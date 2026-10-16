@@ -1,0 +1,22 @@
+{
+  "name": "@skeleton/skeleton-bo-app",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "tags": [
+      "type:app"
+    ],
+    "targets": {
+      "build": {
+        "syncGenerators": [
+          "@skeleton/tailwind-sync-plugin:update-tailwind-globs"
+        ]
+      },
+      "serve": {
+        "syncGenerators": [
+          "@skeleton/tailwind-sync-plugin:update-tailwind-globs"
+        ]
+      }
+    }
+  }
+}

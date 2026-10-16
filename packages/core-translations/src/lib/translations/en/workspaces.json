@@ -1,0 +1,11 @@
+{
+  "workspaces.create.successTitle": "Workspace created!",
+  "workspaces.create.successDescription": "{name} is ready to use. You can now invite team members.",
+  "workspaces.create.title": "Create a new workspace",
+  "workspaces.create.nameLabel": "Workspace name *",
+  "workspaces.create.namePlaceholder": "Your workspace name",
+  "workspaces.create.nameHint": "This will be displayed across the platform.",
+  "workspaces.create.ownerTitle": "You'll be the Owner of this workspace",
+  "workspaces.create.ownerDescription": "You can invite team members and configure settings after creation.",
+  "workspaces.create.submit": "Save Changes"
+}

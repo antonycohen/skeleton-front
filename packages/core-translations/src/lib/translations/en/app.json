@@ -1,0 +1,6 @@
+{
+  "app.noWorkspace.title": "You don't have access to any workspace",
+  "app.noWorkspace.description": "You may have been removed or suspended from your workspace. Ask one of its admins to invite you again, or sign in with another account.",
+  "app.workspaceSwitcher.search": "Search workspaces...",
+  "app.workspaceSwitcher.defaultName": "Workspace"
+}

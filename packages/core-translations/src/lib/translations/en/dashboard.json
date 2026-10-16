@@ -1,0 +1,20 @@
+{
+  "dashboard.title": "Dashboard",
+  "dashboard.members": "Members",
+  "dashboard.deletionCancelled": "Workspace deletion cancelled",
+  "dashboard.deletionCancelFailed": "Failed to cancel deletion",
+  "dashboard.deletionAlert.title": "This workspace is scheduled for deletion",
+  "dashboard.deletionAlert.description": "Deletion will occur on {date}. All actions are limited to read-only.",
+  "dashboard.deletionAlert.cancel": "Cancel deletion",
+  "dashboard.welcome.title": "Welcome!",
+  "dashboard.welcome.titleWithName": "Welcome {firstName}!",
+  "dashboard.welcome.description": "Your workspace is ready. Invite your team or ask the assistant to get started.",
+  "dashboard.welcome.openAssistant": "Open the assistant",
+  "dashboard.admin.description": "Back office of the platform.",
+  "dashboard.admin.workspaces.title": "Workspaces",
+  "dashboard.admin.workspaces.description": "Customer workspaces, members, subscriptions and quotas.",
+  "dashboard.admin.users.title": "Users",
+  "dashboard.admin.users.description": "Every account, its sign-in methods and MFA.",
+  "dashboard.admin.productGroups.title": "Product groups",
+  "dashboard.admin.productGroups.description": "Plans, prices and the quotas they grant."
+}

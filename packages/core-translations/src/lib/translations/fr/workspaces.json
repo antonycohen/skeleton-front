@@ -1,0 +1,11 @@
+{
+  "workspaces.create.successTitle": "Espace de travail créé !",
+  "workspaces.create.successDescription": "{name} est prêt à l'emploi. Vous pouvez maintenant inviter des membres de votre équipe.",
+  "workspaces.create.title": "Créer un nouvel espace de travail",
+  "workspaces.create.nameLabel": "Nom de l'espace de travail *",
+  "workspaces.create.namePlaceholder": "Le nom de votre espace de travail",
+  "workspaces.create.nameHint": "Il sera affiché sur l'ensemble de la plateforme.",
+  "workspaces.create.ownerTitle": "Vous serez le propriétaire de cet espace de travail",
+  "workspaces.create.ownerDescription": "Vous pourrez inviter des membres et configurer les paramètres après la création.",
+  "workspaces.create.submit": "Enregistrer les modifications"
+}

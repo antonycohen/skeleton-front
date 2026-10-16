@@ -1,0 +1,20 @@
+{
+  "navigation.main.dashboard": "Dashboard",
+  "navigation.main.assistant": "Assistant",
+  "navigation.user.profile": "Profile",
+  "navigation.user.inviteMember": "Invite Member",
+  "navigation.user.signOut": "Sign out",
+  "navigation.settings.section": "Settings",
+  "navigation.settings.teams": "Teams",
+  "navigation.settings.security": "Security",
+  "navigation.settings.serviceAccounts": "Service Account",
+  "navigation.settings.billing": "Billing",
+  "navigation.support.section": "Support",
+  "navigation.support.documentation": "Documentation",
+  "navigation.support.messageSupport": "Message support",
+  "navigation.admin.clientsBilling": "Clients & billing",
+  "navigation.admin.workspaces": "Workspaces",
+  "navigation.admin.users": "Users",
+  "navigation.admin.payment": "Payment",
+  "navigation.admin.productGroups": "Product Groups"
+}

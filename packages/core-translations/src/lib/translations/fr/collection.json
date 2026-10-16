@@ -1,0 +1,23 @@
+{
+  "collection.empty": "Aucun résultat.",
+  "collection.pagination.selectedRows": "{count} sur {total} ligne(s) sélectionnée(s).",
+  "collection.pagination.rowsPerPage": "Lignes par page",
+  "collection.pagination.pageOf": "Page {page} sur {total}",
+  "collection.pagination.firstPage": "Aller à la première page",
+  "collection.pagination.previousPage": "Aller à la page précédente",
+  "collection.pagination.nextPage": "Aller à la page suivante",
+  "collection.pagination.lastPage": "Aller à la dernière page",
+  "collection.sort.asc": "Croissant",
+  "collection.sort.desc": "Décroissant",
+  "collection.sort.hide": "Masquer",
+  "collection.toolbar.reset": "Réinitialiser",
+  "collection.toolbar.results": "{count, plural, one {# résultat} other {# résultats}}",
+  "collection.viewOptions.view": "Affichage",
+  "collection.viewOptions.toggleColumns": "Afficher les colonnes",
+  "collection.selection.selectAll": "Tout sélectionner",
+  "collection.selection.selectRow": "Sélectionner la ligne",
+  "collection.filter.selectedCount": "{count, plural, one {# sélectionné} other {# sélectionnés}}",
+  "collection.filter.noResults": "Aucun résultat trouvé.",
+  "collection.filter.clear": "Effacer les filtres",
+  "collection.rowActions.openMenu": "Ouvrir le menu"
+}

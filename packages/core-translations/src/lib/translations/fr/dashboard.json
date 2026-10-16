@@ -1,0 +1,20 @@
+{
+  "dashboard.title": "Tableau de bord",
+  "dashboard.members": "Membres",
+  "dashboard.deletionCancelled": "Suppression de l'espace de travail annulée",
+  "dashboard.deletionCancelFailed": "Impossible d'annuler la suppression",
+  "dashboard.deletionAlert.title": "La suppression de cet espace de travail est programmée",
+  "dashboard.deletionAlert.description": "La suppression aura lieu le {date}. Toutes les actions sont limitées à la lecture seule.",
+  "dashboard.deletionAlert.cancel": "Annuler la suppression",
+  "dashboard.welcome.title": "Bienvenue !",
+  "dashboard.welcome.titleWithName": "Bienvenue {firstName} !",
+  "dashboard.welcome.description": "Votre espace de travail est prêt. Invitez votre équipe ou demandez à l'assistant pour commencer.",
+  "dashboard.welcome.openAssistant": "Ouvrir l'assistant",
+  "dashboard.admin.description": "Back-office de la plateforme.",
+  "dashboard.admin.workspaces.title": "Espaces de travail",
+  "dashboard.admin.workspaces.description": "Espaces de travail clients, membres, abonnements et quotas.",
+  "dashboard.admin.users.title": "Utilisateurs",
+  "dashboard.admin.users.description": "Tous les comptes, leurs méthodes de connexion et la MFA.",
+  "dashboard.admin.productGroups.title": "Groupes de produits",
+  "dashboard.admin.productGroups.description": "Plans, prix et quotas qu'ils accordent."
+}

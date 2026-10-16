@@ -1,0 +1,82 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compileOnSave": false,
+  "files": [],
+  "references": [
+    {
+      "path": "./tools/tailwind-sync-plugin"
+    },
+    {
+      "path": "./apps/skeleton-app"
+    },
+    {
+      "path": "./packages/web-components"
+    },
+    {
+      "path": "./packages/web-layout"
+    },
+    {
+      "path": "./packages/web-themes"
+    },
+    {
+      "path": "./packages/web-feature-login"
+    },
+    {
+      "path": "./packages/core-store-session"
+    },
+    {
+      "path": "./packages/core-api-models"
+    },
+    {
+      "path": "./packages/core-api"
+    },
+    {
+      "path": "./packages/core-store-oauth"
+    },
+    {
+      "path": "./packages/core-utils"
+    },
+    {
+      "path": "./packages/web-collection"
+    },
+    {
+      "path": "./packages/web-feature-users"
+    },
+    {
+      "path": "./packages/web-form"
+    },
+    {
+      "path": "./packages/web-ai"
+    },
+    {
+      "path": "./packages/web-funnel"
+    },
+    {
+      "path": "./packages/core-translations"
+    },
+    {
+      "path": "./packages/web-feature-organizations"
+    },
+    {
+      "path": "./packages/core-workspace"
+    },
+    {
+      "path": "./packages/web-feature-dashboard"
+    },
+    {
+      "path": "./apps/skeleton-bo-app"
+    },
+    {
+      "path": "./packages/web-feature-payment"
+    },
+    {
+      "path": "./packages/core-store-workspace"
+    },
+    {
+      "path": "./packages/core-config"
+    },
+    {
+      "path": "./packages/web-feature-ai"
+    }
+  ]
+}

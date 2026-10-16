@@ -1,0 +1,31 @@
+name: CI
+
+run-name: "CI - ${{ github.event.pull_request.title || github.ref_name }}"
+
+on:
+  # Deliberately unfiltered by branch: a PR whose base is another feature branch
+  # must be built, linted and typechecked too.
+  #
+  # `ready_for_review` is included so a draft that never ran gets checked the
+  # moment it is promoted, without needing another push.
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+# A stack that gets force-pushed re-triggers every PR in it, and superseded runs
+# are of no interest.
+concurrency:
+  group: ci-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+# Nothing here comments on the PR or publishes a check run of its own — the job
+# results are the signal.
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    # Pushes to a draft cost nothing; once "Ready for review" every push is
+    # checked. A draft cannot be merged, so the required checks it lacks block
+    # nothing.
+    if: github.event.pull_request.draft == false
+    uses: ./.github/workflows/_checks.yml

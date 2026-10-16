@@ -1,0 +1,99 @@
+:root {
+  /* ===== LAYOUT ===== */
+  --container-padding-x: var(--spacing-6);
+  --section-padding-y: var(--spacing-24);
+  --section-title-gap-xl: var(--spacing-6);
+  --section-title-gap-lg: var(--spacing-5);
+  --section-title-gap-md: var(--spacing-5);
+  --section-title-gap-sm: var(--spacing-4);
+
+
+  /* ===== HEADING-XL ===== */
+  --heading-xl-font-family: var(--font-font-sans);
+  --heading-xl-font-size: var(--text-7xl-font-size);
+  --heading-xl-line-height: var(--text-7xl-line-height);
+  --heading-xl-font-weight: var(--font-weight-semibold);
+  --heading-xl-letter-spacing: 0;
+
+  /* ===== HEADING-LG ===== */
+  --heading-lg-font-family: var(--font-font-sans);
+  --heading-lg-font-size: var(--text-5xl-font-size);
+  --heading-lg-line-height: var(--text-5xl-line-height);
+  --heading-lg-font-weight: var(--font-weight-semibold);
+  --heading-lg-letter-spacing: 0;
+
+  /* ===== HEADING-MD ===== */
+  --heading-md-font-family: var(--font-font-sans);
+  --heading-md-font-size: var(--text-3xl-font-size);
+  --heading-md-line-height: var(--text-3xl-line-height);
+  --heading-md-font-weight: var(--font-weight-semibold);
+  --heading-md-letter-spacing: 0;
+
+  /* ===== HEADING-SM ===== */
+  --heading-sm-font-family: var(--font-font-sans);
+  --heading-sm-font-size: var(--text-2xl-font-size);
+  --heading-sm-line-height: var(--text-2xl-line-height);
+  --heading-sm-font-weight: var(--font-weight-semibold);
+  --heading-sm-letter-spacing: 0;
+
+  --container-8xl: 1440px;
+
+}
+
+@keyframes cursor-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  :root {
+    /* ===== LAYOUT ===== */
+    --container-padding-x: var(--spacing-6);
+    --section-padding-y: var(--spacing-16);
+    --section-title-gap-xl: var(--spacing-4);
+    --section-title-gap-lg: var(--spacing-4);
+    --section-title-gap-md: var(--spacing-5);
+    --section-title-gap-sm: var(--spacing-4);
+
+    /* ===== HEADING-XL ===== */
+    --heading-xl-font-family: var(--font-font-sans);
+    --heading-xl-font-size: var(--text-5xl-font-size);
+    --heading-xl-line-height: var(--text-5xl-line-height);
+    --heading-xl-font-weight: var(--font-weight-semibold);
+    --heading-xl-letter-spacing: 0;
+
+    /* ===== HEADING-LG ===== */
+    --heading-lg-font-family: var(--font-font-sans);
+    --heading-lg-font-size: var(--text-4xl-font-size);
+    --heading-lg-line-height: var(--text-4xl-line-height);
+    --heading-lg-font-weight: var(--font-weight-semibold);
+    --heading-lg-letter-spacing: 0;
+
+    /* ===== HEADING-MD ===== */
+    --heading-md-font-family: var(--font-font-sans);
+    --heading-md-font-size: var(--text-3xl-font-size);
+    --heading-md-line-height: var(--text-3xl-line-height);
+    --heading-md-font-weight: var(--font-weight-semibold);
+    --heading-md-letter-spacing: 0;
+
+    /* ===== HEADING-SM ===== */
+    --heading-sm-font-family: var(--font-font-sans);
+    --heading-sm-font-size: var(--text-2xl-font-size);
+    --heading-sm-line-height: var(--text-2xl-line-height);
+    --heading-sm-font-weight: var(--font-weight-semibold);
+    --heading-sm-letter-spacing: 0;
+
+  }
+}
+
+/* Height reserved by the job alert bar (a fixed overlay at the top of the
+   window, set by JobAlertProvider). The sidebar and the content column start
+   under it, and full-height views use `h-viewport` to fit the space left. */
+:root {
+  --job-alert-height: 0px;
+}
+
+@utility h-viewport {
+  height: calc(100svh - var(--job-alert-height, 0px));
+}

@@ -1,0 +1,205 @@
+@theme inline {
+  /* ===== FONT FAMILY ===== */
+  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+  "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-heading: "Parkinsans", ui-sans-serif, system-ui, sans-serif;
+  --font-grotesk: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-inter: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  /* ===== SEMANTIC COLORS (Tailwind utility registration) ===== */
+  --color-accent: var(--base-accent);
+  --color-accent-foreground: var(--base-accent-foreground);
+  --color-background: var(--base-background);
+  --color-border: var(--base-border);
+  --color-border-subtle: var(--base-border-subtle);
+  --color-card: var(--base-card);
+  --color-card-foreground: var(--base-card-foreground);
+  --color-destructive: var(--base-destructive);
+  --color-destructive-foreground: var(--base-destructive-foreground);
+  --color-foreground: var(--base-foreground);
+  --color-input: var(--base-input);
+  --color-input-background: var(--base-background);
+  --color-muted: var(--base-muted);
+  --color-muted-foreground: var(--base-muted-foreground);
+  --color-popover: var(--base-popover);
+  --color-popover-foreground: var(--base-popover-foreground);
+  --color-primary: var(--base-primary);
+  --color-primary-foreground: var(--base-primary-foreground);
+  --color-ring: var(--base-ring);
+  --color-ring-offset: var(--base-ring-offset);
+  --color-secondary: var(--base-secondary);
+  --color-secondary-foreground: var(--base-secondary-foreground);
+  --color-subtle: var(--base-subtle);
+  --color-sucess-background: var(--base-sucess-background);
+  --color-chart-1: var(--base-chart-1);
+  --color-chart-2: var(--base-chart-2);
+  --color-chart-3: var(--base-chart-3);
+  --color-chart-4: var(--base-chart-4);
+  --color-chart-5: var(--base-chart-5);
+  --color-sidebar: var(--base-sidebar);
+  --color-sidebar-foreground: var(--base-sidebar-foreground);
+  --color-sidebar-primary-foreground: var(--base-sidebar-primary-foreground);
+  --color-sidebar-primary: var(--base-sidebar-primary);
+  --color-sidebar-accent: var(--base-sidebar-accent);
+  --color-sidebar-accent-foreground: var(--base-sidebar-accent-foreground);
+  --color-sidebar-border: var(--base-sidebar-border);
+  --color-sidebar-ring: var(--base-sidebar-ring);
+  --container-8xl: 1440px;
+}
+
+:root {
+  /* ===== BASE ===== */
+  --base-accent: var(--colors-accent-light);
+  --base-accent-foreground: var(--colors-accent-foreground-light);
+  --base-background: var(--colors-background-light);
+  --base-border: var(--colors-border-light);
+  --base-border-subtle: var(--colors-border-subtle-light);
+  --base-card: var(--colors-card-light);
+  --base-card-foreground: var(--colors-card-foreground-light);
+  --base-destructive: var(--colors-destructive-light);
+  --base-destructive-foreground: var(--colors-destructive-foreground-light);
+  --base-foreground: var(--colors-foreground-light);
+  --base-input: var(--colors-input-light);
+  --base-muted: var(--colors-muted-light);
+  --base-muted-foreground: var(--colors-muted-foreground-light);
+  --base-popover: var(--colors-popover-light);
+  --base-popover-foreground: var(--colors-popover-foreground-light);
+  --base-primary: var(--color-indigo-500);
+  --base-primary-foreground: var(--colors-primary-foreground-light);
+  --base-ring: var(--colors-ring-light);
+  --base-ring-offset: var(--colors-background-light);
+  --base-secondary: var(--colors-secondary-light);
+  --base-secondary-foreground: var(--colors-secondary-foreground-light);
+  --base-subtle: var(--colors-subtle-light);
+  --base-sucess-background: var(--colors-success-background-light);
+  --base-chart-1: var(--colors-chart-1-light);
+  --base-chart-2: var(--colors-chart-2-light);
+  --base-chart-3: var(--colors-chart-3-light);
+  --base-chart-4: var(--colors-chart-4-light);
+  --base-chart-5: var(--colors-chart-5-light);
+  --base-sidebar: var(--colors-background-light);
+  --base-sidebar-foreground: var(--colors-sidebar-foreground-light);
+  --base-sidebar-primary-foreground: var(--colors-sidebar-primary-foreground-light);
+  --base-sidebar-primary: var(--colors-sidebar-primary-light);
+  --base-sidebar-accent: var(--colors-sidebar-accent-light);
+  --base-sidebar-accent-foreground: var(--colors-sidebar-accent-foreground-light);
+  --base-sidebar-border: var(--colors-sidebar-border-light);
+  --base-sidebar-ring: var(--colors-sidebar-ring-light);
+
+  /* ===== ALPHA ===== */
+  --alpha-5: rgb(255 255 255 / 0.95);
+  --alpha-10: rgb(255 255 255 / 0.9);
+  --alpha-20: rgb(255 255 255 / 0.8);
+  --alpha-30: rgb(255 255 255 / 0.7);
+  --alpha-40: rgb(255 255 255 / 0.6);
+  --alpha-50: rgb(255 255 255 / 0.5);
+  --alpha-60: rgb(255 255 255 / 0.4);
+  --alpha-70: rgb(255 255 255 / 0.3);
+  --alpha-80: rgb(255 255 255 / 0.2);
+  --alpha-90: rgb(255 255 255 / 0.1);
+
+  /* ===== CUSTOM ===== */
+  --custom-background-dark-input-30: var(--base-background);
+  --custom-background-dark-calendar-30: var(--base-background);
+  --custom-accent-dark-input-50: var(--base-accent);
+  --custom-accent-dark-calendar-50: var(--base-accent);
+  --custom-input-dark-input-80: var(--base-input);
+  --custom-destructive-dark-destructive-60: var(--base-destructive);
+  --custom-destructive-dark-destructive-70: var(--base-destructive);
+  --custom-destructive-dark-destructive-90: var(--base-destructive);
+  --custom-destructive-20-dark-destructive-40: rgb(220 38 38 / 0.2);
+  --custom-destructive-40-dark-destructive-60: rgb(220 38 38 / 0.4);
+  --custom-dark-input: rgb(255 255 255 / 0);
+  --custom-outline: rgb(163 163 163 / 0.5);
+  --custom-outline-10-dark-outline-20: rgb(163 163 163 / 0.1);
+  --custom-blue-500-dark-blue-600: var(--color-blue-500);
+  --custom-border-dark-input-dark: var(--base-border);
+  --custom-ring-dark-input-dark: var(--base-ring);
+  --custom-ring-dark-input-dark-2: var(--base-ring);
+  --custom-bg-background-20-dark-bg-background-10: rgb(255 255 255 / 0.2);
+  --custom-bg-primary-5-dark-bg-primary-10: rgb(23 23 23 / 0.05);
+}
+
+.dark {
+  /* ===== BASE ===== */
+  --base-accent: var(--colors-accent-dark);
+  --base-accent-foreground: var(--colors-accent-foreground-dark);
+  --base-background: var(--colors-background-dark);
+  --base-border: var(--colors-border-dark);
+  --base-border-subtle: var(--colors-border-subtle-dark);
+  --base-card: var(--colors-card-dark);
+  --base-card-foreground: var(--colors-card-foreground-dark);
+  --base-destructive: var(--colors-destructive-dark);
+  --base-destructive-foreground: var(--colors-destructive-foreground-dark);
+  --base-foreground: var(--colors-foreground-dark);
+  --base-input: var(--colors-input-dark);
+  --base-muted: var(--colors-muted-dark);
+  --base-muted-foreground: var(--colors-muted-foreground-dark);
+  --base-popover: var(--colors-popover-dark);
+  --base-popover-foreground: var(--colors-popover-foreground-dark);
+  --base-primary: var(--color-indigo-400);
+  --base-primary-foreground: var(--colors-primary-foreground-dark);
+  --base-ring: var(--colors-ring-dark);
+  --base-ring-offset: var(--colors-background-dark);
+  --base-secondary: var(--colors-secondary-dark);
+  --base-secondary-foreground: var(--colors-secondary-foreground-dark);
+  --base-subtle: var(--colors-subtle-dark);
+  --base-sucess-background: var(--colors-success-background-dark);
+  --base-chart-1: var(--colors-chart-1-dark);
+  --base-chart-2: var(--colors-chart-2-dark);
+  --base-chart-3: var(--colors-chart-3-dark);
+  --base-chart-4: var(--colors-chart-4-dark);
+  --base-chart-5: var(--colors-chart-5-dark);
+  --base-sidebar: var(--colors-sidebar-dark);
+  --base-sidebar-foreground: var(--colors-sidebar-foreground-dark);
+  --base-sidebar-primary-foreground: var(--colors-sidebar-primary-foreground-dark);
+  --base-sidebar-primary: var(--colors-sidebar-primary-dark);
+  --base-sidebar-accent: var(--colors-sidebar-accent-dark);
+  --base-sidebar-accent-foreground: var(--colors-sidebar-accent-foreground-dark);
+  --base-sidebar-border: var(--colors-sidebar-border-dark);
+  --base-sidebar-ring: var(--colors-sidebar-ring-dark);
+
+  /* ===== ALPHA ===== */
+  --alpha-5: rgb(10 10 10 / 0.95);
+  --alpha-10: rgb(10 10 10 / 0.9);
+  --alpha-20: rgb(10 10 10 / 0.8);
+  --alpha-30: rgb(10 10 10 / 0.7);
+  --alpha-40: rgb(10 10 10 / 0.6);
+  --alpha-50: rgb(10 10 10 / 0.5);
+  --alpha-60: rgb(10 10 10 / 0.4);
+  --alpha-70: rgb(10 10 10 / 0.3);
+  --alpha-80: rgb(10 10 10 / 0.2);
+  --alpha-90: rgb(10 10 10 / 0.1);
+
+  /* ===== CUSTOM ===== */
+  --custom-background-dark-input-30: rgb(255 255 255 / 0.05);
+  --custom-background-dark-calendar-30: rgb(255 255 255 / 0.05);
+  --custom-accent-dark-input-50: rgb(255 255 255 / 0.08);
+  --custom-accent-dark-calendar-50: rgb(255 255 255 / 0.08);
+  --custom-input-dark-input-80: rgb(255 255 255 / 0.12);
+  --custom-destructive-dark-destructive-60: rgb(248 113 113 / 0.6);
+  --custom-destructive-dark-destructive-70: rgb(248 113 113 / 0.7);
+  --custom-destructive-dark-destructive-90: rgb(248 113 113 / 0.9);
+  --custom-destructive-20-dark-destructive-40: rgb(248 113 113 / 0.4);
+  --custom-destructive-40-dark-destructive-60: rgb(248 113 113 / 0.6);
+  --custom-dark-input: var(--base-input);
+  --custom-outline: rgb(115 115 115 / 0.5);
+  --custom-outline-10-dark-outline-20: rgb(115 115 115 / 0.2);
+  --custom-blue-500-dark-blue-600: var(--color-blue-600);
+  --custom-border-dark-input-dark: var(--colors-input-dark);
+  --custom-ring-dark-input-dark: var(--colors-input-dark);
+  --custom-ring-dark-input-dark-2: var(--colors-input-dark);
+  --custom-bg-background-20-dark-bg-background-10: rgb(10 10 10 / 0.1);
+  --custom-bg-primary-5-dark-bg-primary-10: rgb(255 255 255 / 0.1);
+}
+
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "types": [
+      "node",
+      "vite/client",
+      "@nx/react/typings/cssmodule.d.ts",
+      "@nx/react/typings/image.d.ts"
+    ],
+    "rootDir": "src",
+    "jsx": "react-jsx",
+    "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo",
+    "lib": [
+      "es2022",
+      "dom",
+      "dom.iterable"
+    ]
+  },
+  "exclude": [
+    "out-tsc",
+    "dist",
+    "jest.config.ts",
+    "jest.config.cts",
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts",
+    "src/**/*.spec.tsx",
+    "src/**/*.test.tsx",
+    "src/**/*.spec.js",
+    "src/**/*.test.js",
+    "src/**/*.spec.jsx",
+    "src/**/*.test.jsx",
+    "eslint.config.js",
+    "eslint.config.cjs",
+    "eslint.config.mjs"
+  ],
+  "include": [
+    "src/**/*.js",
+    "src/**/*.jsx",
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ],
+  "references": [
+    {
+      "path": "../core-translations/tsconfig.lib.json"
+    },
+    {
+      "path": "../core-utils/tsconfig.lib.json"
+    },
+    {
+      "path": "../web-collection/tsconfig.lib.json"
+    },
+    {
+      "path": "../web-form/tsconfig.lib.json"
+    },
+    {
+      "path": "../web-layout/tsconfig.lib.json"
+    },
+    {
+      "path": "../core-api-models/tsconfig.lib.json"
+    },
+    {
+      "path": "../core-api/tsconfig.lib.json"
+    },
+    {
+      "path": "../web-components/tsconfig.lib.json"
+    },
+    {
+      "path": "../core-workspace/tsconfig.lib.json"
+    }
+  ]
+}

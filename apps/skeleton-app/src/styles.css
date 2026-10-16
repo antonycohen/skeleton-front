@@ -1,0 +1,35 @@
+@import "tw-animate-css";
+@import "tailwindcss";
+
+@import "../../../packages/web-themes/src/theme.css";
+@import "../../../packages/web-themes/src/mode.css";
+@import "../../../packages/web-themes/src/custom.css";
+
+@source "../../../packages/core-api";
+@source "../../../packages/core-api-models";
+@source "../../../packages/core-config";
+@source "../../../packages/core-store-oauth";
+@source "../../../packages/core-store-session";
+@source "../../../packages/core-store-workspace";
+@source "../../../packages/core-translations";
+@source "../../../packages/core-utils";
+@source "../../../packages/core-workspace";
+@source "../../../packages/web-ai";
+@source "../../../packages/web-collection";
+@source "../../../packages/web-components";
+@source "../../../packages/web-feature-ai";
+@source "../../../packages/web-feature-dashboard";
+@source "../../../packages/web-feature-login";
+@source "../../../packages/web-feature-organizations";
+@source "../../../packages/web-feature-payment";
+@source "../../../packages/web-feature-users";
+@source "../../../packages/web-form";
+@source "../../../packages/web-layout";
+
+@source "../../../node_modules/streamdown/dist/*.js";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@plugin 'tailwindcss-animate';
+@plugin "@tailwindcss/typography";
+

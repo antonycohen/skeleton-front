@@ -1,0 +1,15 @@
+{
+  "login.denied.title": "Vous n'êtes pas autorisé à accéder à cette application",
+  "login.denied.signOut": "Se déconnecter",
+  "login.denied.defaultDescription": "Connectez-vous avec un compte ayant accès à cette application.",
+  "login.denied.sessionUnavailable": "Votre compte n'a pas pu être chargé pour cette application.",
+  "login.refusal.mfaEnrolmentRequired": "L'authentification à deux facteurs doit être configurée sur votre compte avant que vous puissiez vous connecter.",
+  "login.refusal.ssoRequired": "Cet espace de travail connecte ses membres via son propre fournisseur d'identité. Connectez-vous via celui-ci pour continuer.",
+  "login.refusal.ssoSessionExpired": "Votre session d'authentification unique a expiré. Reconnectez-vous via votre fournisseur d'identité.",
+  "login.refusal.sessionRevoked": "Votre session a été fermée. Reconnectez-vous pour continuer.",
+  "login.callback.failedTitle": "La connexion n'a pas pu aboutir",
+  "login.callback.linkExpired": "Le lien de connexion a expiré ou a déjà été utilisé.",
+  "login.callback.tryAgain": "Réessayer",
+  "login.callback.signingIn": "Connexion en cours…",
+  "login.dispatcher.redirecting": "Redirection"
+}

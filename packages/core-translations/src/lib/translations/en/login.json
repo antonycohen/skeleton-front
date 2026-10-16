@@ -1,0 +1,15 @@
+{
+  "login.denied.title": "You are not authorized to access this application",
+  "login.denied.signOut": "Sign out",
+  "login.denied.defaultDescription": "Sign in with an account that has access to this application.",
+  "login.denied.sessionUnavailable": "Your account could not be loaded for this application.",
+  "login.refusal.mfaEnrolmentRequired": "Two-factor authentication must be set up on your account before you can sign in.",
+  "login.refusal.ssoRequired": "This workspace signs its members in through its own identity provider. Sign in there to continue.",
+  "login.refusal.ssoSessionExpired": "Your single sign-on session has expired. Sign in through your identity provider again.",
+  "login.refusal.sessionRevoked": "Your session was ended. Sign in again to continue.",
+  "login.callback.failedTitle": "Sign-in could not be completed",
+  "login.callback.linkExpired": "The sign-in link has expired or was already used.",
+  "login.callback.tryAgain": "Try again",
+  "login.callback.signingIn": "Signing you in…",
+  "login.dispatcher.redirecting": "Redirecting"
+}

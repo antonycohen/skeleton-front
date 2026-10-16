@@ -1,0 +1,23 @@
+{
+  "collection.empty": "No results.",
+  "collection.pagination.selectedRows": "{count} of {total} row(s) selected.",
+  "collection.pagination.rowsPerPage": "Rows per page",
+  "collection.pagination.pageOf": "Page {page} of {total}",
+  "collection.pagination.firstPage": "Go to first page",
+  "collection.pagination.previousPage": "Go to previous page",
+  "collection.pagination.nextPage": "Go to next page",
+  "collection.pagination.lastPage": "Go to last page",
+  "collection.sort.asc": "Asc",
+  "collection.sort.desc": "Desc",
+  "collection.sort.hide": "Hide",
+  "collection.toolbar.reset": "Reset",
+  "collection.toolbar.results": "{count} results",
+  "collection.viewOptions.view": "View",
+  "collection.viewOptions.toggleColumns": "Toggle columns",
+  "collection.selection.selectAll": "Select all",
+  "collection.selection.selectRow": "Select row",
+  "collection.filter.selectedCount": "{count} selected",
+  "collection.filter.noResults": "No results found.",
+  "collection.filter.clear": "Clear filters",
+  "collection.rowActions.openMenu": "Open menu"
+}

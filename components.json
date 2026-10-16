@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "new-york",
+  "rsc": false,
+  "tsx": true,
+  "tailwind": {
+    "config": "",
+    "css": "./packages/web-themes/src/theme.css",
+    "baseColor": "neutral",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "iconLibrary": "lucide",
+  "aliases": {
+    "components": "packages/web-components/src",
+    "utils": "packages/core-utils/src/lib",
+    "ui": "packages/web-components/src/lib",
+    "lib": "packages/web-themes/src/lib",
+    "hooks": "packages/core-utils/src/lib"
+  },
+  "registries": {
+    "@shadcndesign": {
+      "url": "https://shadcndesign-registry.vercel.app/api/registry/{name}",
+      "headers": {
+        "X-License-Key": "${SHADCNDESIGN_LICENSE_KEY}"
+      }
+    },
+    "@ai-elements": "https://registry.ai-sdk.dev/{name}.json"
+  }
+}

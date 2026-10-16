@@ -1,0 +1,68 @@
+name: Checks
+
+# Pull-request quality gates.
+#
+# Every project runs, every time, rather than only the ones `nx affected` picks
+# out of the diff. At this size that costs little — the full lint is well under
+# a minute and `pnpm install` dominates the job either way — and it buys two
+# things affected cannot give. The result is a property of the branch tip rather
+# than of the diff, so it stays valid when a stacked PR is retargeted and does
+# not depend on the project graph having every edge right; and an error in a
+# project the PR happens not to touch is caught here instead of ambushing
+# whoever next edits that project.
+#
+# Revisit if the suite grows minutes long: `nx affected --base=origin/$BASE_REF`
+# is the escape hatch, ideally alongside a shared cache.
+#
+# Two jobs rather than one per target: every job is billed at least a minute
+# and spends ~45 s on checkout and install before any work, so three jobs for
+# ~2-3 min of work each cost more in setup and rounding than in checking. Lint
+# and test share a job and run in one nx invocation (nx runs their tasks side
+# by side); typecheck, the longest, keeps its own so the gate takes no longer
+# than it used to. The job names are the check names a branch ruleset
+# can require: `checks / lint-test` and `checks / typecheck`.
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: ${{ matrix.name }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # `--passWithNoTests` comes from the `test` target defaults in nx.json:
+          # passed on the command line it would reach eslint too, which rejects it.
+          - name: lint-test
+            targets: lint,test
+          - name: typecheck
+            targets: typecheck
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run ${{ matrix.targets }}
+        env:
+          TARGETS: ${{ matrix.targets }}
+        run: npx nx run-many --targets="$TARGETS"

@@ -1,0 +1,6 @@
+{
+  "app.noWorkspace.title": "Vous n'avez accès à aucun espace de travail",
+  "app.noWorkspace.description": "Vous avez peut-être été retiré ou suspendu de votre espace de travail. Demandez à l'un de ses administrateurs de vous inviter à nouveau, ou connectez-vous avec un autre compte.",
+  "app.workspaceSwitcher.search": "Rechercher des espaces de travail...",
+  "app.workspaceSwitcher.defaultName": "Espace de travail"
+}
