@@ -1,0 +1,52 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { FontFamilies, TypeScale, Weights } from './tokens';
+
+<Meta title="Foundations/Typography" />
+
+# Typography
+
+Fonts load from Google Fonts (see `apps/skeleton-app/index.html`).
+
+<FontFamilies
+  families={[
+    { name: 'Geist', className: 'font-sans', usage: 'Default for all UI text.' },
+    { name: 'Parkinsans', className: 'font-heading', usage: 'Page titles and marketing headings.' },
+    { name: 'Geist Mono', className: 'font-mono', usage: 'Code, ids, snippets.' },
+  ]}
+/>
+
+## Scale
+
+Font size / line height of each `text-*` utility: the theme's tokens (`theme.css`), letter spacing included.
+
+<TypeScale
+  steps={[
+    { label: 'text-xs', className: 'text-xs' },
+    { label: 'text-sm', className: 'text-sm' },
+    { label: 'text-base', className: 'text-base' },
+    { label: 'text-lg', className: 'text-lg' },
+    { label: 'text-xl', className: 'text-xl' },
+    { label: 'text-2xl', className: 'text-2xl' },
+    { label: 'text-3xl', className: 'text-3xl' },
+    { label: 'text-4xl', className: 'text-4xl' },
+    { label: 'text-5xl', className: 'text-5xl' },
+    { label: 'text-6xl', className: 'text-6xl' },
+    { label: 'text-7xl', className: 'text-7xl' },
+    { label: 'text-8xl', className: 'text-8xl' },
+    { label: 'text-9xl', className: 'text-9xl' },
+  ]}
+/>
+
+## Weights
+
+Note `font-semibold` is **550**, not 600.
+
+<Weights
+  weights={[
+    { label: 'font-light', className: 'font-light' },
+    { label: 'font-normal', className: 'font-normal' },
+    { label: 'font-medium', className: 'font-medium' },
+    { label: 'font-semibold', className: 'font-semibold' },
+    { label: 'font-bold', className: 'font-bold' },
+  ]}
+/>

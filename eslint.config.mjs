@@ -84,6 +84,16 @@ export default [
     ],
     rules: {},
   },
+  // Stories sit next to their component but belong to the Storybook app: they import
+  // `@skeleton/storybook-support`, which imports the packages back (app shell, providers). Nx drops that
+  // edge from the project graph (`"implicitDependencies": ["!@skeleton/storybook-support"]` in each
+  // package), so tasks stay acyclic; the lint rule still sees the file-level loop, so it is off here.
+  {
+    files: ['**/*.stories.tsx', '**/*.stories.ts'],
+    rules: {
+      '@nx/enforce-module-boundaries': 'off',
+    },
+  },
   // Reuse between the two surfaces is one-directional. A back-office
   // (`*-manager-page`) page may import a workspace page's code when that code is
   // generic — but the reverse is never allowed, because back-office components are

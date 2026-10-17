@@ -1,0 +1,40 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import {
+  ArrowRightIcon, CheckIcon, ChevronDownIcon, CopyIcon, HouseIcon, PlusIcon, SearchIcon,
+  SettingsIcon, SparklesIcon, Trash2Icon, UsersIcon, XIcon,
+} from 'lucide-react';
+import { AppLogo } from '@skeleton/web-components';
+import { Grid, IconTile } from './tokens';
+
+<Meta title="Foundations/Icons" />
+
+# Icons
+
+## Interface icons
+
+UI icons come from [Lucide](https://lucide.dev/icons) (`lucide-react`). Size them with `size-4`
+(default inside buttons) or `size-5`; colour follows `currentColor`.
+
+<Grid>
+  <IconTile name="PlusIcon"><PlusIcon /></IconTile>
+  <IconTile name="SearchIcon"><SearchIcon /></IconTile>
+  <IconTile name="SettingsIcon"><SettingsIcon /></IconTile>
+  <IconTile name="SparklesIcon"><SparklesIcon /></IconTile>
+  <IconTile name="HouseIcon"><HouseIcon /></IconTile>
+  <IconTile name="UsersIcon"><UsersIcon /></IconTile>
+  <IconTile name="CopyIcon"><CopyIcon /></IconTile>
+  <IconTile name="Trash2Icon"><Trash2Icon /></IconTile>
+  <IconTile name="CheckIcon"><CheckIcon /></IconTile>
+  <IconTile name="XIcon"><XIcon /></IconTile>
+  <IconTile name="ChevronDownIcon"><ChevronDownIcon /></IconTile>
+  <IconTile name="ArrowRightIcon"><ArrowRightIcon /></IconTile>
+</Grid>
+
+## Brand
+
+The logo files are served from each app's `public/` folder (`logo-icon.svg`, `logo-text.svg`): replace
+them when forking the skeleton.
+
+<Grid>
+  <IconTile name="AppLogo"><AppLogo /></IconTile>
+</Grid>

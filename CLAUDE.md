@@ -23,6 +23,20 @@ npx nx build @skeleton/skeleton-app      # Production build
 npx nx preview @skeleton/skeleton-app    # Preview production build (port 4300; BO: 4500)
 ```
 
+### Storybook
+
+`apps/storybook` (`@skeleton/storybook`) is the UI catalogue: tokens, components and every screen on a
+mock API (MSW). Stories are colocated (`*.stories.tsx` next to the component) and import fixtures,
+mocks and helpers from `@skeleton/storybook-support` (`packages/storybook-support`). Conventions:
+`apps/storybook/README.md`.
+
+```bash
+npx nx storybook @skeleton/storybook         # Dev server on port 6006
+npx nx build-storybook @skeleton/storybook   # Static build (apps/storybook/dist)
+npx nx typecheck @skeleton/storybook         # Typechecks every story
+node apps/storybook/scripts/smoke.mjs        # Renders every story headlessly (needs the dev server)
+```
+
 ### Testing
 
 ```bash
@@ -59,6 +73,7 @@ The monorepo is organized into three main directories:
 - **`apps/`** - Application entry points
   - `skeleton-app/` - Customer web app (port 4200), workspace-scoped under `/w/:organizationId`
   - `skeleton-bo-app/` - Back office (port 4400), fixed top-level routes
+  - `storybook/` - UI catalogue (port 6006): tokens, components and every screen on an MSW mock API
 - **`packages/`** - Shared libraries organized by domain and purpose
 - **`tools/`** - Custom Nx plugins and build tools (`tailwind-sync-plugin`)
 
@@ -104,6 +119,10 @@ Self-contained feature modules with routes, pages, and components:
 - `web-feature-payment` - Billing, paywall, plans, and back-office product groups
 
 Each feature package exports a `*Routes` component (e.g., `LoginRoutes`, `AccountRoutes`, `AdminUsersRoutes`) that defines its routing structure.
+
+#### Storybook Support (`storybook-support`)
+
+Story-only code (providers, app shell, MSW handlers and fixtures per domain), imported by `*.stories.tsx` files as `@skeleton/storybook-support` — never by application code. Packages with stories declare `"implicitDependencies": ["!@skeleton/storybook-support"]` to keep the Nx graph acyclic.
 
 ### Application Architecture
 
@@ -208,7 +227,7 @@ See the `translations` rule (`.claude/rules/translations.md`).
 
 ### Tailwind Integration
 
-The custom `@skeleton/tailwind-sync-plugin` automatically updates `@source` directives in `apps/skeleton-app/src/styles.css` (and the back office's) to include all packages. This ensures Tailwind scans all components for utility classes. The plugin runs via `npx nx sync`.
+The custom `@skeleton/tailwind-sync-plugin` automatically updates `@source` directives in `apps/skeleton-app/src/styles.css` (and the back office's) to include all packages. This ensures Tailwind scans all components for utility classes. The plugin runs via `npx nx sync`. Storybook (tagged `type:storybook`) is skipped: its stylesheet scans `packages/` as a whole.
 
 ### Creating New Packages
 

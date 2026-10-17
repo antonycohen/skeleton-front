@@ -1,0 +1,30 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Introduction" />
+
+# Skeleton UI
+
+The living catalogue of the Skeleton web app: the design tokens, every component and every screen,
+rendered from the real code.
+
+| Section | What you find |
+|---|---|
+| **Foundations** | Colours, typography, spacing & layout, radius & shadows, icons — read from `packages/web-themes` |
+| **Components** | `UI` (shadcn primitives), `Custom` (product components), `Pro blocks` — from `packages/web-components` |
+| **Patterns** | Forms, collections (tables), AI chat, funnels — `web-form`, `web-collection`, `web-ai`, `web-funnel` |
+| **Layout** | The app shell: sidebar, top bar, page header — `web-layout` |
+| **Screens** | Every page of the `web-feature-*` packages, inside the signed-in shell, on a mock API |
+| **Prototypes** | Concept screens for features the product does not have yet, in Storybook only |
+
+Use the toolbar to switch **light / dark**, the viewport and the background.
+
+## How screens get their data
+
+Screens call the real API client. In Storybook every request goes to a fake origin answered by a
+[Mock Service Worker](https://mswjs.io): realistic fixtures per domain, and per-story overrides for
+loading, empty and error states. Open the browser console to see which calls a screen makes.
+
+## Adding a story
+
+Stories live next to the component (`button.tsx` → `button.stories.tsx`). Conventions, the mock API
+and the screen helpers are described in `apps/storybook/README.md`.

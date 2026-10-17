@@ -1,0 +1,41 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Radii, Shadows } from './tokens';
+
+<Meta title="Foundations/Radius & shadows" />
+
+# Radius & shadows
+
+## Radius
+
+Buttons and inputs use `rounded-md`, cards `rounded-xl`, dialogs `rounded-lg`.
+
+<Radii
+  steps={[
+    { label: 'rounded-xs', className: 'rounded-xs' },
+    { label: 'rounded-sm', className: 'rounded-sm' },
+    { label: 'rounded-md', className: 'rounded-md' },
+    { label: 'rounded-lg', className: 'rounded-lg' },
+    { label: 'rounded-xl', className: 'rounded-xl' },
+    { label: 'rounded-2xl', className: 'rounded-2xl' },
+    { label: 'rounded-3xl', className: 'rounded-3xl' },
+    { label: 'rounded-4xl', className: 'rounded-4xl' },
+    { label: 'rounded-full', className: 'rounded-full' },
+  ]}
+/>
+
+## Shadows
+
+Elevation is subtle: `shadow-xs` on buttons and inputs, `shadow-sm` on cards, `shadow-md` and up on
+popovers, menus and dialogs.
+
+<Shadows
+  steps={[
+    { label: 'shadow-2xs', className: 'shadow-2xs' },
+    { label: 'shadow-xs', className: 'shadow-xs' },
+    { label: 'shadow-sm', className: 'shadow-sm' },
+    { label: 'shadow-md', className: 'shadow-md' },
+    { label: 'shadow-lg', className: 'shadow-lg' },
+    { label: 'shadow-xl', className: 'shadow-xl' },
+    { label: 'shadow-2xl', className: 'shadow-2xl' },
+  ]}
+/>

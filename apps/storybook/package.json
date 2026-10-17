@@ -1,0 +1,48 @@
+{
+  "name": "@skeleton/storybook",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "storybook": "storybook dev -p 6006 --no-open",
+    "build-storybook": "storybook build -o dist"
+  },
+  "nx": {
+    "tags": [
+      "type:app",
+      "type:storybook"
+    ],
+    "targets": {
+      "storybook": {
+        "continuous": true
+      },
+      "build-storybook": {
+        "cache": true,
+        "inputs": [
+          "default",
+          "^default"
+        ],
+        "outputs": [
+          "{projectRoot}/dist"
+        ]
+      },
+      "typecheck": {
+        "executor": "nx:run-commands",
+        "dependsOn": [
+          "^typecheck"
+        ],
+        "cache": true,
+        "options": {
+          "cwd": "apps/storybook",
+          "command": "tsc -p tsconfig.json --noEmit"
+        },
+        "inputs": [
+          "{projectRoot}/**/*.{ts,tsx}",
+          "{workspaceRoot}/packages/*/src/**/*.{ts,tsx}",
+          "{workspaceRoot}/tsconfig.base.json"
+        ]
+      }
+    }
+  },
+  "dependencies": {}
+}

@@ -12,6 +12,8 @@
     "lib": ["es2022", "dom", "dom.iterable"]
   },
   "exclude": [
+    "src/**/*.stories.tsx",
+    "src/**/*.stories.ts",
     "out-tsc",
     "dist",
     "jest.config.ts",

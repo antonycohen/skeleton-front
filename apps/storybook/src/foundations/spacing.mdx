@@ -1,0 +1,67 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Spacing, VariableTable } from './tokens';
+
+<Meta title="Foundations/Spacing & layout" />
+
+# Spacing & layout
+
+Spacing follows Tailwind's 4px step (`--spacing: 0.25rem`): `p-4` is 16px, `gap-6` is 24px.
+
+<Spacing
+  steps={[
+    { label: 'w-1', className: 'w-1' },
+    { label: 'w-2', className: 'w-2' },
+    { label: 'w-3', className: 'w-3' },
+    { label: 'w-4', className: 'w-4' },
+    { label: 'w-6', className: 'w-6' },
+    { label: 'w-8', className: 'w-8' },
+    { label: 'w-10', className: 'w-10' },
+    { label: 'w-12', className: 'w-12' },
+    { label: 'w-16', className: 'w-16' },
+    { label: 'w-24', className: 'w-24' },
+    { label: 'w-32', className: 'w-32' },
+    { label: 'w-48', className: 'w-48' },
+    { label: 'w-64', className: 'w-64' },
+  ]}
+/>
+
+## Containers
+
+<Spacing
+  steps={[
+    { label: 'max-w-sm', className: 'w-full max-w-sm' },
+    { label: 'max-w-md', className: 'w-full max-w-md' },
+    { label: 'max-w-lg', className: 'w-full max-w-lg' },
+    { label: 'max-w-xl', className: 'w-full max-w-xl' },
+    { label: 'max-w-2xl', className: 'w-full max-w-2xl' },
+    { label: 'max-w-3xl', className: 'w-full max-w-3xl' },
+    { label: 'max-w-4xl', className: 'w-full max-w-4xl' },
+  ]}
+/>
+
+`max-w-8xl` (1440px) is the widest container, used by full-width pages.
+
+## Breakpoints
+
+| Prefix | Min width |
+|---|---|
+| `sm:` | 640px |
+| `md:` | 768px |
+| `lg:` | 1024px |
+| `xl:` | 1280px |
+| `2xl:` | 1536px |
+
+## Layout variables
+
+From `custom.css`, used by marketing-style sections.
+
+<VariableTable
+  variables={[
+    { name: '--container-padding-x', description: 'Horizontal page padding' },
+    { name: '--section-padding-y', description: 'Vertical padding of a section' },
+    { name: '--section-title-gap-xl', description: 'Gap under an XL section title' },
+    { name: '--section-title-gap-lg', description: 'Gap under an LG section title' },
+    { name: '--section-title-gap-md', description: 'Gap under an MD section title' },
+    { name: '--section-title-gap-sm', description: 'Gap under an SM section title' },
+  ]}
+/>

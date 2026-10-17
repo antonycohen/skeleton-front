@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { ColorTable } from './tokens';
+
+<Meta title="Foundations/Colors" />
+
+# Colors
+
+Components only use **semantic colours**: `bg-primary`, `text-muted-foreground`, `border-border`…
+Each one maps to a `--base-*` variable whose value switches with the theme (`:root` for light,
+`.dark` for dark) in `packages/web-themes/src/mode.css`. The raw palette (`--colors-*-light` /
+`--colors-*-dark`) lives in `theme.css` and is never used directly in components.
+
+Both themes are shown side by side below, whatever the toolbar theme.
+
+## Surfaces & text
+
+<ColorTable filter={(name) => !name.startsWith('chart') && !name.startsWith('sidebar')} />
+
+## Charts
+
+Series colours, in order (`chart-1` first).
+
+<ColorTable filter={(name) => name.startsWith('chart')} />
+
+## Sidebar
+
+<ColorTable filter={(name) => name.startsWith('sidebar')} />

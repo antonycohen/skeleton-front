@@ -24,6 +24,7 @@
     ],
     "baseUrl": ".",
     "paths": {
+      "@skeleton/storybook-support/preview": ["packages/storybook-support/src/preview.ts"],
       "@skeleton/*": [
         "packages/*/src/index.ts"
       ],

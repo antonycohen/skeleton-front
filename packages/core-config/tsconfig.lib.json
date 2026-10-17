@@ -12,6 +12,8 @@
     "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo"
   },
   "exclude": [
+    "src/**/*.stories.tsx",
+    "src/**/*.stories.ts",
     "out-tsc",
     "dist",
     "jest.config.ts",

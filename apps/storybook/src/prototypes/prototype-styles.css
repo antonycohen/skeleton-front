@@ -1,0 +1,5 @@
+/*
+ * Styles the prototypes try out before the design system takes them. Only on the Prototypes stories
+ * (`html[data-prototype]`, set by the preview's decorator). Plain CSS, outside Tailwind's layers, so
+ * it wins over the components' utilities.
+ */

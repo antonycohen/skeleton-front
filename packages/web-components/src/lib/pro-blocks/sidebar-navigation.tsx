@@ -67,13 +67,16 @@ export function SidebarNavigation({
                   <SidebarMenuSub>
                     {item.items.map((subItem) => (
                       <SidebarMenuSubItem key={subItem.url}>
-                        <NavLink to={subItem.url} target={item.target}>
-                          {({ isActive }) => (
-                            <SidebarMenuSubButton isActive={isActive}>
-                              <span>{subItem.title}</span>
-                            </SidebarMenuSubButton>
-                          )}
-                        </NavLink>
+                        {/* The button renders as the link itself (an <a> can't nest another <a>);
+                            NavLink flags the active route with aria-current="page". */}
+                        <SidebarMenuSubButton
+                          asChild
+                          className="aria-[current=page]:bg-sidebar-accent aria-[current=page]:text-sidebar-accent-foreground"
+                        >
+                          <NavLink to={subItem.url} target={item.target}>
+                            <span>{subItem.title}</span>
+                          </NavLink>
+                        </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                     ))}
                   </SidebarMenuSub>

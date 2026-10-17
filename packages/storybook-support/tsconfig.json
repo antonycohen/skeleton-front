@@ -1,0 +1,47 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "lib": ["dom", "dom.iterable", "es2022"],
+    "noEmit": true,
+    "composite": false,
+    "declaration": false,
+    "declarationMap": false,
+    "emitDeclarationOnly": false,
+    "types": ["node", "vite/client", "msw-storybook-addon/csf3"]
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "../../apps/storybook/src/globals.d.ts"
+  ],
+  "references": [
+    {
+      "path": "../core-store-session"
+    },
+    {
+      "path": "../core-store-oauth"
+    },
+    {
+      "path": "../core-config"
+    },
+    {
+      "path": "../core-translations"
+    },
+    {
+      "path": "../core-api-models"
+    },
+    {
+      "path": "../web-feature-payment"
+    },
+    {
+      "path": "../core-workspace"
+    },
+    {
+      "path": "../web-components"
+    },
+    {
+      "path": "../web-layout"
+    }
+  ]
+}

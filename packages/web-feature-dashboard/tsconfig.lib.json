@@ -12,6 +12,8 @@
     "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo"
   },
   "exclude": [
+    "src/**/*.stories.tsx",
+    "src/**/*.stories.ts",
     "out-tsc",
     "dist",
     "jest.config.ts",
@@ -30,16 +32,19 @@
   "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"],
   "references": [
     {
-      "path": "../core-translations/tsconfig.lib.json"
+      "path": "../core-api/tsconfig.lib.json"
+    },
+    {
+      "path": "../core-workspace/tsconfig.lib.json"
     },
     {
       "path": "../core-store-session/tsconfig.lib.json"
     },
     {
-      "path": "../core-api/tsconfig.lib.json"
+      "path": "../core-api-models/tsconfig.lib.json"
     },
     {
-      "path": "../core-workspace/tsconfig.lib.json"
+      "path": "../core-translations/tsconfig.lib.json"
     },
     {
       "path": "../web-layout/tsconfig.lib.json"

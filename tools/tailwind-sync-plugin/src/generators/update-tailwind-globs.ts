@@ -7,10 +7,13 @@ export async function updateTailwindGlobsGenerator(
 ): Promise<SyncGeneratorResult> {
   const projectGraph = await createProjectGraphAsync();
   // Nx infers the Vite apps as libraries (no `projectType`): select them by
-  // location, and only those that own a Tailwind entry stylesheet.
+  // location, and only those that own a Tailwind entry stylesheet. Storybook
+  // (`type:storybook`) scans every package itself and must not drag its support
+  // package into the apps' stylesheets.
   const apps = Object.values(projectGraph.nodes).filter(
     (node) =>
       node.data.root.startsWith('apps/') &&
+      !node.data.tags?.includes('type:storybook') &&
       tree.exists(`${node.data.root}/src/styles.css`),
   );
 

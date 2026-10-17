@@ -1,0 +1,34 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "lib": ["dom", "dom.iterable", "es2022"],
+    "noEmit": true,
+    // Typechecked on its own (tsc -p, see package.json), not as a project reference: the stories live
+    // in the packages, whose own builds exclude them.
+    "composite": false,
+    "declaration": false,
+    "declarationMap": false,
+    "emitDeclarationOnly": false,
+    "allowJs": false,
+    "types": [
+      "node",
+      "@nx/react/typings/cssmodule.d.ts",
+      "@nx/react/typings/image.d.ts",
+      "vite/client",
+      "msw-storybook-addon/csf3"
+    ]
+  },
+  "include": [
+    ".storybook/**/*.ts",
+    ".storybook/**/*.tsx",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "../../packages/*/src/**/*.stories.tsx"
+  ],
+  "references": [
+    {
+      "path": "../../packages/web-themes"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Prototypes/About" />
+
+# Prototypes
+
+Concept screens for features the product does not have yet. They live in Storybook only: no route in
+the app, no API call, state kept in the story.
+
+None yet: this is where a product forked from the skeleton tries out its next screens with its own
+components before they are built for real.
+
+## Conventions
+
+Folder `apps/storybook/src/prototypes/<feature>/`, title `Prototypes/<Feature>/<Screen>`. Styles a
+prototype tries out before the design system takes them go in `prototypes/prototype-styles.css`,
+scoped to `html[data-prototype]` (set on every `Prototypes/…` story by the preview).

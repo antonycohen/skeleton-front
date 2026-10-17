@@ -13,6 +13,8 @@
     "lib": ["dom", "dom.iterable", "esnext"]
   },
   "exclude": [
+    "src/**/*.stories.tsx",
+    "src/**/*.stories.ts",
     "out-tsc",
     "dist",
     "jest.config.ts",
@@ -31,16 +33,19 @@
   "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"],
   "references": [
     {
-      "path": "../web-components/tsconfig.lib.json"
-    },
-    {
-      "path": "../core-utils/tsconfig.lib.json"
+      "path": "../core-api-models/tsconfig.lib.json"
     },
     {
       "path": "../core-api/tsconfig.lib.json"
     },
     {
       "path": "../core-translations/tsconfig.lib.json"
+    },
+    {
+      "path": "../core-utils/tsconfig.lib.json"
+    },
+    {
+      "path": "../web-components/tsconfig.lib.json"
     }
   ]
 }
