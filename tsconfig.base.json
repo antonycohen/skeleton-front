@@ -22,14 +22,14 @@
     "customConditions": [
       "development"
     ],
-    "baseUrl": ".",
     "paths": {
-      "@skeleton/storybook-support/preview": ["packages/storybook-support/src/preview.ts"],
+      "@skeleton/storybook-support/preview": ["./packages/storybook-support/src/preview.ts"],
+      "@skeleton/web-components/markdown": ["./packages/web-components/src/lib/custom/markdown.tsx"],
       "@skeleton/*": [
-        "packages/*/src/index.ts"
+        "./packages/*/src/index.ts"
       ],
       "@skeleton/tailwind-sync-plugin:update-tailwind-globs": [
-        "tools/tailwind-sync-plugin/src/index.ts"
+        "./tools/tailwind-sync-plugin/src/index.ts"
       ]
     }
   }

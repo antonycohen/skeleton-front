@@ -1,12 +1,11 @@
 "use client";
 
-import {ChevronsUpDown} from 'lucide-react';
-import {SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar} from '../ui/sidebar';
+import {CheckIcon, ChevronsUpDown} from 'lucide-react';
+import {SidebarMenu, SidebarMenuButton, SidebarMenuItem} from '../ui/sidebar';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuSub,
   DropdownMenuSubContent,
@@ -23,6 +22,11 @@ type NavItemLink = {
   to?: string;
   onClick?: () => void;
   icon?: ReactNode;
+  /**
+   * Makes the item one choice among its siblings (e.g. the theme in use): `true` draws a check on
+   * the right and is announced as selected. Only for items with an `onClick`.
+   */
+  checked?: boolean;
 }
 
 type NavItemDropdown = {
@@ -46,9 +50,14 @@ const NavItemRenderer = ({ item, index }: { item: NavItem; index: number }) => {
   if (item.type === 'link') {
     if(item.onClick) {
       return (
-        <DropdownMenuItem key={index} onClick={item.onClick}>
+        <DropdownMenuItem
+          key={index}
+          onClick={item.onClick}
+          {...(item.checked !== undefined && { role: 'menuitemradio', 'aria-checked': item.checked })}
+        >
           {item.icon && <span className="mr-2 size-4">{item.icon}</span>}
           {item.title}
+          {item.checked && <CheckIcon className="ml-auto size-4 text-foreground" aria-hidden />}
         </DropdownMenuItem>
       );
     }
@@ -102,7 +111,6 @@ export function NavUser({
   };
   items?: NavItem[];
 }) {
-  const { isMobile } = useSidebar();
 
   const getInitials = () => {
     const names = user.name.split(" ");
@@ -126,34 +134,24 @@ export function NavUser({
                     <AvatarFallback className="rounded-lg">{getInitials()}</AvatarFallback>
                 )}
               </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{user.name}</span>
-                <span className="truncate text-xs">{user.email}</span>
+              <div className="grid flex-1 text-left body-dense">
+                <span className="truncate label-dense">{user.name}</span>
+                <span className="truncate body-sm text-muted-foreground">{user.email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
+          {/* Above the trigger, from its left and 4px off it: the workspace switcher's menu, mirrored. As wide
+              as the sidebar (16rem) less 8px each side; it is portalled, out of reach of --sidebar-width. */}
           <DropdownMenuContent
-            className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
-            side={isMobile ? "bottom" : "right"}
-            align="end"
+            className="w-60"
+            side="top"
+            align="start"
             sideOffset={4}
           >
-            <DropdownMenuLabel className="p-0 font-normal">
-              <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className="rounded-lg">{getInitials()}</AvatarFallback>
-                </Avatar>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{user.name}</span>
-                  <span className="truncate text-xs">{user.email}</span>
-                </div>
-              </div>
-            </DropdownMenuLabel>
+            {/* No user header: the trigger, right under the menu, already shows who it is. */}
             {items && items.length > 0 && (
               <>
-                <DropdownMenuSeparator />
                 {items.map((item, index) => (
                   <NavItemRenderer key={index} item={item} index={index} />
                 ))}

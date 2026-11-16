@@ -11,7 +11,7 @@ import {
   ReadSsoConnection,
   SsoOidcConnectionFormValues,
 } from '@skeleton/core-api-models';
-import { InfoIcon } from 'lucide-react';
+import { TriangleAlertIcon } from 'lucide-react';
 import { useSsoConnectionForm } from '../hooks/use-sso-connection-form';
 import { useTranslation } from '@skeleton/core-translations';
 
@@ -43,12 +43,12 @@ export function SsoOidcConnectionForm({
             <div className="flex flex-col gap-1.5">
               <Label>{t('security.oidc.redirectUri')}</Label>
               <div className="flex items-center gap-2 rounded-lg bg-muted/50 p-3">
-                <span className="break-all font-mono text-xs">
+                <span className="break-all code">
                   {connection.redirectUri}
                 </span>
                 <CopyButton value={connection.redirectUri} />
               </div>
-              <span className="text-xs text-muted-foreground">
+              <span className="body-sm text-muted-foreground">
                 {t('security.oidc.redirectUriHint')}
               </span>
             </div>
@@ -75,12 +75,12 @@ export function SsoOidcConnectionForm({
             }
           />
 
-          <Alert>
-            <InfoIcon />
+          <Alert variant="warning">
+            <TriangleAlertIcon />
             <AlertDescription>{t('security.oidc.trustNotice')}</AlertDescription>
           </Alert>
 
-          {rootError && <p className="text-sm text-destructive">{rootError}</p>}
+          {rootError && <p className="body text-destructive">{rootError}</p>}
 
           <div className="flex justify-end">
             <Button type="submit" isLoading={isSaving}>

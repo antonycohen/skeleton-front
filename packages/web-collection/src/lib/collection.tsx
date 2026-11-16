@@ -1,9 +1,9 @@
-import {useMemo} from 'react';
-import {ColumnDef, flexRender, Row, RowData, SortingState} from '@tanstack/react-table';
+import {useEffect, useMemo, useRef, type MouseEvent} from 'react';
+import {ColumnVisibilityState, flexRender, RowData, SortingState} from '@tanstack/react-table';
 import {UseQueryOptions, UseQueryResult} from '@tanstack/react-query';
 import {CircleIcon} from 'lucide-react';
 
-import {Checkbox, Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from '@skeleton/web-components';
+import {Button, Checkbox, Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from '@skeleton/web-components';
 import {cn} from '@skeleton/core-utils';
 import {useTranslation} from '@skeleton/core-translations';
 import {CollectionToolbar, CollectionToolbarProps,} from './collection-toolbar';
@@ -13,13 +13,7 @@ import {useCollectionState} from './hooks/use-collection-state';
 import {useCollectionQuery} from './hooks/use-collection-query';
 import {useCollectionTable} from './hooks/use-collection-table';
 import {useCollectionSelection} from './hooks/use-collection-selection';
-
-declare module '@tanstack/react-table' {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  interface ColumnMeta<TData extends RowData, TValue> {
-    className: string;
-  }
-}
+import {CollectionColumnDef, CollectionRow} from './collection-features';
 
 export type UseQueryTable<T, Q> = (
   params: GetCollectionQueryParams<T, Q>,
@@ -29,8 +23,8 @@ export type UseQueryTable<T, Q> = (
   >,
 ) => UseQueryResult<ApiCollectionResponse<T>, ApiError>;
 
-interface BaseCollectionProps<T, S> {
-  columns: ColumnDef<T>[];
+interface BaseCollectionProps<T extends RowData, S> {
+  columns: CollectionColumnDef<T>[];
   filtersConfiguration?: Omit<CollectionToolbarProps<T>, 'table' | 'showColumnSelector' | 'actions'>;
   toolbarActions?: React.ReactNode;
   useLocationAsState?: boolean;
@@ -43,23 +37,31 @@ interface BaseCollectionProps<T, S> {
   canBeSelected?: boolean;
   refetchInterval?: UseQueryOptions<ApiCollectionResponse<T>, ApiError>['refetchInterval'];
   defaultSorting?: SortingState;
+  /** Columns hidden until the "View" menu (`showColumnSelector`) shows them, e.g. `{ createdAt: false }`. */
+  defaultColumnVisibility?: ColumnVisibilityState;
+  /** The sizes offered under "Rows per page" (10 to 50 when unset). */
+  pageSizeOptions?: number[];
+  /** Rows per page until the user picks another size (10 when unset). */
+  defaultPageSize?: number;
+  /** Told the size the user picks: a page that remounts its collection can hand it back as `defaultPageSize`. */
+  onPageSizeChange?: (pageSize: number) => void;
 }
 
-type SingleSelectionCollectionProps<T,S> = BaseCollectionProps<T, S> & {
+type SingleSelectionCollectionProps<T extends RowData, S> = BaseCollectionProps<T, S> & {
   singleSelection: true;
   selection?: T | null;
   onSelectionChange?: (selected: T) => void;
 }
 
-type MultiSelectionCollectionProps<T,S> = BaseCollectionProps<T, S> & {
+type MultiSelectionCollectionProps<T extends RowData, S> = BaseCollectionProps<T, S> & {
   singleSelection?: false;
   selection?: T[];
   onSelectionChange?: (selected: T[]) => void;
 }
 
-type Props<T, S> = SingleSelectionCollectionProps<T, S> | MultiSelectionCollectionProps<T, S>;
+type Props<T extends RowData, S> = SingleSelectionCollectionProps<T, S> | MultiSelectionCollectionProps<T, S>;
 
-export function Collection<T, Q = undefined>({
+export function Collection<T extends RowData, Q = undefined>({
   columns,
   filtersConfiguration,
   useLocationAsState = false,
@@ -76,13 +78,32 @@ export function Collection<T, Q = undefined>({
   toolbarActions,
   refetchInterval,
   defaultSorting,
+  defaultColumnVisibility,
+  pageSizeOptions,
+  defaultPageSize,
+  onPageSizeChange,
 }: Props<T, Q>) {
   const { t } = useTranslation();
   const selectAllLabel = t('collection.selection.selectAll');
   const selectRowLabel = t('collection.selection.selectRow');
-  const state = useCollectionState({ useLocationAsState, defaultSorting });
+  const unknownErrorLabel = t('collection.error.unknown');
+  const state = useCollectionState({ useLocationAsState, defaultSorting, defaultColumnVisibility, defaultPageSize, pageSizeOptions });
+  const pageSize = state.pagination.pageSize;
+  // Told when the page size changes, not when the caller hands a new callback (an inline one would
+  // otherwise be called on every render).
+  const onPageSizeChangeRef = useRef(onPageSizeChange);
+  useEffect(() => {
+    onPageSizeChangeRef.current = onPageSizeChange;
+  }, [onPageSizeChange]);
+  // Only on a change: the size the page opens with is not one the user picked.
+  const lastPageSize = useRef(pageSize);
+  useEffect(() => {
+    if (lastPageSize.current === pageSize) return;
+    lastPageSize.current = pageSize;
+    onPageSizeChangeRef.current?.(pageSize);
+  }, [pageSize]);
 
-  const { items, totalCount } = useCollectionQuery({
+  const { items, totalCount, error, isPending } = useCollectionQuery({
     pagination: state.pagination,
     globalFilter: state.globalFilter,
     columnFilters: state.columnFilters,
@@ -94,7 +115,7 @@ export function Collection<T, Q = undefined>({
     refetchInterval,
   });
 
-  const selectionColumn: ColumnDef<T> = useMemo(() => ({
+  const selectionColumn: CollectionColumnDef<T> = useMemo(() => ({
     id: '_select',
     header: ({ table }) => singleSelection ? null : (
       <Checkbox
@@ -153,18 +174,62 @@ export function Collection<T, Q = undefined>({
 
   const isClickable = onRowClick || canBeSelected;
 
-  const handleRowClick = (row: Row<T>) => {
+  // Empty, two ways: nothing in the list yet — only its empty state, no columns, no search or filters
+  // (nothing to look through), as Linear's lists; or nothing matching the search or filters — the
+  // columns and the toolbar stay, to see and undo what narrowed it.
+  const isFiltered = !!state.globalFilter || state.columnFilters.length > 0;
+  // A failed read is neither: it says so in the table.
+  const isEmpty = !isPending && !error && items.length === 0;
+  const isFirstUse = isEmpty && !isFiltered;
+  const clearFilters = () => {
+    table.setGlobalFilter('');
+    table.resetColumnFilters();
+  };
+
+  const handleRowClick = (row: CollectionRow<T>, event: MouseEvent<HTMLTableRowElement>) => {
     if (canBeSelected) {
       handleRowSelect(row);
+    }
+    // A link or control inside the row (the name's link, an actions menu) handles its own click, and
+    // so does anything portaled out of it (a menu, a dialog): React bubbles those up to the row too.
+    const target = event.target as HTMLElement;
+    if (!event.currentTarget.contains(target) || target.closest('a, button, input, [role="menuitem"]')) {
+      return;
     }
     onRowClick?.(row.original);
   };
 
+  const hasToolbar =
+    !!filtersConfiguration?.textFilter ||
+    !!filtersConfiguration?.facetedFilters?.length ||
+    showColumnSelector ||
+    !!toolbarActions;
+
   return (
     <div className="space-y-4">
-      <CollectionToolbar table={table} showColumnSelector={showColumnSelector} {...filtersConfiguration} actions={toolbarActions} />
-      <div className="rounded-md border border-border-subtle">
-        <Table>
+      {/* Nothing in it yet: its empty state stands for the whole list, toolbar and its actions included
+          (it carries its own); without one, only the actions stay. A list with nothing to search,
+          filter, choose or act on has no toolbar: its count alone says nothing the table doesn't. */}
+      {hasToolbar && !(isFirstUse && (emptyState || !toolbarActions)) && (
+        <CollectionToolbar<T>
+          table={table}
+          showColumnSelector={showColumnSelector}
+          {...filtersConfiguration}
+          actions={toolbarActions}
+          controls={!isFirstUse}
+        />
+      )}
+      {error && items.length > 0 && (
+        // A failed refresh keeps the previous rows on screen: say they are stale.
+        <p role="alert" className="body text-destructive">
+          {t('collection.error.refresh', { message: collectionErrorMessage(error, unknownErrorLabel) })}
+        </p>
+      )}
+      {/* A raised surface (card), like the dashboard's data cards. */}
+      <div className="overflow-hidden rounded-2xl bg-card outline outline-1 outline-offset-[-1px] outline-border-subtle">
+        {isFirstUse
+          ? (emptyState ?? <p className="py-16 text-center body text-muted-foreground">{t('collection.firstUse')}</p>)
+          : <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -193,7 +258,7 @@ export function Collection<T, Q = undefined>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
-                  onClick={() => handleRowClick(row)}
+                  onClick={(event) => handleRowClick(row, event)}
                   className={isClickable ? 'cursor-pointer' : ''}
                 >
                   {row.getVisibleCells().map((cell) => (
@@ -209,20 +274,49 @@ export function Collection<T, Q = undefined>({
                   ))}
                 </TableRow>
               ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={allColumns.length}
-                  className="h-24 text-center"
-                >
-                  {emptyState ?? t('collection.empty')}
+            ) : error ? (
+              // A failed read is not an empty list: say so, or the failure passes for "nothing here".
+              <TableRow className="hover:bg-transparent">
+                <TableCell colSpan={allColumns.length} className="h-24 text-center">
+                  <div role="alert" className="flex flex-col items-center justify-center gap-1 py-8">
+                    <p className="title-md text-destructive">{t('collection.error.load')}</p>
+                    <p className="body text-muted-foreground">{collectionErrorMessage(error, unknownErrorLabel)}</p>
+                  </div>
                 </TableCell>
               </TableRow>
-            )}
+            ) : isEmpty ? (
+              // Nothing to point at: no hover on the empty state.
+              <TableRow className="hover:bg-transparent">
+                <TableCell colSpan={allColumns.length} className="py-12 text-center">
+                  <div className="flex flex-col items-center gap-3">
+                    <p className="body text-muted-foreground">{t('collection.noMatch')}</p>
+                    <Button variant="outline" size="sm" onClick={clearFilters}>
+                      {t('collection.filter.clear')}
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ) : null}
           </TableBody>
-        </Table>
+        </Table>}
       </div>
-      <CollectionPagination table={table} canBeSelected={canBeSelected} />
+      {!isFirstUse && <CollectionPagination table={table} canBeSelected={canBeSelected} pageSizeOptions={pageSizeOptions} />}
     </div>
   );
+}
+
+/** The API's own message when it gave one, with its HTTP status. */
+function collectionErrorMessage(error: unknown, unknownLabel: string): string {
+  if (error && typeof error === 'object') {
+    // ApiError carries the API's own message in `error`; `message` is the fallback.
+    const { httpCode, error: apiMessage, message: thrown } = error as { httpCode?: number; error?: string; message?: string };
+    const message = apiMessage || thrown;
+    if (httpCode) {
+      return message ? `${message} (HTTP ${httpCode})` : `HTTP ${httpCode}`;
+    }
+    if (message) {
+      return message;
+    }
+  }
+  return unknownLabel;
 }

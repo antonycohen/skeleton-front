@@ -56,7 +56,7 @@ export const DeleteAccountConfirmationAlertDialog = ({
           <AlertDialogDescription asChild>
             <div className="space-y-4">
               <p>{t('account.deleteAccount.dialog.intro')}</p>
-              <ul className="list-disc list-inside space-y-1 text-sm">
+              <ul className="list-disc list-inside space-y-1 body">
                 <li>{t('account.deleteAccount.dialog.removeData')}</li>
                 <li>{t('account.deleteAccount.dialog.cannotBeUndone')}</li>
               </ul>

@@ -3,6 +3,7 @@ import { CreatePrice } from '@skeleton/core-api-models';
 import {
   Button,
   Dialog,
+  DialogBody,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -39,7 +40,7 @@ export const NewPriceModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>{t('adminPayment.price.new.title')}</DialogTitle>
           <DialogDescription>
@@ -47,55 +48,57 @@ export const NewPriceModal = ({
           </DialogDescription>
         </DialogHeader>
         <FormProvider {...form}>
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <ControlledTextInput
-              name="nickname"
-              label={t('adminPayment.price.nickname')}
-              placeholder={t('adminPayment.price.nicknamePlaceholder')}
-            />
-            <ControlledTextInput
-              name="lookupKey"
-              label={t('adminPayment.price.lookupKey')}
-              placeholder={t('adminPayment.price.lookupKeyPlaceholder')}
-            />
-            <ControlledSelectInput
-              name="currency"
-              label={t('adminPayment.price.currency')}
-              options={[
-                { value: 'eur', label: 'EUR' },
-                { value: 'usd', label: 'USD' },
-              ]}
-            />
-            <ControlledNumberInput
-              name="unitAmountInCents"
-              label={t('adminPayment.price.unitAmount')}
-              min={0}
-              step={1}
-              placeholder="0"
-            />
-            <ControlledSelectInput
-              name="recurringInterval"
-              label={t('adminPayment.price.recurringInterval')}
-              options={[
-                { value: 'day', label: t('common.day') },
-                { value: 'week', label: t('common.week') },
-                { value: 'month', label: t('common.month') },
-                { value: 'year', label: t('common.year') },
-              ]}
-            />
-            <ControlledSelectInput
-              name="recurringUsageType"
-              label={t('adminPayment.price.usageType')}
-              options={[
-                { value: 'licensed', label: t('adminPayment.price.usageType.licensed') },
-                { value: 'metered', label: t('adminPayment.price.usageType.metered') },
-              ]}
-            />
-            <ControlledSwitchInput
-              name="active"
-              label={t('adminPayment.price.active')}
-              description={t('adminPayment.price.activeDescription')}
-            />
+          <form onSubmit={handleSubmit} className="contents">
+            <DialogBody className="flex flex-col gap-4">
+              <ControlledTextInput
+                name="nickname"
+                label={t('adminPayment.price.nickname')}
+                placeholder={t('adminPayment.price.nicknamePlaceholder')}
+              />
+              <ControlledTextInput
+                name="lookupKey"
+                label={t('adminPayment.price.lookupKey')}
+                placeholder={t('adminPayment.price.lookupKeyPlaceholder')}
+              />
+              <ControlledSelectInput
+                name="currency"
+                label={t('adminPayment.price.currency')}
+                options={[
+                  { value: 'eur', label: 'EUR' },
+                  { value: 'usd', label: 'USD' },
+                ]}
+              />
+              <ControlledNumberInput
+                name="unitAmountInCents"
+                label={t('adminPayment.price.unitAmount')}
+                min={0}
+                step={1}
+                placeholder="0"
+              />
+              <ControlledSelectInput
+                name="recurringInterval"
+                label={t('adminPayment.price.recurringInterval')}
+                options={[
+                  { value: 'day', label: t('common.day') },
+                  { value: 'week', label: t('common.week') },
+                  { value: 'month', label: t('common.month') },
+                  { value: 'year', label: t('common.year') },
+                ]}
+              />
+              <ControlledSelectInput
+                name="recurringUsageType"
+                label={t('adminPayment.price.usageType')}
+                options={[
+                  { value: 'licensed', label: t('adminPayment.price.usageType.licensed') },
+                  { value: 'metered', label: t('adminPayment.price.usageType.metered') },
+                ]}
+              />
+              <ControlledSwitchInput
+                name="active"
+                label={t('adminPayment.price.active')}
+                description={t('adminPayment.price.activeDescription')}
+              />
+            </DialogBody>
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
                 {t('common.cancel')}

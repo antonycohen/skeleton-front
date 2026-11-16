@@ -3,6 +3,7 @@ import { ReadPrice, UpdatePrice } from '@skeleton/core-api-models';
 import {
   Button,
   Dialog,
+  DialogBody,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -33,7 +34,7 @@ export const EditPriceModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>{t('adminPayment.price.edit.title')}</DialogTitle>
           <DialogDescription>
@@ -41,12 +42,14 @@ export const EditPriceModal = ({
           </DialogDescription>
         </DialogHeader>
         <FormProvider {...form}>
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <ControlledTextInput
-              name="nickname"
-              label={t('adminPayment.price.nickname')}
-              placeholder={t('adminPayment.price.nicknamePlaceholder')}
-            />
+          <form onSubmit={handleSubmit} className="contents">
+            <DialogBody className="flex flex-col gap-4">
+              <ControlledTextInput
+                name="nickname"
+                label={t('adminPayment.price.nickname')}
+                placeholder={t('adminPayment.price.nicknamePlaceholder')}
+              />
+            </DialogBody>
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
                 {t('common.cancel')}

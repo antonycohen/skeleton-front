@@ -6,22 +6,23 @@ import { Loader2 } from 'lucide-react';
 import { cn } from '@skeleton/core-utils';
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md label transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
   {
     variants: {
       variant: {
         default:
-          'bg-foreground text-primary-foreground shadow-xs hover:bg-foreground/90',
+          'bg-foreground text-background shadow-xs hover:bg-foreground/90',
         accent:
           'bg-primary text-primary-foreground shadow-xs hover:bg-primary/90',
         destructive:
           'bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/100 dark:bg-destructive/100',
         outline:
-          'border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50',
+          'border bg-card shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50',
         secondary:
           'bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80',
+        // `muted` (neutral-150) in light: `accent` (neutral-100) barely shows on the neutral-50 background.
         ghost:
-          'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
+          'hover:bg-muted hover:text-accent-foreground dark:hover:bg-accent/50',
         link: 'text-primary underline-offset-4 hover:underline',
       },
       size: {
@@ -31,6 +32,16 @@ const buttonVariants = cva(
         icon: 'size-9',
       },
     },
+    compoundVariants: [
+      // Icon-only ghost buttons (close, sidebar toggle, "…"): muted at rest, the foreground on hover,
+      // focus or while their menu is open. Ghost buttons with a label keep the foreground.
+      {
+        variant: 'ghost',
+        size: 'icon',
+        className:
+          'text-muted-foreground focus-visible:text-accent-foreground aria-expanded:text-accent-foreground data-[state=open]:text-accent-foreground',
+      },
+    ],
     defaultVariants: {
       variant: 'default',
       size: 'default',

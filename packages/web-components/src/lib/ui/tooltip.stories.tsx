@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
-import { InfoIcon } from 'lucide-react';
+import { Download, InfoIcon, Maximize, MousePointer, Type } from 'lucide-react';
 import { Button } from './button';
-import { Tooltip, TooltipContent, TooltipTrigger } from './tooltip';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './tooltip';
 
 const SIDES = ['top', 'right', 'bottom', 'left'] as const;
 
@@ -45,5 +45,59 @@ export const Sides: Story = {
         </Tooltip>
       ))}
     </div>
+  ),
+};
+
+/** A shortcut after the label, in the lib's kbd chip. */
+export const Shortcut: Story = {
+  parameters: { docs: { story: { inline: false, iframeHeight: 200 } } },
+  render: (args) => (
+    <Tooltip {...args} defaultOpen>
+      <TooltipTrigger asChild>
+        <Button variant="outline" size="icon" aria-label="Full screen"><Maximize /></Button>
+      </TooltipTrigger>
+      <TooltipContent shortcut={['⇧', 'F']}>Full screen</TooltipContent>
+    </Tooltip>
+  ),
+};
+
+/** A disabled action's reason: wraps at `max-w-xs`, balanced. */
+export const LongReason: Story = {
+  parameters: { docs: { story: { inline: false, iframeHeight: 200 } } },
+  render: (args) => (
+    <Tooltip {...args} defaultOpen>
+      <TooltipTrigger asChild>
+        <span tabIndex={0}>
+          <Button disabled><Download />Export</Button>
+        </span>
+      </TooltipTrigger>
+      <TooltipContent>Complete the setup first to export this report</TooltipContent>
+    </Tooltip>
+  ),
+};
+
+/**
+ * One provider for a row: 400ms before the first tooltip, then none while moving to the next one —
+ * hover from button to button.
+ */
+export const Toolbar: Story = {
+  render: () => (
+    <TooltipProvider>
+      <div className="flex items-center gap-1 rounded-lg outline outline-1 outline-offset-[-1px] outline-border-subtle bg-card p-1">
+        {[
+          { icon: MousePointer, label: 'Select', shortcut: ['V'] },
+          { icon: Type, label: 'Text', shortcut: ['T'] },
+          { icon: Maximize, label: 'Full screen', shortcut: ['⇧', 'F'] },
+          { icon: Download, label: 'Export' },
+        ].map(({ icon: Icon, label, shortcut }) => (
+          <Tooltip key={label}>
+            <TooltipTrigger asChild>
+              <Button variant="ghost" size="icon" aria-label={label}><Icon /></Button>
+            </TooltipTrigger>
+            <TooltipContent shortcut={shortcut}>{label}</TooltipContent>
+          </Tooltip>
+        ))}
+      </div>
+    </TooltipProvider>
   ),
 };

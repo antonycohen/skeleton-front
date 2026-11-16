@@ -21,8 +21,8 @@ type Story = StoryObj<typeof meta>;
 
 export const Profile: Story = {};
 
-export const Connexion: Story = {
-  parameters: { screen: { path: 'account/*', url: 'account/connexion' } },
+export const Security: Story = {
+  parameters: { screen: { path: 'account/*', url: 'account/security' } },
 };
 
 export const Preferences: Story = {
@@ -35,11 +35,11 @@ export const InSettings: Story = {
   parameters: { screen: { path: 'settings/account/*', url: 'settings/account/profile' } },
 };
 
-const connexion = { path: 'account/*', url: 'account/connexion' } satisfies ScreenParameters;
+const security = { path: 'account/*', url: 'account/security' } satisfies ScreenParameters;
 
 /** "Set up" starts the enrolment: the dialog shows the QR code and the key to type in by hand. */
-export const ConnexionSetUpMfa: Story = {
-  parameters: { screen: connexion },
+export const SecuritySetUpMfa: Story = {
+  parameters: { screen: security },
   play: async ({ canvasElement }) => {
     const button = await within(canvasElement).findByRole('button', { name: 'Set up' });
     // Disabled until the second factor's status has loaded.
@@ -50,26 +50,26 @@ export const ConnexionSetUpMfa: Story = {
 };
 
 /** Two-factor on, with all its recovery codes. */
-export const ConnexionMfaEnabled: Story = {
-  parameters: { screen: connexion, msw: [mock.body('/users/:userId/mfa', mfaStatuses.enabled)] },
+export const SecurityMfaEnabled: Story = {
+  parameters: { screen: security, msw: [mock.body('/users/:userId/mfa', mfaStatuses.enabled)] },
 };
 
 /** Two recovery codes left: a warning asks to regenerate them. */
-export const ConnexionLowRecoveryCodes: Story = {
-  parameters: { screen: connexion, msw: [mock.body('/users/:userId/mfa', mfaStatuses.lowRecoveryCodes)] },
+export const SecurityLowRecoveryCodes: Story = {
+  parameters: { screen: security, msw: [mock.body('/users/:userId/mfa', mfaStatuses.lowRecoveryCodes)] },
 };
 
 /** Every recovery code used: the warning turns destructive. */
-export const ConnexionNoRecoveryCodes: Story = {
-  parameters: { screen: connexion, msw: [mock.body('/users/:userId/mfa', mfaStatuses.noRecoveryCodes)] },
+export const SecurityNoRecoveryCodes: Story = {
+  parameters: { screen: security, msw: [mock.body('/users/:userId/mfa', mfaStatuses.noRecoveryCodes)] },
 };
 
 /** A workspace requires two-factor and it is not set up yet. */
-export const ConnexionMfaRequired: Story = {
-  parameters: { screen: connexion, msw: [mock.body('/users/:userId/mfa', mfaStatuses.required)] },
+export const SecurityMfaRequired: Story = {
+  parameters: { screen: security, msw: [mock.body('/users/:userId/mfa', mfaStatuses.required)] },
 };
 
 /** Required (super admin) and on: it cannot be disabled. */
-export const ConnexionMfaRequiredEnabled: Story = {
-  parameters: { screen: connexion, msw: [mock.body('/users/:userId/mfa', mfaStatuses.requiredEnabled)] },
+export const SecurityMfaRequiredEnabled: Story = {
+  parameters: { screen: security, msw: [mock.body('/users/:userId/mfa', mfaStatuses.requiredEnabled)] },
 };

@@ -29,7 +29,7 @@ export const InviteFormSection = ({ organizationId }: {
       </div>
       <div className="bg-muted rounded-md px-6 py-3">
         <form onSubmit={handleSubmit} className="flex items-center gap-2">
-          <span className="font-semibold text-base whitespace-nowrap">
+          <span className="title-md whitespace-nowrap">
             {t("teams.invite.title")}
           </span>
           <div className="flex-1 flex items-center gap-2">

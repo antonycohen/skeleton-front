@@ -29,9 +29,9 @@ export const PricesColumn = ({
   const prices = selectedProduct?.prices ?? [];
 
   return (
-    <Card className="rounded-2xl gap-0">
+    <Card className="gap-0">
       <CardHeader className="flex flex-row items-center justify-between gap-2">
-        <CardTitle className="text-xl">
+        <CardTitle>
           {selectedProduct
             ? t('adminPayment.prices.titleWithProduct', { product: selectedProduct.name ?? '' })
             : t('adminPayment.prices.title')}

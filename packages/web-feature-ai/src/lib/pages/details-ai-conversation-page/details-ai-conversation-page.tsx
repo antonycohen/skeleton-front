@@ -56,8 +56,8 @@ export function DetailsAiConversationPage() {
             placeholder={t('ai.conversation.placeholder')}
             emptyState={
               <div className="flex flex-1 flex-col items-center justify-center gap-2 text-center">
-                <p className="text-lg font-semibold">{t('ai.conversation.emptyTitle')}</p>
-                <p className="text-sm text-muted-foreground">
+                <p className="heading-sm">{t('ai.conversation.emptyTitle')}</p>
+                <p className="body text-muted-foreground">
                   {t('ai.conversation.emptyDescription')}
                 </p>
               </div>

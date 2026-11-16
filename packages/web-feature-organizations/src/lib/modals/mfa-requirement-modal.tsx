@@ -1,6 +1,7 @@
 import {
   Button,
   Dialog,
+  DialogBody,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -72,17 +73,19 @@ export const MfaRequirementModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent size="sm">
         <DialogHeader>
           <DialogTitle>
             {required ? t('security.mfaModal.requireTitle') : t('security.mfaModal.liftTitle')}
           </DialogTitle>
-          <DialogDescription>
+        </DialogHeader>
+        <DialogBody>
+          <DialogDescription className="text-foreground">
             {required
               ? describeRequire(t, membersWithoutMfaCount, membersCountIsPartial)
               : t('security.mfaModal.liftDescription')}
           </DialogDescription>
-        </DialogHeader>
+        </DialogBody>
 
         <DialogFooter>
           <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>

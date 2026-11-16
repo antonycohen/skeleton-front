@@ -26,6 +26,7 @@ import { toast } from 'sonner';
 import { useTranslation } from '@skeleton/core-translations';
 import { RemoveSsoDomainModal } from '../modals/remove-sso-domain-modal';
 
+
 const statusVariants: Record<
   SsoDomainStatus,
   'success' | 'warning' | 'destructive'
@@ -126,7 +127,7 @@ export function SsoVerifiedDomainsCard({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-xl">{t('security.domains.title')}</CardTitle>
+        <CardTitle size="lg">{t('security.domains.title')}</CardTitle>
         <CardDescription>{t('security.domains.description')}</CardDescription>
       </CardHeader>
 
@@ -146,7 +147,7 @@ export function SsoVerifiedDomainsCard({
               />
             </div>
             {addError && (
-              <p className="text-sm text-destructive">{addError}</p>
+              <p className="body text-destructive">{addError}</p>
             )}
           </div>
           <Button
@@ -161,7 +162,7 @@ export function SsoVerifiedDomainsCard({
         {isLoading && <Skeleton className="h-24 w-full rounded-xl" />}
 
         {!isLoading && domains.length === 0 && (
-          <p className="text-sm text-muted-foreground">
+          <p className="body text-muted-foreground">
             {t('security.domains.empty')}
           </p>
         )}
@@ -174,7 +175,7 @@ export function SsoVerifiedDomainsCard({
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex items-center gap-3">
-                  <span className="font-medium">{row.domain}</span>
+                  <span className="label-lg">{row.domain}</span>
                   {row.status && (
                     <Badge variant={statusVariants[row.status]}>
                       {t(statusLabelKeys[row.status])}
@@ -208,17 +209,17 @@ export function SsoVerifiedDomainsCard({
               </div>
 
               {row.status === 'verified' ? (
-                <p className="text-sm text-muted-foreground">
+                <p className="body text-muted-foreground">
                   {t('security.domains.keepRecord')}
                 </p>
               ) : (
                 <div className="flex flex-col gap-2">
-                  <p className="text-sm text-muted-foreground">
+                  <p className="body text-muted-foreground">
                     {row.status === 'suspended'
                       ? t('security.domains.recordMissing')
                       : t('security.domains.publishRecord')}
                   </p>
-                  <div className="flex flex-col gap-1 rounded-lg bg-muted/50 p-3 text-xs">
+                  <div className="flex flex-col gap-1 rounded-lg bg-muted/50 p-3 body-sm">
                     <div className="flex items-center gap-2">
                       <span className="w-14 shrink-0 text-muted-foreground">
                         {t('security.domains.record.type')}
@@ -254,7 +255,7 @@ export function SsoVerifiedDomainsCard({
               )}
 
               {verifyError?.domainId === row.id && (
-                <p className="text-sm text-destructive">
+                <p className="body text-destructive">
                   {verifyError.message}
                 </p>
               )}

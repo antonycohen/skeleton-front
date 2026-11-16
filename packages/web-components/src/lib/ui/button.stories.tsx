@@ -41,7 +41,7 @@ export const Icon: Story = {
   args: { size: 'icon', variant: 'outline', children: <PlusIcon />, 'aria-label': 'Add' },
 };
 
-/** Ghost, icon only (close, sidebar toggle, "…"). */
+/** Ghost, icon only (close, sidebar toggle, "…"): muted at rest, the foreground on hover, focus or with its menu open. */
 export const GhostIcon: Story = {
   name: 'Ghost — Icon',
   args: { size: 'icon', variant: 'ghost', children: <XIcon />, 'aria-label': 'Close' },

@@ -42,7 +42,7 @@ export function EditTeamPage() {
       <header className="sticky top-0 z-30">
         <LayoutTopbar />
       </header>
-      <LayoutContent>
+      <LayoutContent width="narrow">
         <LayoutHeader
           pageTitle={t('teams.page.title')}
           pageDescription={
@@ -58,8 +58,10 @@ export function EditTeamPage() {
 
           {/* Members Table */}
           <div className="flex flex-col gap-4">
-            <h2 className="text-xl font-semibold font-heading">{t('teams.members.title')}</h2>
-            <Collection
+            <h2 className="heading-sm">{t('teams.members.title')}</h2>
+            {/* Typed explicitly: inferring T across the columns, the query and the faceted filters' dot
+                notation runs past the compiler's instantiation depth (TS2589). */}
+            <Collection<OrganizationMember, { organizationId: string }>
               useLocationAsState
               columns={columns}
               filtersConfiguration={{
@@ -85,6 +87,7 @@ export function EditTeamPage() {
                     options: [
                       { value: 'INVITED', label: t('teams.statuses.invited') },
                       { value: 'ACCEPTED', label: t('teams.statuses.accepted') },
+                      { value: 'SUSPENDED', label: t('teams.statuses.suspended') },
                     ],
                   },
                 ],

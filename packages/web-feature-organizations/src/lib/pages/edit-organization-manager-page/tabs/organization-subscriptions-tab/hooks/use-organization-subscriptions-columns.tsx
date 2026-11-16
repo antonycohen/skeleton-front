@@ -1,11 +1,10 @@
-import { ColumnDef } from '@tanstack/react-table';
 import { ReadSubscription } from '@skeleton/core-api-models';
 import {
   Badge,
   BadgeStatus,
   LongText,
 } from '@skeleton/web-components';
-import { CollectionColumnHeader } from '@skeleton/web-collection';
+import { CollectionColumnHeader, type CollectionColumnDef } from '@skeleton/web-collection';
 import { format } from 'date-fns';
 import { useTranslation } from '@skeleton/core-translations';
 
@@ -23,7 +22,7 @@ const STATUS_BADGE: Record<
   incomplete_expired: { variant: 'red', labelKey: 'adminOrganizations.subscriptions.status.incompleteExpired' },
 };
 
-export function useOrganizationSubscriptionsColumns(): ColumnDef<ReadSubscription>[] {
+export function useOrganizationSubscriptionsColumns(): CollectionColumnDef<ReadSubscription>[] {
   const { t } = useTranslation();
   return [
     {
@@ -37,9 +36,9 @@ export function useOrganizationSubscriptionsColumns(): ColumnDef<ReadSubscriptio
           subscription.productGroup?.name ?? subscription.description ?? '-';
         return (
           <div className="flex flex-col min-w-0">
-            <LongText className="max-w-64 font-semibold">{planName}</LongText>
+            <LongText className="max-w-64 body">{planName}</LongText>
             {subscription.id ? (
-              <span className="text-xs text-muted-foreground truncate">
+              <span className="body-sm text-muted-foreground truncate">
                 {subscription.id}
               </span>
             ) : null}
@@ -68,7 +67,7 @@ export function useOrganizationSubscriptionsColumns(): ColumnDef<ReadSubscriptio
                   {item.price?.product?.name ?? item.price?.nickname ?? '-'}
                 </LongText>
                 {item.price?.product?.name && item.price?.nickname ? (
-                  <span className="text-xs text-muted-foreground truncate">
+                  <span className="body-sm text-muted-foreground truncate">
                     {item.price.nickname}
                   </span>
                 ) : null}
@@ -114,7 +113,7 @@ export function useOrganizationSubscriptionsColumns(): ColumnDef<ReadSubscriptio
           <div className="flex flex-col">
             <span>{value ? format(new Date(value), 'dd/MM/yyyy') : '-'}</span>
             {cancelAtPeriodEnd ? (
-              <span className="text-xs text-destructive">
+              <span className="body-sm text-destructive">
                 {t('adminOrganizations.subscriptions.cancelsAtPeriodEnd')}
               </span>
             ) : null}

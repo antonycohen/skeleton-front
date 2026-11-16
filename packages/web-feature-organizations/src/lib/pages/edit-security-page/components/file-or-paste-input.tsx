@@ -104,7 +104,7 @@ export function FileOrPasteInput({
         placeholder={placeholder}
         spellCheck={false}
         rows={6}
-        className="font-mono text-xs"
+        className="code"
         aria-invalid={!!error}
         disabled={disabled}
       />

@@ -5,8 +5,10 @@ import { ExternalLink, Settings, Hand } from 'lucide-react';
 import { Button } from '../../ui/button';
 import { Switch } from '../../ui/switch';
 import { Badge } from '../../ui/badge';
+import { CardTitle } from '../../ui/card';
 
-type IntegrationCardStatus = 'not-connected' | 'connected' | 'expiring' | 'expired';
+/** `disabled`: connected, but Skeleton stopped using it (a webhook endpoint that kept failing). */
+type IntegrationCardStatus = 'not-connected' | 'connected' | 'expiring' | 'expired' | 'disabled';
 
 interface IntegrationCardProps {
   title: string;
@@ -19,10 +21,14 @@ interface IntegrationCardProps {
   onEnabledChange?: (enabled: boolean) => void;
   onSettingsClick?: () => void;
   onRequestClick?: () => void;
+  /** Overrides the status badge's wording (e.g. "Key rejected" rather than "Token expired"). */
+  statusLabel?: string;
+  /** More footer buttons, after Settings (e.g. editing a connected integration's API key). */
+  extraActions?: React.ReactNode;
   className?: string;
 }
 
-function StatusBadge({ status }: { status: IntegrationCardStatus }) {
+function StatusBadge({ status, label: labelOverride }: { status: IntegrationCardStatus; label?: string }) {
   const { t } = useTranslation();
   if (status === 'not-connected') return null;
 
@@ -33,16 +39,19 @@ function StatusBadge({ status }: { status: IntegrationCardStatus }) {
         ? 'bg-amber-400'
         : 'bg-rose-500';
   const label =
-    status === 'connected'
+    labelOverride ??
+    (status === 'connected'
       ? t('components.integration.connected')
       : status === 'expiring'
         ? t('components.integration.expiring')
-        : t('components.integration.expired');
+        : status === 'disabled'
+          ? t('components.integration.disabled')
+          : t('components.integration.expired'));
 
   return (
     <div className="flex items-center gap-1 rounded-md bg-secondary px-1.5 py-0.5">
       <span className={cn('size-2 rounded-full', dotColor)} />
-      <span className="text-xs font-medium text-secondary-foreground">
+      <span className="label-sm text-secondary-foreground">
         {label}
       </span>
     </div>
@@ -60,6 +69,8 @@ function IntegrationCard({
   onEnabledChange,
   onSettingsClick,
   onRequestClick,
+  statusLabel,
+  extraActions,
   className,
 }: IntegrationCardProps) {
   const { t } = useTranslation();
@@ -69,19 +80,19 @@ function IntegrationCard({
     <div
       className={cn(
         'flex w-full max-w-[369px] flex-col overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm',
-        status === 'expired' && 'border-destructive/20',
+        (status === 'expired' || status === 'disabled') && 'border-destructive/20',
         className
       )}
     >
-      {/* Card Content */}
-      <div className="flex flex-col gap-4 p-6">
+      {/* Card Content: grows so that the footers of a grid row line up */}
+      <div className="flex grow flex-col gap-4 p-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex grow items-center gap-3">
             <div className="flex size-10 shrink-0 items-center justify-center overflow-hidden">
               {icon}
             </div>
-            {showStatusBadge && <StatusBadge status={status} />}
+            {showStatusBadge && <StatusBadge status={status} label={statusLabel} />}
           </div>
           {externalUrl && (
             <Button variant="ghost" size="icon" asChild>
@@ -93,9 +104,9 @@ function IntegrationCard({
         </div>
 
         {/* Title & Description */}
-        <div className="flex flex-col gap-1.5">
-          <h3 className="font-semibold leading-none tracking-tight">{title}</h3>
-          <p className="line-clamp-2 h-10 text-sm text-muted-foreground">
+        <div className="flex flex-col gap-1">
+          <CardTitle>{title}</CardTitle>
+          <p className="line-clamp-2 h-10 body text-muted-foreground">
             {description}
           </p>
         </div>
@@ -111,6 +122,7 @@ function IntegrationCard({
                 {t('components.integration.settings')}
               </Button>
             )}
+            {extraActions && <div className="ml-2 flex items-center gap-2">{extraActions}</div>}
             <Switch className="ml-auto" checked={enabled} onCheckedChange={onEnabledChange} />
           </>
         ) : (

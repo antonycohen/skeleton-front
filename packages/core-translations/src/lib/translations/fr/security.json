@@ -126,7 +126,7 @@
   "security.oidc.clientSecret": "Secret client",
   "security.oidc.clientSecretSaved": "Enregistré : saisissez-en un nouveau pour le remplacer",
   "security.oidc.clientSecretPlaceholder": "Collez le secret client",
-  "security.oidc.trustNotice": "Modifier l'émetteur ou l'ID client repasse la connexion en brouillon : l'authentification unique est désactivée et l'exigence levée jusqu'à ce qu'une nouvelle connexion de test réussisse. Ce n'est pas le cas d'un nouveau secret client : lancez une connexion de test pour le vérifier.",
+  "security.oidc.trustNotice": "Modifier l'émetteur ou l'ID client repasse la connexion en brouillon : l'authentification unique est désactivée et l'exigence levée jusqu'à ce qu'une nouvelle connexion de test réussisse. Un nouvel émetteur supprime aussi le secret client enregistré : saisissez le secret du nouveau fournisseur avant d'enregistrer. Un nouveau secret client ne repasse pas la connexion en brouillon : lancez une connexion de test pour le vérifier.",
   "security.fileInput.tooLarge": "{name} est trop volumineux pour ce champ",
   "security.fileInput.unreadable": "Impossible de lire {name}",
   "security.fileInput.choose": "Choisir un fichier",

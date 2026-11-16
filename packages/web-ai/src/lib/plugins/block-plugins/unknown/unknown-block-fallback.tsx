@@ -29,7 +29,7 @@ function UnknownBlockContent({
       )}
     >
       <HelpCircle className="size-4 text-muted-foreground" />
-      <span className="text-sm text-muted-foreground">
+      <span className="body text-muted-foreground">
         {t('ai.block.unknown')} <code className="font-mono">{blockType}</code>
         {isStreaming && (
           <span className="ml-2 inline-block size-1.5 animate-pulse rounded-full bg-current" />

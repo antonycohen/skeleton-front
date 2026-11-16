@@ -1,16 +1,16 @@
-import { ColumnDef } from '@tanstack/react-table';
 import { ReadProductGroup } from '@skeleton/core-api-models';
 import { BadgeStatus, Button, LongText } from '@skeleton/web-components';
 import {
   CollectionColumnHeader,
   CollectionRowActions,
+  type CollectionColumnDef,
 } from '@skeleton/web-collection';
 import { Link } from 'react-router-dom';
 import { IconEdit, IconTrash } from '@tabler/icons-react';
 import { format } from 'date-fns';
 import { useTranslation } from '@skeleton/core-translations';
 
-export function useProductGroupsListColumns(): ColumnDef<ReadProductGroup>[] {
+export function useProductGroupsListColumns(): CollectionColumnDef<ReadProductGroup>[] {
   const { t } = useTranslation();
 
   return [
@@ -86,7 +86,7 @@ export function useProductGroupsListColumns(): ColumnDef<ReadProductGroup>[] {
               label: t('adminPayment.productGroups.action.delete'),
               icon: IconTrash,
               group: 'danger',
-              className: 'text-red-500!',
+              variant: 'destructive',
               linkTo: (group: ReadProductGroup) =>
                 `/payment/product-groups/${group.id}`,
             },

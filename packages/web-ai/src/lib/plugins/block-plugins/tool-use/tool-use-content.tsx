@@ -47,14 +47,14 @@ export function ToolUseContent({
 
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen} className={cn('my-2', className)}>
-      <CollapsibleTrigger className="flex w-full items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-sm font-medium transition-colors hover:bg-muted/50">
+      <CollapsibleTrigger className="flex w-full items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 label transition-colors hover:bg-muted/50">
         {isStreaming ? (
           <Loader2 className="size-4 animate-spin text-muted-foreground" />
         ) : (
           <CheckCircle2 className="size-4 text-green-600" />
         )}
         <Wrench className="size-4 text-muted-foreground" />
-        <span className="flex-1 text-left font-mono text-xs">{name}</span>
+        <span className="flex-1 text-left code font-medium">{name}</span>
         <ChevronRight
           className={cn(
             'size-4 text-muted-foreground transition-transform duration-200',
@@ -65,10 +65,10 @@ export function ToolUseContent({
       <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
         <div className="mt-2 overflow-hidden rounded-lg border border-border">
           <div className="border-b border-border bg-muted/50 px-3 py-1.5">
-            <span className="text-xs font-medium text-muted-foreground">{t('ai.toolUse.input')}</span>
+            <span className="label-sm text-muted-foreground">{t('ai.toolUse.input')}</span>
           </div>
           <div className="bg-muted/20 p-3">
-            <pre className="overflow-x-auto whitespace-pre-wrap font-mono text-xs text-foreground">
+            <pre className="overflow-x-auto whitespace-pre-wrap code text-foreground">
               {displayInput
                 ? JSON.stringify(displayInput, null, 2)
                 : partialJson ?? '{}'}

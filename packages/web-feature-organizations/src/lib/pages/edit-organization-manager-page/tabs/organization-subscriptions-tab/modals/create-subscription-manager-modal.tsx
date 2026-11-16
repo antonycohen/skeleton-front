@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import {
   Button,
   Dialog,
+  DialogBody,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -195,9 +196,34 @@ export const CreateSubscriptionManagerModal = ({
     });
   };
 
+  // Above either form: the billing state of the workspace and the price mode.
+  const intro = (
+    <>
+      {!isLoadingCustomers && !customer && (
+        <p className="body text-destructive">
+          {t('adminOrganizations.subscriptions.create.noCustomer')}
+        </p>
+      )}
+
+      <Tabs
+        value={priceMode}
+        onValueChange={(value) => setPriceMode(value as 'existing' | 'new')}
+      >
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="existing">
+            {t('adminOrganizations.subscriptions.create.existingPrice')}
+          </TabsTrigger>
+          <TabsTrigger value="new">
+            {t('adminOrganizations.subscriptions.create.newPrice')}
+          </TabsTrigger>
+        </TabsList>
+      </Tabs>
+    </>
+  );
+
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent size="md">
         <DialogHeader>
           <DialogTitle>{t('adminOrganizations.subscriptions.create.title')}</DialogTitle>
           <DialogDescription>
@@ -206,117 +232,100 @@ export const CreateSubscriptionManagerModal = ({
             })}
           </DialogDescription>
         </DialogHeader>
-
-        {!isLoadingCustomers && !customer && (
-          <p className="text-sm text-destructive">
-            {t('adminOrganizations.subscriptions.create.noCustomer')}
-          </p>
-        )}
-
-        <Tabs
-          value={priceMode}
-          onValueChange={(value) => setPriceMode(value as 'existing' | 'new')}
-        >
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="existing">
-              {t('adminOrganizations.subscriptions.create.existingPrice')}
-            </TabsTrigger>
-            <TabsTrigger value="new">{t('adminOrganizations.subscriptions.create.newPrice')}</TabsTrigger>
-          </TabsList>
-        </Tabs>
-
         {priceMode === 'existing' ? (
-          <div className="flex flex-col gap-4">
-            <Field>
-              <FieldLabel>{t('adminOrganizations.subscriptions.create.product')}</FieldLabel>
-              <Select
-                value={selectedProductId}
-                onValueChange={(productId) => {
-                  setSelectedProductId(productId);
-                  // A previously picked price no longer matches the product.
-                  if (selectedPrice && selectedPrice.product?.id !== productId) {
-                    setSelectedPrice(null);
-                  }
-                }}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder={t('adminOrganizations.subscriptions.create.selectProduct')} />
-                </SelectTrigger>
-                <SelectContent>
-                  {products.map((product) =>
-                    product.id ? (
-                      <SelectItem key={product.id} value={product.id}>
-                        {product.name ?? product.id}
-                      </SelectItem>
-                    ) : null,
-                  )}
-                </SelectContent>
-              </Select>
-            </Field>
-
-            <Field>
-              <FieldLabel>{t('adminOrganizations.subscriptions.create.price')}</FieldLabel>
-              <Select
-                disabled={!selectedProductId}
-                value={selectedPrice?.id ?? ''}
-                onValueChange={(priceId) =>
-                  setSelectedPrice(prices.find((price) => price.id === priceId) ?? selectedPrice)
-                }
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue
-                    placeholder={
-                      selectedProductId
-                        ? t('adminOrganizations.subscriptions.create.selectPrice')
-                        : t('adminOrganizations.subscriptions.create.selectProductFirst')
+          <>
+            <DialogBody className="flex flex-col gap-4">
+              {intro}
+              <Field>
+                <FieldLabel>{t('adminOrganizations.subscriptions.create.product')}</FieldLabel>
+                <Select
+                  value={selectedProductId}
+                  onValueChange={(productId) => {
+                    setSelectedProductId(productId);
+                    // A previously picked price no longer matches the product.
+                    if (selectedPrice && selectedPrice.product?.id !== productId) {
+                      setSelectedPrice(null);
                     }
-                  />
-                </SelectTrigger>
-                <SelectContent>
-                  {/* A price just created from the "New price" tab may not be in the list yet. */}
-                  {selectedPrice?.id && !prices.some((price) => price.id === selectedPrice.id) && (
-                    <SelectItem value={selectedPrice.id}>
-                      {formatPriceLabel(selectedPrice, t)}
-                    </SelectItem>
-                  )}
-                  {prices.map((price) =>
-                    price.id ? (
-                      <SelectItem key={price.id} value={price.id}>
-                        {formatPriceLabel(price, t)}
+                  }}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder={t('adminOrganizations.subscriptions.create.selectProduct')} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {products.map((product) =>
+                      product.id ? (
+                        <SelectItem key={product.id} value={product.id}>
+                          {product.name ?? product.id}
+                        </SelectItem>
+                      ) : null,
+                    )}
+                  </SelectContent>
+                </Select>
+              </Field>
+
+              <Field>
+                <FieldLabel>{t('adminOrganizations.subscriptions.create.price')}</FieldLabel>
+                <Select
+                  disabled={!selectedProductId}
+                  value={selectedPrice?.id ?? ''}
+                  onValueChange={(priceId) =>
+                    setSelectedPrice(prices.find((price) => price.id === priceId) ?? selectedPrice)
+                  }
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue
+                      placeholder={
+                        selectedProductId
+                          ? t('adminOrganizations.subscriptions.create.selectPrice')
+                          : t('adminOrganizations.subscriptions.create.selectProductFirst')
+                      }
+                    />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {/* A price just created from the "New price" tab may not be in the list yet. */}
+                    {selectedPrice?.id && !prices.some((price) => price.id === selectedPrice.id) && (
+                      <SelectItem value={selectedPrice.id}>
+                        {formatPriceLabel(selectedPrice, t)}
                       </SelectItem>
-                    ) : null,
-                  )}
-                </SelectContent>
-              </Select>
-            </Field>
+                    )}
+                    {prices.map((price) =>
+                      price.id ? (
+                        <SelectItem key={price.id} value={price.id}>
+                          {formatPriceLabel(price, t)}
+                        </SelectItem>
+                      ) : null,
+                    )}
+                  </SelectContent>
+                </Select>
+              </Field>
 
-            <Field>
-              <FieldLabel>{t('adminOrganizations.subscriptions.create.billingEmail')}</FieldLabel>
-              <Input
-                type="email"
-                placeholder="billing@company.example"
-                value={email}
-                onChange={(event) => setEmailOverride(event.target.value)}
-              />
-              <p className="text-xs text-muted-foreground">
-                {t('adminOrganizations.subscriptions.create.billingEmailHint')}
-              </p>
-            </Field>
+              <Field>
+                <FieldLabel>{t('adminOrganizations.subscriptions.create.billingEmail')}</FieldLabel>
+                <Input
+                  type="email"
+                  placeholder="billing@company.example"
+                  value={email}
+                  onChange={(event) => setEmailOverride(event.target.value)}
+                />
+                <p className="body-sm text-muted-foreground">
+                  {t('adminOrganizations.subscriptions.create.billingEmailHint')}
+                </p>
+              </Field>
 
-            <Field data-invalid={isDaysUntilDueInvalid}>
-              <FieldLabel>{t('adminOrganizations.subscriptions.create.daysUntilDue')}</FieldLabel>
-              <Input
-                type="number"
-                min={1}
-                step={1}
-                value={daysUntilDue}
-                onChange={(event) => setDaysUntilDue(event.target.value)}
-              />
-              {isDaysUntilDueInvalid && (
-                <FieldError>{t('adminOrganizations.subscriptions.create.daysUntilDueInvalid')}</FieldError>
-              )}
-            </Field>
-
+              <Field data-invalid={isDaysUntilDueInvalid}>
+                <FieldLabel>{t('adminOrganizations.subscriptions.create.daysUntilDue')}</FieldLabel>
+                <Input
+                  type="number"
+                  min={1}
+                  step={1}
+                  value={daysUntilDue}
+                  onChange={(event) => setDaysUntilDue(event.target.value)}
+                />
+                {isDaysUntilDueInvalid && (
+                  <FieldError>{t('adminOrganizations.subscriptions.create.daysUntilDueInvalid')}</FieldError>
+                )}
+              </Field>
+            </DialogBody>
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => handleOpenChange(false)}>
                 {t('common.cancel')}
@@ -330,63 +339,66 @@ export const CreateSubscriptionManagerModal = ({
                 {t('adminOrganizations.subscriptions.createAction')}
               </Button>
             </DialogFooter>
-          </div>
+          </>
         ) : (
           <FormProvider {...priceForm.form}>
-            <form onSubmit={priceForm.handleSubmit} className="flex flex-col gap-4">
-              <ControlledSelectInput
-                name="product.id"
-                label={t('adminOrganizations.subscriptions.create.product')}
-                placeholder={t('adminOrganizations.subscriptions.create.selectProduct')}
-                options={products
-                  .filter((product) => product.id)
-                  .map((product) => ({
-                    value: product.id as string,
-                    label: product.name ?? (product.id as string),
-                  }))}
-              />
-              <ControlledTextInput
-                name="nickname"
-                label={t('adminOrganizations.subscriptions.create.nickname')}
-                placeholder={t('adminOrganizations.subscriptions.create.nicknamePlaceholder')}
-              />
-              <ControlledTextInput
-                name="lookupKey"
-                label={t('adminOrganizations.subscriptions.create.lookupKey')}
-                placeholder="e.g. business_monthly"
-              />
-              <ControlledSelectInput
-                name="currency"
-                label={t('adminOrganizations.subscriptions.create.currency')}
-                options={[
-                  { value: 'eur', label: 'EUR' },
-                  { value: 'usd', label: 'USD' },
-                ]}
-              />
-              <ControlledNumberInput
-                name="unitAmountInCents"
-                label={t('adminOrganizations.subscriptions.create.unitAmount')}
-                min={0}
-                step={1}
-                placeholder="0"
-              />
-              <ControlledSelectInput
-                name="recurringInterval"
-                label={t('adminOrganizations.subscriptions.create.recurringInterval')}
-                options={[
-                  { value: 'month', label: t('common.month') },
-                  { value: 'year', label: t('common.year') },
-                ]}
-              />
-              <ControlledSelectInput
-                name="organizationType"
-                label={t('adminOrganizations.subscriptions.create.organizationType')}
-                description={t('adminOrganizations.subscriptions.create.organizationTypeHint')}
-                options={[
-                  { value: 'business', label: t('adminOrganizations.types.business') },
-                  { value: 'individual', label: t('adminOrganizations.types.individual') },
-                ]}
-              />
+            <form onSubmit={priceForm.handleSubmit} className="contents">
+              <DialogBody className="flex flex-col gap-4">
+                {intro}
+                <ControlledSelectInput
+                  name="product.id"
+                  label={t('adminOrganizations.subscriptions.create.product')}
+                  placeholder={t('adminOrganizations.subscriptions.create.selectProduct')}
+                  options={products
+                    .filter((product) => product.id)
+                    .map((product) => ({
+                      value: product.id as string,
+                      label: product.name ?? (product.id as string),
+                    }))}
+                />
+                <ControlledTextInput
+                  name="nickname"
+                  label={t('adminOrganizations.subscriptions.create.nickname')}
+                  placeholder={t('adminOrganizations.subscriptions.create.nicknamePlaceholder')}
+                />
+                <ControlledTextInput
+                  name="lookupKey"
+                  label={t('adminOrganizations.subscriptions.create.lookupKey')}
+                  placeholder="e.g. business_monthly"
+                />
+                <ControlledSelectInput
+                  name="currency"
+                  label={t('adminOrganizations.subscriptions.create.currency')}
+                  options={[
+                    { value: 'eur', label: 'EUR' },
+                    { value: 'usd', label: 'USD' },
+                  ]}
+                />
+                <ControlledNumberInput
+                  name="unitAmountInCents"
+                  label={t('adminOrganizations.subscriptions.create.unitAmount')}
+                  min={0}
+                  step={1}
+                  placeholder="0"
+                />
+                <ControlledSelectInput
+                  name="recurringInterval"
+                  label={t('adminOrganizations.subscriptions.create.recurringInterval')}
+                  options={[
+                    { value: 'month', label: t('common.month') },
+                    { value: 'year', label: t('common.year') },
+                  ]}
+                />
+                <ControlledSelectInput
+                  name="organizationType"
+                  label={t('adminOrganizations.subscriptions.create.organizationType')}
+                  description={t('adminOrganizations.subscriptions.create.organizationTypeHint')}
+                  options={[
+                    { value: 'business', label: t('adminOrganizations.types.business') },
+                    { value: 'individual', label: t('adminOrganizations.types.individual') },
+                  ]}
+                />
+              </DialogBody>
               <DialogFooter>
                 <Button type="button" variant="outline" onClick={() => handleOpenChange(false)}>
                   {t('common.cancel')}

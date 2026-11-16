@@ -106,7 +106,7 @@ genuinely surface-agnostic (no workspace hooks, links passed in as props).
 A `list-*` page renders a `Collection` driven by a columns hook:
 
 - Shell: `LayoutTopbar` (with `useBreadcrumb`) → `LayoutContent` → `LayoutHeader` (title + description).
-- Columns come from a hook `hooks/use-<entity>-list-columns.tsx` returning `ColumnDef<Read<Entity>>[]`.
+- Columns come from a hook `hooks/use-<entity>-list-columns.tsx` returning `CollectionColumnDef<Read<Entity>>[]` (from `@skeleton/web-collection`).
 - Wire the `Collection` with `useQueryFn`, `staticParams` (workspace id), `queryFields`, and an `emptyState`.
 - Get workspace context from `@skeleton/core-workspace` (`useGetCurrentWorkspaceId`, `useCurrentWorkspaceUrlPrefix`).
 - **Admin lists do neither**: they are cross-workspace, so they pass no workspace id in

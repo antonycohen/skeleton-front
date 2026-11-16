@@ -114,7 +114,7 @@ export function TextInputField({ payload, ctx }: TextInputFieldProps) {
         <div className="p-4">
           {/* Label */}
           {payload.label && (
-            <label className="mb-2 block text-sm font-medium text-foreground">
+            <label className="mb-2 block label text-foreground">
               {payload.label}
             </label>
           )}
@@ -128,13 +128,13 @@ export function TextInputField({ payload, ctx }: TextInputFieldProps) {
               )}
             >
               {payload.prefix && (
-                <span className="select-none border-r border-border px-3 py-2.5 text-sm text-muted-foreground">
+                <span className="select-none border-r border-border px-3 py-2.5 body text-muted-foreground">
                   {payload.prefix}
                 </span>
               )}
               <input
                 type="text"
-                className="flex-1 bg-transparent px-3 py-2.5 text-base text-foreground placeholder:text-muted-foreground focus:outline-none"
+                className="flex-1 bg-transparent px-3 py-2.5 body-lg text-foreground placeholder:text-muted-foreground focus:outline-none"
                 placeholder={payload.placeholder}
                 value={value}
                 onChange={(e) => {
@@ -164,7 +164,7 @@ export function TextInputField({ payload, ctx }: TextInputFieldProps) {
 
           {/* Validation error */}
           {error && (
-            <p className="mt-1.5 text-sm text-destructive">{tIfKey(error)}</p>
+            <p className="mt-1.5 body text-destructive">{tIfKey(error)}</p>
           )}
         </div>
       </div>

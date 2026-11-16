@@ -425,7 +425,7 @@ export function ControlledTokenInput<TForm extends FieldValues, TValue = string>
           onKeyDown={(e) => handleTokenKeyDown(e, index)}
           onFocus={() => setSelectedTokenIndex(index)}
           className={cn(
-            'flex items-center gap-1 h-8 px-2 pr-1 bg-background border rounded-full text-sm transition-colors',
+            'flex items-center gap-1 h-8 px-2 pr-1 bg-background border rounded-full body transition-colors',
             'focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1',
             selectedTokenIndex === index
               ? 'border-ring bg-accent'
@@ -537,7 +537,7 @@ export function ControlledTokenInput<TForm extends FieldValues, TValue = string>
       {label && (
         <FieldLabel
           htmlFor={id}
-          className={direction === 'horizontal' ? 'font-semibold basis-1/2' : ''}
+          className={direction === 'horizontal' ? 'basis-1/2' : ''}
         >
           {label}
         </FieldLabel>

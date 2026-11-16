@@ -14,6 +14,7 @@ export * from './lib/ui/collapsible';
 export * from './lib/ui/command';
 export * from './lib/ui/dialog';
 export * from './lib/ui/dropdown-menu';
+export * from './lib/ui/hover-card';
 export * from './lib/ui/field';
 export * from './lib/ui/form';
 export * from './lib/ui/input';
@@ -72,10 +73,16 @@ export * from './lib/custom/csv-uploader';
 export * from './lib/custom/copy-button';
 export * from './lib/custom/carousel-modal';
 export * from './lib/custom/badge-status';
+export * from './lib/custom/dot-status';
 export * from './lib/custom/error-placeholder';
 export * from './lib/custom/tooltip-banner';
 export * from './lib/custom/editor-toolbar';
+export * from './lib/custom/floating-bar';
 export * from './lib/custom/logo-image';
+export * from './lib/custom/clip';
+export * from './lib/custom/tree-list';
+export * from './lib/custom/info-disclosure';
+export * from './lib/custom/search-input';
 
 export * from './lib/shadcn-io/color-picker';
 

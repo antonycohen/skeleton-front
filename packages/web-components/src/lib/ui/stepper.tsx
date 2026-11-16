@@ -12,7 +12,6 @@ import {
   useContext,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from "react"
 import {cn} from "@skeleton/core-utils";
@@ -20,6 +19,8 @@ import {cn} from "@skeleton/core-utils";
 
 // Types
 type StepperOrientation = "horizontal" | "vertical"
+/** `stretch`: the steps share the full width. `compact`: steps sized to their content, 32px separators. */
+type StepperLayout = "stretch" | "compact"
 type StepState = "active" | "completed" | "inactive" | "loading"
 type StepIndicators = {
   active?: React.ReactNode
@@ -33,6 +34,7 @@ interface StepperContextValue {
   setActiveStep: (step: number) => void
   stepsCount: number
   orientation: StepperOrientation
+  layout: StepperLayout
   registerTrigger: (node: HTMLButtonElement | null) => void
   triggerNodes: HTMLButtonElement[]
   focusNext: (currentIdx: number) => void
@@ -71,6 +73,7 @@ interface StepperProps extends HTMLAttributes<HTMLDivElement> {
   value?: number
   onValueChange?: (value: number) => void
   orientation?: StepperOrientation
+  layout?: StepperLayout
   indicators?: StepIndicators
 }
 
@@ -79,6 +82,7 @@ function Stepper({
                    value,
                    onValueChange,
                    orientation = "horizontal",
+                   layout = "stretch",
                    className,
                    children,
                    indicators = {},
@@ -134,6 +138,7 @@ function Stepper({
           (child.type as { displayName?: string }).displayName === "StepperItem"
       ).length,
       orientation,
+      layout,
       registerTrigger,
       focusNext,
       focusPrev,
@@ -147,6 +152,7 @@ function Stepper({
       handleSetActiveStep,
       children,
       orientation,
+      layout,
       registerTrigger,
       triggerNodes,
     ]
@@ -184,7 +190,7 @@ function StepperItem({
                        children,
                        ...props
                      }: StepperItemProps) {
-  const { activeStep } = useStepper()
+  const { activeStep, layout } = useStepper()
 
   const state: StepState =
     completed || step < activeStep
@@ -202,7 +208,8 @@ function StepperItem({
       <div
         data-slot="stepper-item"
         className={cn(
-          "group/step flex items-center justify-center not-last:flex-1 group-data-[orientation=horizontal]/stepper-nav:flex-row group-data-[orientation=vertical]/stepper-nav:flex-col",
+          "group/step flex items-center justify-center group-data-[orientation=horizontal]/stepper-nav:flex-row group-data-[orientation=vertical]/stepper-nav:flex-col",
+          layout === "stretch" && "not-last:flex-1",
           className
         )}
         data-state={state}
@@ -243,19 +250,20 @@ function StepperTrigger({
   const id = `stepper-tab-${step}`
   const panelId = `stepper-panel-${step}`
 
-  // Register this trigger for keyboard navigation
-  const btnRef = useRef<HTMLButtonElement>(null)
+  // Register this trigger for keyboard navigation. The node is kept in state (a callback ref), not
+  // a ref object: it is read while rendering, and an effect has to run when it is attached.
+  const [btn, setBtn] = useState<HTMLButtonElement | null>(null)
   useEffect(() => {
-    if (btnRef.current) {
-      registerTrigger(btnRef.current)
+    if (btn) {
+      registerTrigger(btn)
     }
-  }, [btnRef.current])
+  }, [btn, registerTrigger])
 
   // Find our index among triggers for navigation
   const myIdx = useMemo(
     () =>
-      triggerNodes.findIndex((n: HTMLButtonElement) => n === btnRef.current),
-    [triggerNodes, btnRef.current]
+      triggerNodes.findIndex((n: HTMLButtonElement) => n === btn),
+    [triggerNodes, btn]
   )
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
@@ -300,7 +308,7 @@ function StepperTrigger({
 
   return (
     <button
-      ref={btnRef}
+      ref={setBtn}
       role="tab"
       id={id}
       aria-selected={isSelected}
@@ -336,8 +344,8 @@ function StepperIndicator({
       data-slot="stepper-indicator"
       data-state={state}
       className={cn(
-        "bg-muted text-muted-foreground data-[state=completed]:bg-indigo-100 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground relative flex size-6 shrink-0 items-center justify-center overflow-hidden",
-        "rounded-full text-sm font-semibold",
+        "bg-muted text-muted-foreground data-[state=completed]:bg-indigo-100 data-[state=completed]:text-primary data-[state=active]:bg-primary data-[state=active]:text-primary-foreground relative flex size-6 shrink-0 items-center justify-center overflow-hidden",
+        "rounded-full title",
         className
       )}
     >
@@ -359,13 +367,21 @@ function StepperIndicator({
 
 function StepperSeparator({ className }: React.ComponentProps<"div">) {
   const { state } = useStepItem()
+  const { orientation, layout } = useStepper()
 
   return (
     <div
       data-slot="stepper-separator"
       data-state={state}
       className={cn(
-        "bg-muted rounded-sm group-data-[orientation=horizontal]/stepper-nav:h-0.5 group-data-[orientation=vertical]/stepper-nav:h-12 group-data-[orientation=vertical]/stepper-nav:w-0.5 m-0.5 group-data-[orientation=horizontal]/stepper-nav:flex-1",
+        "bg-muted rounded-sm group-data-[orientation=horizontal]/stepper-nav:h-0.5 group-data-[orientation=vertical]/stepper-nav:h-12 group-data-[orientation=vertical]/stepper-nav:w-0.5",
+        // Plain classes per orientation, so a consumer's w-*, m-* or flex-* still wins.
+        // Horizontal: fills the room between steps, or (compact) a fixed 32px line, 12px from each step.
+        orientation !== "horizontal"
+          ? "m-0.5"
+          : layout === "compact"
+            ? "w-8 shrink-0 mx-3 my-0.5"
+            : "m-0.5 flex-1",
         className
       )}
     />
@@ -374,13 +390,15 @@ function StepperSeparator({ className }: React.ComponentProps<"div">) {
 
 function StepperTitle({ children, className }: React.ComponentProps<"h3">) {
   const { state } = useStepItem()
+  const { layout } = useStepper()
 
   return (
     <h3
       data-slot="stepper-title"
       data-state={state}
       className={cn(
-        "text-sm leading-none font-medium",
+        "label-dense",
+        layout === "compact" && "whitespace-nowrap",
         className
       )}
     >
@@ -400,7 +418,7 @@ function StepperDescription({
       data-slot="stepper-description"
       data-state={state}
       className={cn(
-        "text-muted-foreground text-sm",
+        "text-muted-foreground body",
         className
       )}
     >

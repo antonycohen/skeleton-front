@@ -79,8 +79,12 @@ export function NavbarTitleInput({
       onFocus={() => isEditable && setIsEditing(true)}
       onBlur={isEditable ? handleBlur : undefined}
       onKeyDown={isEditable ? handleKeyDown : undefined}
+      // 8px padding, and 4px into the navbar's gap right after the sidebar toggle: the name starts
+      // 22px after its icon (30px before), the hover field stays 4px off the button. As wide as the
+      // name (the hover field hugs it), up to 320px (~45 characters), and narrower if the navbar is:
+      // only then does it truncate. w-auto: the Input's w-full would take a fixed-width parent's width.
       className={cn(
-        'h-9 w-40 min-w-0 truncate rounded-md border-0 bg-transparent px-3 py-1 text-sm text-foreground shadow-none',
+        'h-9 w-auto field-sizing-content max-w-80 min-w-0 shrink truncate rounded-md border-0 bg-transparent px-2 py-1 body text-foreground shadow-none [[data-slot=sidebar-trigger]+&]:-ml-1',
         isEditable
           ? 'hover:bg-muted focus-visible:border-0 focus-visible:bg-background focus-visible:ring-[3px] focus-visible:ring-ring/50'
           : 'cursor-default focus-visible:ring-0',

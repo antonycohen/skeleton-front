@@ -1,6 +1,7 @@
 import {
   Button,
   Dialog,
+  DialogBody,
   DialogContent,
   DialogFooter,
   DialogHeader,
@@ -33,19 +34,19 @@ export const UpdateOrganizationModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>{t('userWorkspaces.rename.title')}</DialogTitle>
         </DialogHeader>
-
         <FormProvider {...form}>
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <ControlledTextInput
-              direction="vertical"
-              name="name"
-              label={t('userWorkspaces.rename.nameLabel')}
-            />
-
+          <form onSubmit={handleSubmit} className="contents">
+            <DialogBody className="flex flex-col gap-4">
+              <ControlledTextInput
+                direction="vertical"
+                name="name"
+                label={t('userWorkspaces.rename.nameLabel')}
+              />
+            </DialogBody>
             <DialogFooter>
               <Button
                 type="button"

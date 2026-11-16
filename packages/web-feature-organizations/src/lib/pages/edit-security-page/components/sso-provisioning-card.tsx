@@ -52,7 +52,7 @@ export function SsoProvisioningCard({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-xl">
+        <CardTitle size="lg">
           {t('security.provisioning.title')}
         </CardTitle>
         <CardDescription>
@@ -90,7 +90,7 @@ export function SsoProvisioningCard({
             />
 
             {rootError && (
-              <p className="text-sm text-destructive">{rootError}</p>
+              <p className="body text-destructive">{rootError}</p>
             )}
 
             <div className="flex justify-end border-t pt-6">

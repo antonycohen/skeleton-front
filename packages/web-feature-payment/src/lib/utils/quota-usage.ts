@@ -1,4 +1,5 @@
 import {ReadQuota} from '@skeleton/core-api-models';
+import type {UsageStat} from '@skeleton/web-components';
 import type {TFunction} from '@skeleton/core-translations';
 
 export type QuotaUsageMetric = {
@@ -26,6 +27,14 @@ export const getQuotaUsageMetrics = (t: TFunction, quotas: ReadQuota[] | null | 
     label: t('billing.quota.left', { label: getQuotaLabel(quota) }),
     value: quota.remainingQuota ?? 0,
     percent: getQuotaUsedPercent(quota),
+  }));
+
+/** One stat per active quota, for the plan card: what is left of each quota, first quota as the headline. */
+export const getQuotaUsageStats = (quotas: ReadQuota[] | null | undefined): UsageStat[] =>
+  (quotas ?? []).map((quota) => ({
+    label: getQuotaLabel(quota),
+    remaining: quota.remainingQuota ?? 0,
+    limit: quota.quotaLimit,
   }));
 
 export const getQuotaIncludedItems = (quotas: ReadQuota[] | null | undefined): QuotaIncludedItem[] =>

@@ -1,6 +1,8 @@
 import { Meta } from '@storybook/addon-docs/blocks';
 import { ColorTable } from './tokens';
 
+export const isStatusTone = (name) => /^(important|success|warning|destructive)-(surface|border|on-surface)$/.test(name);
+
 <Meta title="Foundations/Colors" />
 
 # Colors
@@ -14,7 +16,17 @@ Both themes are shown side by side below, whatever the toolbar theme.
 
 ## Surfaces & text
 
-<ColorTable filter={(name) => !name.startsWith('chart') && !name.startsWith('sidebar')} />
+<ColorTable filter={(name) => !name.startsWith('chart') && !name.startsWith('sidebar') && !isStatusTone(name)} />
+
+## Status tones
+
+One tone per meaning, shared by every component that carries it (Alert, banners, job bar…):
+**important** (indigo) not to be missed but no risk, **success** (teal) an action went through,
+**warning** (amber) a consequence to read before acting, **destructive** (rose) something failed or
+is blocked. Three roles each: `surface` the tinted fill, `border`, and `on-surface` for the text and
+the icon. `destructive` itself stays the solid colour of buttons and errors.
+
+<ColorTable filter={isStatusTone} />
 
 ## Charts
 

@@ -1,5 +1,5 @@
 import { Meta } from '@storybook/addon-docs/blocks';
-import { FontFamilies, TypeScale, Weights } from './tokens';
+import { FontFamilies, TextStyles, TypeScale, Weights } from './tokens';
 
 <Meta title="Foundations/Typography" />
 
@@ -48,5 +48,35 @@ Note `font-semibold` is **550**, not 600.
     { label: 'font-medium', className: 'font-medium' },
     { label: 'font-semibold', className: 'font-semibold' },
     { label: 'font-bold', className: 'font-bold' },
+  ]}
+/>
+
+## Text styles
+
+Use a named style rather than composing `font-* text-* leading-* tracking-*` by hand: one class sets
+the family, size, line height, weight and letter spacing (`custom.css`). Every `h1` takes
+`heading-lg` by default.
+
+The `-dense` variant keeps the style on a tighter line height, for a single line packed in a row —
+table cells, badges, list items, toolbars. Multi-line text keeps the standard one.
+
+<TextStyles
+  styles={[
+    { name: 'display', usage: 'Hero headings (marketing). 48px below 768px.' },
+    { name: 'heading-xl', usage: 'Large marketing headings, pricing. 36px below 768px.' },
+    { name: 'heading-lg', usage: 'Page titles — every h1. 24px below 768px.' },
+    { name: 'heading-md', usage: 'Section titles inside a page; KPI figures (MetricCard, AlertCard).' },
+    { name: 'heading-sm', usage: 'Sub-sections, large cards (a settings card’s title).', dense: 'heading-sm-dense' },
+    { name: 'title-lg', usage: 'Settings cards (CardTitle size="lg"), alert dialog titles. Dense: Dialog and Sheet titles.', dense: 'title-lg-dense' },
+    { name: 'title-md', usage: 'Titles one step above a card title: AI chat blocks, key values in a summary card (plan figures, prices, dates).' },
+    { name: 'title', usage: 'Card titles (CardTitle), list item titles.', dense: 'title-dense' },
+    { name: 'body-lg', usage: 'Intros, lead paragraphs.', dense: 'body-lg-dense' },
+    { name: 'body', usage: 'Default UI text.', dense: 'body-dense' },
+    { name: 'body-sm', usage: 'Captions, help text, metadata.', dense: 'body-sm-dense' },
+    { name: 'label-lg', usage: 'Fieldset legends (FieldSet variant="legend"), the name in a row of a product group or SSO list.' },
+    { name: 'label', usage: 'Form labels, buttons, tabs, column headers, the name in a table’s first column.', dense: 'label-dense' },
+    { name: 'label-sm', usage: 'Badges, small labels.', dense: 'label-sm-dense' },
+    { name: 'code-lg', usage: 'Mono values shown on their own, to read or copy: URLs, recovery codes, code blocks (Geist Mono).' },
+    { name: 'code', usage: 'Inline code, IDs, keys and parameters (Geist Mono).' },
   ]}
 />

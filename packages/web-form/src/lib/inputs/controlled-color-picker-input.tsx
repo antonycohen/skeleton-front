@@ -137,7 +137,7 @@ export function ControlledColorPickerInput<TForm extends FieldValues>(
                 type="button"
                 onKeyDown={handleTriggerKeyDown}
                 className={cn(
-                  'flex items-center gap-1 h-8 px-2 bg-background border rounded-full text-sm transition-colors',
+                  'flex items-center gap-1 h-8 px-2 bg-background border rounded-full body transition-colors',
                   'focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1',
                   'border-border hover:bg-accent/50',
                 )}
@@ -147,7 +147,7 @@ export function ControlledColorPickerInput<TForm extends FieldValues>(
                   className="size-4 rounded-full shrink-0"
                   style={{ backgroundColor: currentColor }}
                 />
-                <span className="px-1 text-sm">{currentColor}</span>
+                <span className="px-1 body">{currentColor}</span>
                 <span
                   role="button"
                   tabIndex={-1}
@@ -228,7 +228,7 @@ export function ControlledColorPickerInput<TForm extends FieldValues>(
       {label && (
         <FieldLabel
           htmlFor={id}
-          className={direction === 'horizontal' ? 'font-medium basis-1/2' : ''}
+          className={direction === 'horizontal' ? 'basis-1/2' : ''}
         >
           {label}
         </FieldLabel>

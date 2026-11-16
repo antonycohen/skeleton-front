@@ -1,7 +1,7 @@
 'use client';
 
 import { Cross2Icon } from '@radix-ui/react-icons';
-import { Table } from '@tanstack/react-table';
+import { RowData } from '@tanstack/react-table';
 import { Button, InputGroup, InputGroupAddon, InputGroupInput } from '@skeleton/web-components';
 import { SearchIcon } from 'lucide-react';
 import { ObjectDotNotation } from '@skeleton/core-utils';
@@ -11,9 +11,10 @@ import {
   CollectionFacetedFilterProps,
 } from './collection-faceted-filter';
 import { CollectionViewOptions } from './collection-view-options';
+import { CollectionTable } from './collection-features';
 
 interface FacetedFilterConfiguration<TData>
-  extends Omit<CollectionFacetedFilterProps<TData, unknown>, 'column'> {
+  extends Omit<CollectionFacetedFilterProps<RowData, unknown>, 'column'> {
   columnId: ObjectDotNotation<TData>;
   queryParamName: string;
 }
@@ -23,12 +24,16 @@ interface TextFilterConfiguration {
   queryParamName: string;
 }
 
+// TData is left unconstrained: `ObjectDotNotation` of a `RowData`-constrained type does not resolve
+// (TS2589). The table, which needs the constraint, gets it by intersection.
 export interface CollectionToolbarProps<TData> {
-  table: Table<TData>;
+  table: CollectionTable<TData & RowData>;
   showColumnSelector: boolean;
   textFilter?: TextFilterConfiguration;
   facetedFilters?: FacetedFilterConfiguration<TData>[];
   actions?: React.ReactNode;
+  /** Search, filters, columns and count; off on a list with nothing in it yet, where only the actions stay. */
+  controls?: boolean;
 }
 
 export function CollectionToolbar<TData>({
@@ -37,13 +42,17 @@ export function CollectionToolbar<TData>({
   textFilter,
   facetedFilters,
   actions,
+  controls = true,
 }: CollectionToolbarProps<TData>) {
   const { t } = useTranslation();
-  const isFiltered = table.getState().columnFilters.length > 0;
+  const isFiltered = table.state.columnFilters.length > 0;
 
   return (
     <div className="flex items-center justify-between">
-      <div className="flex flex-1 flex-col-reverse items-start gap-y-2 sm:flex-row sm:items-center sm:space-x-2">
+      <div
+        className="flex flex-1 flex-col-reverse items-start gap-y-2 sm:flex-row sm:items-center sm:space-x-2"
+        hidden={!controls}
+      >
         {textFilter && (
           <InputGroup className="w-[280px]">
             <InputGroupAddon align="inline-start">
@@ -52,7 +61,7 @@ export function CollectionToolbar<TData>({
             <InputGroupInput
               placeholder={textFilter.placeholder}
               value={
-                (table.getState().globalFilter as string) ?? ''
+                (table.state.globalFilter as string) ?? ''
               }
               onChange={(event) =>
                 table.setGlobalFilter(event.target.value)
@@ -85,12 +94,13 @@ export function CollectionToolbar<TData>({
             <Cross2Icon className="ml-2 h-4 w-4" />
           </Button>
         )}
-        <div className="text-muted-foreground text-sm font-normal leading-5 line-clamp-1">
+        {/* Shaping the list stays on the left (search, filters, columns); the right is for the page's actions. */}
+        {showColumnSelector && <CollectionViewOptions table={table} />}
+        <div className="text-muted-foreground body line-clamp-1">
           {t('collection.toolbar.results', { count: table.getRowCount() })}
         </div>
       </div>
-      <div className="flex items-center gap-2">
-        {showColumnSelector && <CollectionViewOptions table={table} />}
+      <div className="ml-auto flex items-center gap-2">
         {actions}
       </div>
     </div>

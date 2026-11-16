@@ -113,7 +113,7 @@ export function ImagePicker({
         />
         <div
           className={cn(
-            "border-input bg-background flex h-9 flex-1 items-center overflow-hidden rounded-md border text-sm shadow-xs",
+            "border-input bg-background flex h-9 flex-1 items-center overflow-hidden rounded-md border body shadow-xs",
             "focus-within:border-ring focus-within:ring-ring/50 focus-within:ring-[3px]",
             ariaInvalid && "border-destructive ring-destructive/20"
           )}
@@ -122,11 +122,11 @@ export function ImagePicker({
             type="button"
             onClick={handleClick}
             disabled={disabled}
-            className="bg-muted text-foreground h-full shrink-0 border-r px-3 text-sm font-medium hover:bg-muted/80"
+            className="bg-muted text-foreground h-full shrink-0 border-r px-3 label hover:bg-muted/80"
           >
             {t('components.imagePicker.chooseFile')}
           </button>
-          <span className="text-muted-foreground truncate px-3 text-sm">
+          <span className="text-muted-foreground truncate px-3 body">
             {value?.originalFilename || t('components.imagePicker.noFile')}
           </span>
         </div>

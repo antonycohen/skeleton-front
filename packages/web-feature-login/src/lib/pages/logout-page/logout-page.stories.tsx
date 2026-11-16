@@ -11,8 +11,8 @@ const meta = {
   component: LogoutPage,
   parameters: { layout: 'centered' },
   render: () => (
-    <div className="max-w-md space-y-2 p-6 text-sm text-muted-foreground">
-      <p className="font-medium text-foreground">Not rendered: redirects on mount</p>
+    <div className="max-w-md space-y-2 p-6 body text-muted-foreground">
+      <p className="label text-foreground">Not rendered: redirects on mount</p>
       <p>
         <code>/logout</code> has no UI. It sends the browser to the API&apos;s <code>/logout</code>{' '}
         (server session ended), then to <code>/logout/callback</code>, which clears the local session.

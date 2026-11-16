@@ -1,36 +1,38 @@
 import { cn } from '@skeleton/core-utils';
+import { DotStatus, type DotStatusVariant } from './dot-status';
 
-export type BadgeStatusVariant = 'green' | 'red' | 'yellow' | 'pricing' | 'blue';
+/** `pending`: not started yet (waiting, queued), a hollow ring instead of a filled dot. */
+export type BadgeStatusVariant = DotStatusVariant | 'pricing';
 
 type BadgeStatusProps = {
   variant: BadgeStatusVariant;
   children: React.ReactNode;
+  /** Hide the dot: a plain tag (keyword, count). Ignored by `pricing`, which has none. @default true */
+  dot?: boolean;
+  /** `plain`: the dot and the text only, no border, background or padding (statuses in dense rows). @default 'badge' */
+  appearance?: 'badge' | 'plain';
   className?: string;
 };
 
-const dotColors: Record<Exclude<BadgeStatusVariant, 'pricing'>, string> = {
-  blue: 'bg-blue-500',
-  green: 'bg-emerald-400',
-  red: 'bg-rose-500',
-  yellow: 'bg-amber-400',
-};
-
-export const BadgeStatus = ({ variant, children, className }: BadgeStatusProps) => {
+export const BadgeStatus = ({ variant, children, dot = true, appearance = 'badge', className }: BadgeStatusProps) => {
   const isPricing = variant === 'pricing';
 
   return (
     <span
       className={cn(
-        'inline-flex items-center rounded-md border px-1.5 py-0.5 text-xs font-medium',
-        isPricing
-          ? 'border-teal-100 bg-teal-50 text-teal-600 dark:border-teal-900 dark:bg-teal-950 dark:text-teal-400'
-          : 'gap-1 border-border-subtle bg-secondary text-secondary-foreground',
+        'inline-flex items-center',
+        appearance === 'plain'
+          ? cn('body-sm-dense gap-1.5', isPricing ? 'text-teal-600 dark:text-teal-400' : 'text-muted-foreground')
+          : cn(
+              'label-sm-dense rounded-md border px-1.5 py-0.5',
+              isPricing
+                ? 'border-teal-100 bg-teal-50 text-teal-600 dark:border-teal-900 dark:bg-teal-950 dark:text-teal-400'
+                : 'gap-1.5 border-border-subtle bg-secondary text-secondary-foreground',
+            ),
         className,
       )}
     >
-      {!isPricing && (
-        <span className={cn('size-2 shrink-0 rounded-full', dotColors[variant])} />
-      )}
+      {!isPricing && dot && <DotStatus variant={variant} className="size-1.5" />}
       {children}
     </span>
   );

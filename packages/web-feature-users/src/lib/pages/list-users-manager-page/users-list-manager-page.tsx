@@ -22,7 +22,7 @@ export function UsersListManagerPage() {
         />
       </header>
       <LayoutContent>
-        <div className="flex w-full justify-between items-end">
+        <div className="relative">
           <LayoutHeader
             pageTitle={t('adminUsers.list.title')}
             pageDescription={t('adminUsers.list.description')}
@@ -30,7 +30,7 @@ export function UsersListManagerPage() {
           <img
             src={`${assetsUrl}/header-illustration.svg`}
             alt=""
-            className="h-[120px] w-[360px] shrink-0 object-cover pointer-events-none"
+            className="pointer-events-none absolute top-1/2 right-0 h-[88px] w-[264px] -translate-y-1/2 object-cover max-md:hidden"
           />
         </div>
         <Collection

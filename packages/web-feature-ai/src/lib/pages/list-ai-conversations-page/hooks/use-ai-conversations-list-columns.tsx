@@ -1,6 +1,5 @@
-import { ColumnDef } from '@tanstack/react-table';
 import { AiConversation } from '@skeleton/core-api-models';
-import { CollectionColumnHeader, CollectionRowActions } from '@skeleton/web-collection';
+import { CollectionColumnDef, CollectionColumnHeader, CollectionRowActions } from '@skeleton/web-collection';
 import { format } from 'date-fns';
 import { MessageSquare, Trash } from 'lucide-react';
 import { useTranslation } from '@skeleton/core-translations';
@@ -12,7 +11,7 @@ type UseAiConversationsListColumnsOptions = {
 
 export function useAiConversationsListColumns(
   options: UseAiConversationsListColumnsOptions,
-): ColumnDef<AiConversation>[] {
+): CollectionColumnDef<AiConversation>[] {
   const { conversationUrl, onDelete } = options;
   const { t } = useTranslation();
 
@@ -23,7 +22,7 @@ export function useAiConversationsListColumns(
         <CollectionColumnHeader column={column} title={t('ai.conversation.columns.conversation')} />
       ),
       cell: ({ row }) => (
-        <span className="text-sm font-semibold">
+        <span className="body">
           {row.original.title ?? t('ai.conversation.untitled')}
         </span>
       ),
@@ -34,7 +33,7 @@ export function useAiConversationsListColumns(
       accessorKey: 'messagesCount',
       header: () => <span>{t('ai.conversation.columns.messages')}</span>,
       cell: ({ row }) => (
-        <span className="text-sm">{row.original.messagesCount ?? 0}</span>
+        <span className="body">{row.original.messagesCount ?? 0}</span>
       ),
       enableSorting: false,
     },
@@ -46,7 +45,7 @@ export function useAiConversationsListColumns(
       cell: ({ row }) => {
         const date = row.original.lastMessageAt ?? row.original.updatedAt;
         return (
-          <span className="text-sm">
+          <span className="body">
             {date ? format(date, 'dd/MM/yyyy HH:mm') : '-'}
           </span>
         );
@@ -70,7 +69,7 @@ export function useAiConversationsListColumns(
                 label: t('common.delete'),
                 icon: Trash,
                 group: 'danger',
-                className: 'text-red-500!',
+                variant: 'destructive',
                 onClick: (conversation: AiConversation) => {
                   onDelete?.(conversation);
                 },

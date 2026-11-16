@@ -14,6 +14,14 @@ export interface UseJobAlertOptions {
   pendingUrl: string;
   /** URL to navigate to once job completes */
   completedUrl: string;
+  /** Serializable context stored with the job (see `JobDefinition.meta`). */
+  meta?: Record<string, string>;
+  /**
+   * Whether a new job also replaces an ended run of the same name, tag and pending URL that this
+   * mount did not start (one registered before a reload of its page). Only for a caller whose
+   * pending URL names one thing, e.g. one record's build page: a bulk import's does not.
+   */
+  replacesEndedRuns?: boolean;
   /** Optional top alert bar. If omitted, the job is tracked silently in the floating widget. */
   alert?: JobAlertBarOptions;
   /** Fired the first time `start(jobId)` registers a new job in the store
@@ -25,7 +33,7 @@ export interface UseJobAlertOptions {
   onTerminal?: (status: 'completed' | 'failed') => void;
 }
 
-export function useJobAlert({tag, name, pendingUrl, completedUrl, alert, onStart, onTerminal}: UseJobAlertOptions) {
+export function useJobAlert({tag, name, pendingUrl, completedUrl, meta, replacesEndedRuns = false, alert, onStart, onTerminal}: UseJobAlertOptions) {
   const registerJob = useJobStore((s) => s.registerJob);
   const removeJob = useJobStore((s) => s.removeJob);
 
@@ -35,10 +43,18 @@ export function useJobAlert({tag, name, pendingUrl, completedUrl, alert, onStart
   useEffect(() => {
     alertRef.current = alert;
   });
+  // Same for the meta, built inline too.
+  const metaRef = useRef(meta);
+  useEffect(() => {
+    metaRef.current = meta;
+  });
 
   // Track the id of the most recently started job so we can subscribe to its
   // status transitions for `onTerminal`.
   const [trackedJobId, setTrackedJobId] = useState<string | null>(null);
+  // The same, read synchronously by `start`.
+  const trackedJobIdRef = useRef<string | null>(null);
+
 
   // Keep `onStart` in a ref so `start` stays referentially stable while
   // still firing the latest callback when invoked.
@@ -51,15 +67,29 @@ export function useJobAlert({tag, name, pendingUrl, completedUrl, alert, onStart
   // the same id (the registerJob merge path) doesn't refire the callback.
   const startedIdsRef = useRef<Set<string>>(new Set());
 
-  /** Register the job and show the alert bar. Idempotent — re-registering merges. */
+  /**
+   * Register the job and show the alert bar. Idempotent — re-registering merges. A new id after the
+   * tracked job ended (a retry: every run is a new job) takes its place in the widget: the ended run
+   * no longer stands beside the one under way. With `replacesEndedRuns`, so does an ended run of the
+   * same name, tag and pending URL registered before this mount.
+   */
   const start = useCallback(
     (jobId: string) => {
+      const previous = trackedJobIdRef.current;
+      for (const job of useJobStore.getState().jobs) {
+        const ended = job.status === 'completed' || job.status === 'failed';
+        const sameRun =
+          job.id === previous || (replacesEndedRuns && job.pendingUrl === pendingUrl && job.name === name && job.tag === tag);
+        if (job.id !== jobId && ended && sameRun) removeJob(job.id);
+      }
+      trackedJobIdRef.current = jobId;
       registerJob({
         id: jobId,
         tag,
         name,
         pendingUrl,
         completedUrl,
+        ...(metaRef.current !== undefined ? {meta: metaRef.current} : {}),
         ...(alertRef.current !== undefined ? {alert: alertRef.current} : {}),
       });
       setTrackedJobId(jobId);
@@ -68,7 +98,7 @@ export function useJobAlert({tag, name, pendingUrl, completedUrl, alert, onStart
         onStartRef.current?.(jobId);
       }
     },
-    [name, tag, pendingUrl, completedUrl, registerJob],
+    [name, tag, pendingUrl, completedUrl, replacesEndedRuns, registerJob, removeJob],
   );
 
   /** Hide the top alert bar but keep tracking the job in the floating widget. */

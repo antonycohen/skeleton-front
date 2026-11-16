@@ -11,6 +11,7 @@ const meta = {
   args: { children: 'Draft' },
   argTypes: {
     variant: { control: 'select', options: VARIANTS },
+    size: { control: 'inline-radio', options: ['default', 'count'] },
     asChild: { table: { disable: true } },
   },
 } satisfies Meta<typeof Badge>;
@@ -31,6 +32,9 @@ export const Success: Story = { args: { variant: 'success', children: <><CheckIc
 export const Warning: Story = { args: { variant: 'warning', children: 'Payment due' } };
 
 export const Important: Story = { args: { variant: 'important', children: 'New' } };
+
+/** A count beside a label: a tab's (Page variants), a row's (Ready to publish). */
+export const Count: Story = { args: { size: 'count', children: 47 } };
 
 /** Every variant. */
 export const Matrix: Story = {

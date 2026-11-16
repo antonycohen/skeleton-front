@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, userEvent, within } from 'storybook/test';
 import type { User } from '@skeleton/core-api-models';
-import { mock, users, type ScreenParameters } from '@skeleton/storybook-support';
+import { backOfficeOrganizations, mock, users, type ScreenParameters } from '@skeleton/storybook-support';
 import { UserDetailManagerPage } from './details-user-manager-page';
 
 const [, withMfa, , pending, withoutMfa, invited] = users;
@@ -25,6 +25,14 @@ type Story = StoryObj<typeof meta>;
 
 /** Two-factor on, preferences set. */
 export const Default: Story = {};
+
+/** A member of several workspaces, each linking to its back office page. */
+export const Workspaces: Story = {
+  parameters: { msw: [mock.collection('/users/:userId/organizations', backOfficeOrganizations)] },
+};
+
+/** A member of no workspace. */
+export const NoWorkspaces: Story = { parameters: { msw: [mock.empty('/users/:userId/organizations')] } };
 
 /** No second factor: "Reset 2FA" is disabled; no preferences saved yet. */
 export const WithoutMfa: Story = { parameters: { screen: screen(withoutMfa) } };

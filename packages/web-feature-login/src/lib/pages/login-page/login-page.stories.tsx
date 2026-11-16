@@ -11,8 +11,8 @@ const meta = {
   component: LoginPage,
   parameters: { session: 'anonymous', layout: 'centered' },
   render: () => (
-    <div className="max-w-md space-y-2 p-6 text-sm text-muted-foreground">
-      <p className="font-medium text-foreground">Not rendered: redirects on mount</p>
+    <div className="max-w-md space-y-2 p-6 body text-muted-foreground">
+      <p className="label text-foreground">Not rendered: redirects on mount</p>
       <p>
         <code>/login</code> has no UI. It sends the browser to the authorization server (OAuth2
         authorization code + PKCE), which shows the sign-in form, then comes back to{' '}

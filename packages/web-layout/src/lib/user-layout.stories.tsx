@@ -108,7 +108,7 @@ const meta = {
         ],
       },
     ],
-    footerNavigationGroups: [
+    secondaryNavigationGroups: [
       {
         sectionName: 'Support',
         items: [
@@ -148,5 +148,5 @@ export const WithBackLink: Story = { args: { backLink: `${BASE}/dashboard`, vers
 
 /** No workspace switcher, no header action, no plan card. */
 export const Minimal: Story = {
-  args: { workspaces: undefined, headerAction: undefined, cardPlan: undefined, footerNavigationGroups: [] },
+  args: { workspaces: undefined, headerAction: undefined, cardPlan: undefined, secondaryNavigationGroups: [] },
 };

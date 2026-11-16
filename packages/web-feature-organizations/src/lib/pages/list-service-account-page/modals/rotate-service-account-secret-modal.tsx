@@ -1,17 +1,20 @@
 import {
   Button,
   Dialog,
+  DialogBody,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  Alert,
+  AlertDescription,
+  AlertTitle,
 } from '@skeleton/web-components';
 import { CreatedServiceAccount, ServiceAccount } from '@skeleton/core-api-models';
 import { useRotateServiceAccountSecret } from '@skeleton/core-api';
-import { IconAlertTriangle } from '@tabler/icons-react';
 import { toast } from 'sonner';
 import { useTranslation } from '@skeleton/core-translations';
-import { RefreshCw } from 'lucide-react';
+import { RefreshCw, TriangleAlertIcon } from 'lucide-react';
 import { useState } from 'react';
 import { ServiceAccountSecretReveal } from '../components/service-account-secret-reveal';
 
@@ -58,18 +61,18 @@ export const RotateServiceAccountSecretModal = ({
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent size="sm">
         {rotatedServiceAccount ? (
           <>
             <DialogHeader>
               <DialogTitle>{t('serviceAccounts.rotate.generatedTitle')}</DialogTitle>
             </DialogHeader>
-
-            <ServiceAccountSecretReveal
-              clientId={rotatedServiceAccount.clientId ?? ''}
-              clientSecret={rotatedServiceAccount.clientSecret ?? ''}
-            />
-
+            <DialogBody className="flex flex-col gap-4">
+              <ServiceAccountSecretReveal
+                clientId={rotatedServiceAccount.clientId ?? ''}
+                clientSecret={rotatedServiceAccount.clientSecret ?? ''}
+              />
+            </DialogBody>
             <DialogFooter>
               <Button
                 type="button"
@@ -85,21 +88,15 @@ export const RotateServiceAccountSecretModal = ({
             <DialogHeader>
               <DialogTitle>{t('serviceAccounts.rotate.title')}</DialogTitle>
             </DialogHeader>
-
-            <div className="flex gap-3 items-start rounded-lg border border-rose-200 bg-rose-50 px-4 py-3">
-              <div className="pt-0.5">
-                <IconAlertTriangle className="size-4 text-destructive" />
-              </div>
-              <div className="flex flex-col gap-1 flex-1 text-destructive">
-                <p className="text-sm font-medium">
-                  {t('serviceAccounts.accountName', { name: serviceAccount.name ?? '' })}
-                </p>
-                <p className="text-sm">
+            <DialogBody className="flex flex-col gap-4">
+              <Alert variant="warning">
+                <TriangleAlertIcon />
+                <AlertTitle>{t('serviceAccounts.accountName', { name: serviceAccount.name ?? '' })}</AlertTitle>
+                <AlertDescription>
                   {t('serviceAccounts.rotate.warning')}
-                </p>
-              </div>
-            </div>
-
+                </AlertDescription>
+              </Alert>
+            </DialogBody>
             <DialogFooter>
               <Button
                 type="button"

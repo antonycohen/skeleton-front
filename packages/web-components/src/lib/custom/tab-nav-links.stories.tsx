@@ -32,3 +32,17 @@ export const NestedMatch: Story = {
     ],
   },
 };
+
+/** A page's tabs (`fullWidth`): the rule runs edge to edge of the area that clips it, past a narrower content column. */
+export const FullWidth: Story = {
+  args: { fullWidth: true },
+  decorators: [
+    (Story) => (
+      <div className="overflow-x-clip py-6">
+        <div className="max-w-xl">
+          <Story />
+        </div>
+      </div>
+    ),
+  ],
+};

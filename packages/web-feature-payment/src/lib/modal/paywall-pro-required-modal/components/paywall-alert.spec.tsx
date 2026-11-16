@@ -13,16 +13,17 @@ const renderAlert = (reason: string) =>
     />,
   );
 
-const alertClasses = () => screen.getByRole('alert').className;
+// Only the destructive alert has role="alert", the other tones are role="status": find it by its slot.
+const alert = () => document.querySelector('[data-slot="alert"]');
+// The tone comes from the Alert variant, whose colours are a recipe, not Tailwind classes.
+const alertVariant = () => alert()?.getAttribute('data-variant');
 
 describe('PaywallAlert', () => {
   // A feature of another plan is offered, not refused: never in the red of an error.
   it.each(['sso', 'role'])('shows the %s upsell as information, in the brand colour', (reason) => {
     renderAlert(reason);
 
-    expect(alertClasses()).toContain('bg-indigo-50');
-    expect(alertClasses()).not.toContain('text-destructive');
-    expect(alertClasses()).not.toContain('bg-rose-50');
+    expect(alertVariant()).toBe('important');
   });
 
   it('names the Enterprise feature on the single sign-on upsell', () => {
@@ -35,7 +36,7 @@ describe('PaywallAlert', () => {
     renderAlert('quota_exceeded');
 
     expect(screen.getByText('You have reached your seats limit')).toBeTruthy();
-    expect(alertClasses()).toContain('text-destructive');
+    expect(alertVariant()).toBe('destructive');
   });
 
   it('shows nothing for an unknown reason', () => {

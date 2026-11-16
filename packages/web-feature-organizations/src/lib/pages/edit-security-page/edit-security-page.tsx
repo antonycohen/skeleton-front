@@ -18,7 +18,7 @@ import {
 } from '@skeleton/web-components';
 import { LayoutContent, LayoutHeader, LayoutTopbar } from '@skeleton/web-layout';
 import { IconShieldCheck, IconShieldOff } from '@tabler/icons-react';
-import { InfoIcon, TriangleAlertIcon } from 'lucide-react';
+import { InfoIcon } from 'lucide-react';
 import { useIsWorkspaceAdmin } from '../../hooks/use-is-workspace-admin';
 import { countMembersWithoutMfa } from '../../hooks/use-members-without-mfa-count';
 import { MfaRequirementModal } from '../../modals/mfa-requirement-modal';
@@ -76,7 +76,7 @@ export function EditSecurityPage() {
   const ownMfaEnabled = ownMfaStatus?.enabled ?? false;
   // Requiring it takes an admin who has it (the API answers 409 otherwise); lifting it does not.
   const needsOwnMfaFirst = isWorkspaceAdmin && !mfaRequired && !ownMfaEnabled;
-  const accountSecurityUrl = `${workspaceUrlPrefix}/settings/account/connexion`;
+  const accountSecurityUrl = `${workspaceUrlPrefix}/settings/account/security`;
   // Not entitled: nothing about single sign-on is fetched, every one of those calls would be a 404.
   const ssoAvailable = organization?.ssoAvailable ?? false;
 
@@ -85,7 +85,7 @@ export function EditSecurityPage() {
       <header className="sticky top-0 z-30">
         <LayoutTopbar />
       </header>
-      <LayoutContent>
+      <LayoutContent width="narrow">
         <LayoutHeader
           pageTitle={t('security.page.title')}
           pageDescription={
@@ -94,10 +94,10 @@ export function EditSecurityPage() {
               : t('security.page.descriptionFallback')
           }
         />
-        <div className="flex max-w-4xl flex-col gap-8">
-          <Card className="rounded-2xl">
+        <div className="flex flex-col gap-8">
+          <Card>
             <CardHeader>
-              <CardTitle className="text-xl">{t('security.mfa.title')}</CardTitle>
+              <CardTitle size="lg">{t('security.mfa.title')}</CardTitle>
               <CardDescription>{t('security.mfa.description')}</CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col gap-4">
@@ -109,10 +109,10 @@ export function EditSecurityPage() {
                     <IconShieldOff className="size-6 shrink-0 text-muted-foreground" />
                   )}
                   <div className="flex flex-col">
-                    <Label htmlFor="workspace-mfa-required" className="font-semibold">
+                    <Label htmlFor="workspace-mfa-required" className="title-dense">
                       {t('security.mfa.requiredLabel')}
                     </Label>
-                    <span className="text-sm text-muted-foreground">
+                    <span className="body text-muted-foreground">
                       {isLoading
                         ? t('security.mfa.checking')
                         : mfaRequired
@@ -131,7 +131,7 @@ export function EditSecurityPage() {
 
               {!isLoading && isWorkspaceAdmin && membersWithoutMfaCount !== null && (
                 <div className="flex items-center justify-between gap-4 border-t py-3">
-                  <span className="text-sm text-muted-foreground">
+                  <span className="body text-muted-foreground">
                     {membersWithoutMfaCount === 0 && !membersCountIsPartial
                       ? t('security.mfa.allMembersCovered')
                       : membersCountIsPartial
@@ -140,7 +140,7 @@ export function EditSecurityPage() {
                   </span>
                   <Link
                     to={`${workspaceUrlPrefix}/settings/teams`}
-                    className="shrink-0 text-sm underline"
+                    className="shrink-0 body underline"
                   >
                     {t('security.mfa.viewMembers')}
                   </Link>
@@ -156,7 +156,7 @@ export function EditSecurityPage() {
 
               {!isLoading && needsOwnMfaFirst && (
                 <Alert variant="important">
-                  <TriangleAlertIcon />
+                  <InfoIcon />
                   <AlertTitle>{t('security.mfa.ownFirst.title')}</AlertTitle>
                   <AlertDescription>
                     <span>

@@ -1,8 +1,8 @@
-import {Alert, AlertTitle, Button} from '@skeleton/web-components';
+import {Alert, AlertAction, AlertTitle, Button} from '@skeleton/web-components';
 import {useCurrentOrganization} from "@skeleton/core-workspace";
 import {useManageSubscription} from "../../hooks/use-manage-subscription";
 import {SubscriptionPlanSummary} from "../../components/plan-summary";
-import {CircleXIcon} from "lucide-react";
+import {CircleAlertIcon, TriangleAlertIcon} from "lucide-react";
 import {useSubscriptionCancel} from "../../hooks/use-subscription-cancel";
 import {LayoutContent, LayoutHeader, LayoutTopbar} from "@skeleton/web-layout";
 import {useTranslation} from "@skeleton/core-translations";
@@ -37,40 +37,38 @@ export function BillingPage() {
         <LayoutTopbar />
       </header>
 
-      <LayoutContent>
+      <LayoutContent width="narrow">
         <LayoutHeader
           pageTitle={t('billing.page.title')}
           pageDescription={t('billing.page.description')}
         />
 
         {/* Main Content */}
-        <div className="flex flex-col gap-8 max-w-[1056px]">
+        <div className="flex flex-col gap-8">
           {/* Cancellation Alert */}
           {cancelAt && (
-            <Alert className="flex items-center justify-between border-rose-200 bg-rose-50">
-              <div className="flex items-center gap-3">
-                <CircleXIcon className="size-4 text-destructive" />
-                <AlertTitle className="text-destructive">
-                  {t('billing.page.cancelsOn', { date: formatCancelDate(cancelAt) })}
-                </AlertTitle>
-              </div>
-              <Button variant="outline" size="sm" onClick={handleReactivate} disabled={isPending}>
-                {t('billing.page.reactivate')}
-              </Button>
+            <Alert variant="warning">
+              <TriangleAlertIcon />
+              <AlertTitle>{t('billing.page.cancelsOn', { date: formatCancelDate(cancelAt) })}</AlertTitle>
+              <AlertAction>
+                <Button variant="outline" size="sm" onClick={handleReactivate} disabled={isPending}>
+                  {t('billing.page.reactivate')}
+                </Button>
+              </AlertAction>
             </Alert>
           )}
 
           {subscriptionStatus === 'past_due' && (
-            <Alert className="flex items-center justify-between border-rose-200 bg-rose-50">
-              <div className="flex items-center gap-3">
-                <CircleXIcon className="size-4 text-destructive" />
-                <AlertTitle className="text-destructive">
-                  {t('billing.page.pastDue')}
-                </AlertTitle>
-              </div>
-              <Button variant="outline" size="sm" onClick={handleReactivate} disabled={isPending}>
-                {t('billing.page.update')}
-              </Button>
+            <Alert variant="destructive">
+              <CircleAlertIcon />
+              <AlertTitle>
+                {t('billing.page.pastDue')}
+              </AlertTitle>
+              <AlertAction>
+                <Button variant="outline" size="sm" onClick={handleReactivate} disabled={isPending}>
+                  {t('billing.page.update')}
+                </Button>
+              </AlertAction>
             </Alert>
           )}
 
@@ -87,7 +85,7 @@ export function BillingPage() {
           {/* Cancellation Section */}
           {!cancelAt && (
             <div className="flex items-center justify-between pt-9">
-              <h2 className="text-xl font-semibold tracking-tight text-foreground font-heading">
+              <h2 className="heading-sm text-foreground">
                 {t('billing.page.cancellation')}
               </h2>
               <Button variant="destructive" disabled={!isSubscribed || isCancelPending} onClick={handleSubscriptionCancel}>

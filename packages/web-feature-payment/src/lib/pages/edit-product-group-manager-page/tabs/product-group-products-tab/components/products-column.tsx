@@ -49,9 +49,9 @@ export const ProductsColumn = ({
 }: ProductsColumnProps) => {
   const { t } = useTranslation();
   return (
-    <Card className="rounded-2xl gap-0">
+    <Card className="gap-0">
       <CardHeader className="flex flex-row items-center justify-between gap-2">
-        <CardTitle className="text-xl flex items-center gap-2">
+        <CardTitle className="flex items-center gap-2">
           {t('adminPayment.products.title')}
           {isReordering ? (
             <IconLoader2

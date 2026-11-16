@@ -5,7 +5,6 @@ import { cn } from '@skeleton/core-utils';
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from './tooltip';
 import { Popover, PopoverContent, PopoverTrigger } from './popover';
@@ -33,20 +32,18 @@ export function LongText({
   return (
     <>
       <div className="hidden sm:block">
-        <TooltipProvider delayDuration={0}>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <div ref={ref} className={cn("truncate", className)}>
-                {children}
-              </div>
-            </TooltipTrigger>
-            {isOverflown && (
-              <TooltipContent>
-                <p className={contentClassName}>{children}</p>
-              </TooltipContent>
-            )}
-          </Tooltip>
-        </TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div ref={ref} className={cn("truncate", className)}>
+              {children}
+            </div>
+          </TooltipTrigger>
+          {isOverflown && (
+            <TooltipContent>
+              <p className={contentClassName}>{children}</p>
+            </TooltipContent>
+          )}
+        </Tooltip>
       </div>
       <div className="sm:hidden">
         <Popover>

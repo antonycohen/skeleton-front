@@ -43,7 +43,7 @@ function toPathname(url: string): string {
 }
 
 // Strip query/hash from a non-http URL so `pendingUrl` values that include a
-// per-job hash (e.g. `/dashboard#audience-import=abc`) still match the bare
+// per-job hash (e.g. `/dashboard#import=abc`) still match the bare
 // `useLocation().pathname` when deciding whether to show the top alert bar.
 function toPagePath(url: string): string {
   if (url.startsWith('http')) return toPathname(url);
@@ -61,9 +61,9 @@ function JobMonitor({jobId, currentStatus}: {jobId: string; currentStatus: JobSt
     {
       id: jobId,
       fields: {
-        id: null,
-        status: null,
-      },
+          id: null,
+          status: null,
+        },
     },
     {
       refetchInterval: MONITOR_POLL_INTERVAL_MS,
@@ -87,6 +87,7 @@ function JobMonitor({jobId, currentStatus}: {jobId: string; currentStatus: JobSt
 // ---------------------------------------------------------------------------
 
 function JobRow({job, onRemove}: {job: JobDefinition; onRemove: () => void}) {
+  const {t} = useTranslation();
   const config = statusConfig[job.status];
   const href = job.status === 'completed' ? job.completedUrl : job.pendingUrl;
 
@@ -95,17 +96,20 @@ function JobRow({job, onRemove}: {job: JobDefinition; onRemove: () => void}) {
       <div className={cn('shrink-0', config.className)}>{config.icon}</div>
       <Link
         to={href}
-        className="flex flex-1 items-center gap-1.5 truncate text-sm font-medium text-foreground no-underline hover:underline"
+        className="flex flex-1 items-center gap-1.5 truncate label text-foreground no-underline hover:underline"
       >
         <span className="truncate">{job.name}</span>
         <ExternalLink className="size-3 shrink-0 opacity-0 transition-opacity group-hover:opacity-60" />
       </Link>
       {job.status !== 'running' && (
         <Button
+          type="button"
           variant="ghost"
           size="icon"
+          aria-label={t('layout.jobs.remove')}
           className="size-6 shrink-0 opacity-0 transition-opacity group-hover:opacity-100"
           onClick={(e) => {
+            e.preventDefault();
             e.stopPropagation();
             onRemove();
           }}
@@ -137,15 +141,15 @@ function JobAlertWidget() {
     <div className="fixed bottom-4 right-24 z-[9998] w-80 overflow-hidden rounded-xl border bg-background shadow-lg animate-in slide-in-from-bottom-4 duration-300">
       <div className="flex items-center justify-between border-b px-4 py-2.5">
         <div className="flex items-center gap-2">
-          <h3 className="text-sm font-semibold text-foreground">{t('layout.jobs.title')}</h3>
+          <h3 className="title text-foreground">{t('layout.jobs.title')}</h3>
           {runningCount > 0 && (
-            <span className="flex size-5 items-center justify-center rounded-full bg-indigo-100 text-xs font-medium text-indigo-700">
+            <span className="flex size-5 items-center justify-center rounded-full bg-indigo-100 label-sm text-indigo-700">
               {runningCount}
             </span>
           )}
         </div>
       </div>
-      <div className="max-h-60 overflow-y-auto p-1">
+      <div className="max-h-80 divide-y overflow-y-auto p-1">
         {visibleJobs.map((job) => (
           <JobRow key={job.id} job={job} onRemove={() => removeJob(job.id)} />
         ))}

@@ -233,7 +233,7 @@ export function ControlledColorTokenInput<TForm extends FieldValues>(
             onKeyDown={(e) => handleTokenKeyDown(e, index)}
             onFocus={() => setSelectedTokenIndex(index)}
             className={cn(
-              'flex items-center gap-1 h-8 px-2 bg-background border rounded-full text-sm transition-colors',
+              'flex items-center gap-1 h-8 px-2 bg-background border rounded-full body transition-colors',
               'focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1',
               selectedTokenIndex === index
                 ? 'border-ring bg-accent'
@@ -245,7 +245,7 @@ export function ControlledColorTokenInput<TForm extends FieldValues>(
               className="size-4 rounded-full shrink-0"
               style={{ backgroundColor: hexColor }}
             />
-            <span className="px-1 text-sm">{hexColor}</span>
+            <span className="px-1 body">{hexColor}</span>
             <span
               role="button"
               tabIndex={-1}
@@ -335,7 +335,7 @@ export function ControlledColorTokenInput<TForm extends FieldValues>(
       {label && (
         <FieldLabel
           htmlFor={id}
-          className={direction === 'horizontal' ? 'font-medium basis-1/2' : ''}
+          className={direction === 'horizontal' ? 'basis-1/2' : ''}
         >
           {label}
         </FieldLabel>

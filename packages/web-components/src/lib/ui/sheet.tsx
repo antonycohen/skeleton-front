@@ -1,6 +1,7 @@
 import * as React from "react"
 import { Dialog as SheetPrimitive } from "radix-ui"
 import { XIcon } from "lucide-react"
+import { buttonVariants } from "./button"
 
 import { cn } from '@skeleton/core-utils';
 import { useTranslation } from '@skeleton/core-translations';
@@ -47,9 +48,12 @@ function SheetContent({
   className,
   children,
   side = "right",
+  showCloseButton = true,
   ...props
 }: React.ComponentProps<typeof SheetPrimitive.Content> & {
   side?: "top" | "right" | "bottom" | "left"
+  /** Off when the sheet's own header carries the close button (a toolbar). @default true */
+  showCloseButton?: boolean
 }) {
   const { t } = useTranslation()
 
@@ -73,10 +77,13 @@ function SheetContent({
         {...props}
       >
         {children}
-        <SheetPrimitive.Close className="ring-offset-background focus:ring-ring data-[state=open]:bg-secondary absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none">
-          <XIcon className="size-4" />
-          <span className="sr-only">{t('common.close')}</span>
-        </SheetPrimitive.Close>
+        {showCloseButton && (
+          // The same close button as the dialogs and the side panels: a ghost icon Button.
+          <SheetPrimitive.Close className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "absolute top-4 right-4")}>
+            <XIcon className="size-5" />
+            <span className="sr-only">{t('common.close')}</span>
+          </SheetPrimitive.Close>
+        )}
       </SheetPrimitive.Content>
     </SheetPortal>
   )
@@ -109,7 +116,7 @@ function SheetTitle({
   return (
     <SheetPrimitive.Title
       data-slot="sheet-title"
-      className={cn("text-foreground font-semibold", className)}
+      className={cn("text-foreground title-lg-dense", className)}
       {...props}
     />
   )
@@ -122,7 +129,7 @@ function SheetDescription({
   return (
     <SheetPrimitive.Description
       data-slot="sheet-description"
-      className={cn("text-muted-foreground text-sm", className)}
+      className={cn("text-muted-foreground body", className)}
       {...props}
     />
   )

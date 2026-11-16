@@ -16,6 +16,46 @@ export type CsvUploaderProps = {
   analyzingDescription?: string;
 };
 
+/**
+ * The MIME types browsers report for each extension the uploader may accept. Spreadsheet MIME
+ * types vary by OS and browser (Windows reports a CSV as `application/vnd.ms-excel`, some Linux
+ * set-ups as `text/comma-separated-values`), hence several per entry.
+ */
+const MIME_TYPES_BY_EXTENSION: Record<string, readonly string[]> = {
+  '.csv': [
+    'text/csv',
+    'application/csv',
+    'text/x-csv',
+    'text/comma-separated-values',
+    'text/plain',
+    'application/vnd.ms-excel',
+  ],
+  '.xlsx': ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+};
+
+/** What a browser reports when it has no idea of the type: no more telling than no type at all. */
+const UNKNOWN_MIME_TYPES = new Set(['', 'application/octet-stream']);
+
+/**
+ * `accept` lists extensions (`.csv`) and, as the HTML attribute allows, MIME types (`text/csv`),
+ * each matched exactly. A file passes on a listed MIME type, or on a listed extension whose
+ * reported MIME type, when the browser knows one, is in that extension's list above.
+ */
+const isAcceptedFile = (file: File, accept: string): boolean => {
+  const accepted = accept.split(',').map((type) => type.trim().toLowerCase());
+  const mimeType = file.type.toLowerCase();
+  if (mimeType && accepted.includes(mimeType)) {
+    return true;
+  }
+  const dot = file.name.lastIndexOf('.');
+  const extension = dot >= 0 ? file.name.slice(dot).toLowerCase() : '';
+  if (!extension || !accepted.includes(extension)) {
+    return false;
+  }
+  const mimeTypes = MIME_TYPES_BY_EXTENSION[extension];
+  return UNKNOWN_MIME_TYPES.has(mimeType) || !mimeTypes || mimeTypes.includes(mimeType);
+};
+
 export function CsvUploader({
   onFileSelect,
   accept = '.csv,.xlsx',
@@ -39,10 +79,7 @@ export function CsvUploader({
     (file: File) => {
       setError(null);
 
-      // Validate file type
-      const validTypes = accept.split(',').map((ext) => ext.trim());
-      const fileExtension = `.${file.name.split('.').pop()?.toLowerCase()}`;
-      if (!validTypes.some((type) => fileExtension === type || file.type.includes(type.replace('.', '')))) {
+      if (!isAcceptedFile(file, accept)) {
         setError(t('components.csvUploader.invalidType', { helper: helperText }));
         return;
       }
@@ -118,11 +155,11 @@ export function CsvUploader({
           <LoaderCircleIcon className="size-6 text-foreground animate-spin" />
         </div>
 
-        <div className="flex flex-col gap-2 items-center text-center w-full">
-          <p className="text-lg font-medium text-foreground tracking-tight">
+        <div className="flex flex-col gap-1 items-center text-center w-full">
+          <p className="title-md text-foreground">
             {analyzingTitle}
           </p>
-          <p className="text-sm text-muted-foreground">
+          <p className="body text-muted-foreground">
             {analyzingDescription}
           </p>
         </div>
@@ -156,27 +193,27 @@ export function CsvUploader({
       </div>
 
       <div className="flex flex-col gap-2 items-center text-center">
-        <p className="text-xl font-semibold text-foreground">
+        <p className="title-md text-foreground">
           {selectedFile ? selectedFile.name : t('components.csvUploader.dropTitle')}
         </p>
         {selectedFile ? (
-          <p className="text-sm text-muted-foreground">
+          <p className="body text-muted-foreground">
             {`${(selectedFile.size / 1024).toFixed(1)} KB`}
           </p>
         ) : (
-          <p className="text-sm text-muted-foreground">
+          <p className="body text-muted-foreground">
             {t('components.csvUploader.dropDescription')}
           </p>
         )}
       </div>
 
-      {error && <p className="text-sm text-destructive">{error}</p>}
+      {error && <p className="body text-destructive">{error}</p>}
 
       <div className="flex flex-col gap-1 items-center">
         <Button type="button" variant="outline" onClick={handleClick} disabled={disabled}>
           {selectedFile ? t('components.csvUploader.changeFile') : t('components.csvUploader.selectFile')}
         </Button>
-        <p className="text-sm text-muted-foreground text-center">{helperText}</p>
+        <p className="body text-muted-foreground text-center">{helperText}</p>
       </div>
     </div>
   );

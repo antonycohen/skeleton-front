@@ -9,12 +9,17 @@
       "import": "./src/index.ts",
       "default": "./src/index.ts"
     },
+    "./markdown": {
+      "types": "./src/lib/custom/markdown.tsx",
+      "import": "./src/lib/custom/markdown.tsx",
+      "default": "./src/lib/custom/markdown.tsx"
+    },
     "./package.json": "./package.json"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
     "cmdk": "^1.1.1",
-    "lucide-react": "^0.547.0"
+    "lucide-react": "^1.63.0"
   },
   "nx": {
     "implicitDependencies": [

@@ -1,7 +1,5 @@
-import { ColumnDef } from '@tanstack/react-table';
 import { ServiceAccount, toShortPermission } from '@skeleton/core-api-models';
 import {
-  Badge,
   BadgeStatus,
   CopyButton,
   Tooltip,
@@ -11,6 +9,7 @@ import {
 import {
   CollectionColumnHeader,
   CollectionRowActions,
+  type CollectionColumnDef,
 } from '@skeleton/web-collection';
 import { format } from 'date-fns';
 import { IconBan, IconCircleCheck } from '@tabler/icons-react';
@@ -27,7 +26,7 @@ type UseServiceAccountListColumnsOptions = {
 
 export function useServiceAccountListColumns(
   options: UseServiceAccountListColumnsOptions,
-): ColumnDef<ServiceAccount>[] {
+): CollectionColumnDef<ServiceAccount>[] {
   const { onEdit, onRotateSecret, onDisable, onEnable, onDelete } = options;
   const { t } = useTranslation();
 
@@ -38,7 +37,7 @@ export function useServiceAccountListColumns(
         <CollectionColumnHeader column={column} title={t('serviceAccounts.columns.name')} />
       ),
       cell: ({ row }) => (
-        <span className="text-sm font-semibold">{row.original.name ?? '-'}</span>
+        <span className="body">{row.original.name ?? '-'}</span>
       ),
       meta: { className: 'min-w-[200px]' },
       enableSorting: true,
@@ -51,7 +50,7 @@ export function useServiceAccountListColumns(
         if (!clientId) return <span>-</span>;
         return (
           <div className="flex items-center gap-1">
-            <code className="font-mono text-xs">{clientId}</code>
+            <code className="code">{clientId}</code>
             <CopyButton
               value={clientId}
               toastMessage={t('serviceAccounts.clientIdCopied')}
@@ -70,20 +69,16 @@ export function useServiceAccountListColumns(
         if (!permissions?.length) return <span>-</span>;
         return (
           <Tooltip>
+            {/* The count alone, under its column's title; the permissions on hover. */}
             <TooltipTrigger asChild>
-              <Badge variant="secondary">
-                {t('serviceAccounts.permissionsCount', {
-                  count: permissions.length,
-                })}
-              </Badge>
+              <span tabIndex={0} className="cursor-default">
+                {permissions.length}
+              </span>
             </TooltipTrigger>
-            <TooltipContent
-              className="max-h-64 overflow-y-auto border border-border bg-popover text-popover-foreground shadow-md"
-              arrowClassName="bg-popover fill-popover"
-            >
+            <TooltipContent className="max-h-64 overflow-y-auto border border-border bg-popover text-popover-foreground shadow-md">
               <div className="flex flex-col gap-0.5">
                 {permissions.map((permission) => (
-                  <span key={permission} className="font-mono text-xs">
+                  <span key={permission} className="code">
                     {toShortPermission(permission)}
                   </span>
                 ))}
@@ -114,7 +109,7 @@ export function useServiceAccountListColumns(
         <CollectionColumnHeader column={column} title={t('serviceAccounts.columns.created')} />
       ),
       cell: ({ row }) => (
-        <div className="text-sm">
+        <div className="body">
           {row.getValue('createdAt')
             ? format(row.getValue('createdAt'), 'dd/MM/yyyy')
             : '-'}
@@ -166,7 +161,7 @@ export function useServiceAccountListColumns(
                   label: t('common.delete'),
                   icon: Trash,
                   group: 'danger',
-                  className: 'text-red-500!',
+                  variant: 'destructive',
                   onClick: (serviceAccount: ServiceAccount) => {
                     onDelete?.(serviceAccount);
                   },

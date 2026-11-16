@@ -15,12 +15,12 @@ Conventions for the hooks that define a `Collection`/table's columns. Reference 
 
 ## Signature
 
-Return `ColumnDef<TModel>[]`, where `TModel` is the row's model type from `@skeleton/core-api-models` (`ServiceAccount`, `OrganizationMember`, `AiConversation`, …):
+Return `CollectionColumnDef<TModel>[]` (from `@skeleton/web-collection`: TanStack Table v9's `ColumnDef` with the collection's feature set), where `TModel` is the row's model type from `@skeleton/core-api-models` (`ServiceAccount`, `OrganizationMember`, `AiConversation`, …). Don't import `ColumnDef` from `@tanstack/react-table` directly: in v9 it takes the feature set as its first type argument.
 
 ```tsx
 export function useTeamMembersColumns(
   options: UseTeamMembersColumnsOptions,
-): ColumnDef<OrganizationMember>[] { … }
+): CollectionColumnDef<OrganizationMember>[] { … }
 ```
 
 - Pass per-row action callbacks and required context through a single `options` object (e.g. `conversationUrl`, `onChangeRole`, `onDelete`). Type it as `Use<Name>ColumnsOptions`.
@@ -33,7 +33,7 @@ export function useTeamMembersColumns(
 - **Header**: sortable/standard columns use `({ column }) => <CollectionColumnHeader column={column} title={t('…')} />` (from `@skeleton/web-collection`). Plain display headers use `() => <span>{t('…')}</span>`; the actions header is right-aligned: `() => <div className="text-right">{t('common.actions')}</div>`.
 - **Text**: every header, label, fallback and action label goes through `t()` from `useTranslation()` (`@skeleton/core-translations`), called at the top of the columns hook — see the `translations` rule.
 - **Cell**: `({ row }) => …` reading `row.original`. Always null-guard nullable model fields (`?? '-'`, `?? 0`).
-- **Flags & sizing**: set `size` / `minSize`, `enableSorting`, `enableHiding`, `filterFn: 'equals'`, and `meta: { className: 'min-w-[200px]' }` as needed.
+- **Flags & sizing**: set `size` / `minSize`, `enableSorting`, `enableHiding`, `filterFn: 'equals'`, and `meta: { className: 'min-w-[200px]', label: t('…') }` as needed (`label` names the column in the "Columns" menu when `showColumnSelector` is on; its id otherwise). `CollectionColumnHeader` also takes an optional `tooltip` shown on hovering the title.
 
 ## Common cell patterns
 
@@ -54,12 +54,12 @@ Always the **last** column, `id: 'actions'`, right-aligned header, using `Collec
     { label: t('teams.members.changeRole'), icon: UserCog, onClick: (m) => onChangeRole?.(m) },
     { label: t('ai.conversations.open'), icon: MessageSquare, linkTo: (c) => `${workspaceBaseUrl}/assistant/${c.id}` },
     { label: t('adminOrganizations.quotas.adjust'), icon: IconPencil, dialog: { id: 'adjust-quota', component: AdjustQuotaModal } },
-    { label: t('common.delete'), icon: Trash, group: 'danger', className: 'text-red-500!', onClick: (x) => onDelete?.(x) },
+    { label: t('common.delete'), icon: Trash, group: 'danger', variant: 'destructive', onClick: (x) => onDelete?.(x) },
   ]}
 />
 ```
 
 - Each action is one of: `onClick`, `linkTo: (row) => url`, or `dialog: { id, component }`.
-- Destructive actions set `group: 'danger'` and a red class (`text-red-500!` or `text-destructive`).
+- Destructive actions set `group: 'danger'` and `variant: 'destructive'` (no colour classes).
 - Build the `actions` array conditionally (e.g. spread `...(isAdjustable(row.original) ? [...] : [])`, or enable/disable depending on a service account's status) to vary actions per row state.
 - Primary CTAs (e.g. "Open") may sit as inline `Link`+`Button` next to `CollectionRowActions` inside a right-aligned flex container.

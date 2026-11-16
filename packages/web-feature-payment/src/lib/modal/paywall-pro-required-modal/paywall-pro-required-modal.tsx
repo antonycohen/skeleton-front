@@ -2,9 +2,10 @@
 
 import {useCallback, useState} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
-import {SparklesIcon, XIcon} from 'lucide-react';
+import {SparklesIcon} from 'lucide-react';
 import {
   Dialog,
+  DialogBody,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -85,24 +86,17 @@ export function PaywallProRequiredModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogContent className="sm:max-w-2xl gap-6 rounded-3xl p-8" showCloseButton={false}>
+      <DialogContent size="lg">
         <DialogHeader className="flex-row items-start gap-4">
           <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground">
             <SparklesIcon className="size-5" />
           </div>
-          <DialogTitle className="grow font-heading text-xl tracking-[-0.4px]">
+          <DialogTitle className="grow heading-sm">
             {modalTitle}
           </DialogTitle>
-          <button
-            onClick={handleClose}
-            className="shrink-0 opacity-70 transition-opacity hover:opacity-100"
-          >
-            <XIcon className="size-6" />
-            <span className="sr-only">{t('common.close')}</span>
-          </button>
         </DialogHeader>
 
-        <div className="flex flex-col gap-6 -mx-4 no-scrollbar max-h-[75vh] overflow-y-auto px-4">
+        <DialogBody className="flex flex-col gap-6">
           <PaywallAlert
             hashParams={hashParams}
             isQuotaExceeded={isQuotaExceeded}
@@ -133,7 +127,7 @@ export function PaywallProRequiredModal({
               features={features}
             />
           )}
-        </div>
+        </DialogBody>
 
         <PaywallFooter
           salesUrl={isSalesOnly ? ENTERPRISE_SALES_URL : undefined}

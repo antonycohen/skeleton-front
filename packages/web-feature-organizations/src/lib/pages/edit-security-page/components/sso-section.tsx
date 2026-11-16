@@ -7,7 +7,7 @@ import {
 import { toast } from 'sonner';
 import { useTranslation } from '@skeleton/core-translations';
 import { Alert, AlertDescription } from '@skeleton/web-components';
-import { TriangleAlertIcon } from 'lucide-react';
+import { CircleAlertIcon } from 'lucide-react';
 import { OrganizationMember } from '@skeleton/core-api-models';
 import {
   countMembersOnVerifiedDomains,
@@ -152,7 +152,7 @@ export function SsoSection({
     <>
       {loadError && (
         <Alert variant="destructive">
-          <TriangleAlertIcon />
+          <CircleAlertIcon />
           <AlertDescription>
             {t('security.sso.loadError')} {loadError}
           </AlertDescription>

@@ -1,6 +1,7 @@
 {
   "ai.chat.replyPlaceholder": "Reply...",
   "ai.chat.selectedItem": "Selected item",
+  "ai.chat.thinking": "Thinking...",
   "ai.suggestions.somethingElse": "Something else...",
   "ai.toolUse.input": "Input",
   "ai.webSearch.results": "Web Search Results",
@@ -21,6 +22,7 @@
   "ai.conversation.placeholder": "Ask anything...",
   "ai.conversation.emptyTitle": "How can I help?",
   "ai.conversation.emptyDescription": "Ask a question to start the conversation.",
+  "ai.conversation.listEmptyDescription": "Start a new conversation to ask the assistant.",
   "ai.conversation.columns.conversation": "Conversation",
   "ai.conversation.columns.messages": "Messages",
   "ai.conversation.columns.lastActivity": "Last activity",

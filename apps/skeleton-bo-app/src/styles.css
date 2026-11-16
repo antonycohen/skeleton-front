@@ -5,6 +5,8 @@
 @import "../../../packages/web-themes/src/mode.css";
 @import "../../../packages/web-themes/src/custom.css";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @source "../../../packages/core-api";
 @source "../../../packages/core-api-models";
 @source "../../../packages/core-config";
@@ -28,7 +30,6 @@
 
 @source "../../../node_modules/streamdown/dist/*.js";
 
-@custom-variant dark (&:where(.dark, .dark *));
 
 @plugin 'tailwindcss-animate';
 @plugin "@tailwindcss/typography";

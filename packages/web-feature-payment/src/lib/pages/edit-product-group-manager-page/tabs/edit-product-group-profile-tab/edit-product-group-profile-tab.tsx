@@ -41,9 +41,9 @@ export const EditProductGroupProfileTab = () => {
   return (
     <FormProvider {...form}>
       <form onSubmit={handleSubmit}>
-        <Card className="rounded-2xl gap-0">
+        <Card className="gap-0">
           <CardHeader>
-            <CardTitle className="text-xl">{t('adminPayment.productGroup.profile.title')}</CardTitle>
+            <CardTitle>{t('adminPayment.productGroup.profile.title')}</CardTitle>
             <CardDescription>
               {t('adminPayment.productGroup.profile.description')}
             </CardDescription>

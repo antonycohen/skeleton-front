@@ -54,7 +54,7 @@ export const RecoveryCodesList = ({ codes, accountEmail }: RecoveryCodesListProp
 
   return (
     <div className="flex flex-col gap-4">
-      <Alert variant="important">
+      <Alert variant="warning">
         <TriangleAlertIcon />
         <AlertTitle>{t('account.mfa.recoveryCodesList.saveNowTitle')}</AlertTitle>
         <AlertDescription>
@@ -64,7 +64,7 @@ export const RecoveryCodesList = ({ codes, accountEmail }: RecoveryCodesListProp
 
       <ul
         aria-label={t('account.mfa.recoveryCodes')}
-        className="grid grid-cols-2 gap-x-6 gap-y-2 rounded-lg border bg-muted/40 px-5 py-4 font-mono text-sm select-all"
+        className="grid grid-cols-2 gap-x-6 gap-y-2 rounded-lg border bg-muted/40 px-5 py-4 code-lg select-all"
       >
         {codes.map((code) => (
           <li key={code} className="tracking-wider">

@@ -2,7 +2,7 @@ import { resolve } from 'node:path';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig(() => ({
-  root: __dirname,
+  root: import.meta.dirname,
   cacheDir: '../../node_modules/.vite/packages/web-feature-payment',
   resolve: {
     // Workspace packages are wired through tsconfig `paths`, which vitest does
@@ -10,7 +10,7 @@ export default defineConfig(() => ({
     alias: [
       {
         find: /^@skeleton\/([^/]+)$/,
-        replacement: resolve(__dirname, '../$1/src/index.ts'),
+        replacement: resolve(import.meta.dirname, '../$1/src/index.ts'),
       },
     ],
   },

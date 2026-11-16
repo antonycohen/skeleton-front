@@ -11,7 +11,7 @@ export function ThinkingContent({ thinking, className }: ThinkingContentProps) {
   return (
     <p
       className={cn(
-        'text-sm text-muted-foreground animate-pulse whitespace-pre-wrap',
+        'body text-muted-foreground animate-pulse whitespace-pre-wrap',
         className
       )}
     >

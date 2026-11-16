@@ -12,7 +12,6 @@ import {
   SidebarNavigation,
   SidebarNavigationProps,
   SidebarProvider,
-  SidebarRail,
   TeamSwitcher,
   TeamSwitcherProps,
 } from '@skeleton/web-components';
@@ -27,7 +26,11 @@ type LayoutProps = {
   mainNavigationGroups?: SidebarNavigationProps[];
   workspaces?: TeamSwitcherProps;
   settingsUrl?: string;
-  footerNavigationGroups?: SidebarNavigationProps[];
+  /**
+   * Groups listed after the main ones (Support): they scroll with them, so a small screen keeps
+   * the plan card and the user menu in view; on the icon rail too, they follow the main ones.
+   */
+  secondaryNavigationGroups?: SidebarNavigationProps[];
   cardPlan?: ReactNode;
   navUserItems?: NavItem[]
   backLink?: string;
@@ -36,6 +39,15 @@ type LayoutProps = {
   /** Rendered full-width above the page content (e.g. past-due invoice warning). */
   banner?: ReactNode;
 };
+
+/**
+ * While one of the sidebar's menus is open (the workspace switcher, the user menu), the rest of the
+ * sidebar steps back: the menu is modal, a click there only closes it. The part holding the open
+ * trigger stays as it is, so the menu still shows where it came from. Parts marked `data-sidebar-dim`.
+ */
+const DIM_WHILE_MENU_OPEN =
+  '[&_[data-sidebar-dim]]:transition-opacity [&_[data-sidebar-dim]]:duration-150 ' +
+  '[&:has([data-slot=dropdown-menu-trigger][data-state=open])_[data-sidebar-dim]:not(:has([data-slot=dropdown-menu-trigger][data-state=open]))]:opacity-40';
 
 export function UserLayout(props: LayoutProps) {
   return (
@@ -50,7 +62,7 @@ function UserLayoutShell(props: LayoutProps) {
     connectedUser,
     mainNavigationGroups,
     workspaces,
-    footerNavigationGroups = [],
+    secondaryNavigationGroups = [],
     cardPlan,
     navUserItems = [],
     backLink,
@@ -67,12 +79,12 @@ function UserLayoutShell(props: LayoutProps) {
     <div>
       <SidebarProvider defaultOpen={readSidebarCookie()}>
         {!sidebarHidden && (
-        <Sidebar collapsible="icon" className="sidebar-height">
+        <Sidebar collapsible="icon" className={`sidebar-height ${DIM_WHILE_MENU_OPEN}`}>
           {/* 52px like the navbar, so the switcher and the pen sit on the
               same line as the sidebar toggle and the breadcrumb. */}
           <SidebarHeader className="min-h-13 justify-center gap-0 p-0 group-data-[collapsible=icon]:px-2">
             {backLink && (
-              <div className={'m-2 group-data-[collapsible=icon]:mx-0'}>
+              <div data-sidebar-dim className={'m-2 group-data-[collapsible=icon]:mx-0'}>
                 <Link to={backLink}>
                   <Button variant={'outline'} size={'icon'} className="group-data-[collapsible=icon]:size-8 size-auto px-2 py-1">
                     <ArrowLeftIcon />
@@ -82,38 +94,34 @@ function UserLayoutShell(props: LayoutProps) {
               </div>
             )}
             <div className="flex h-13 items-center">
-              <div className="flex min-w-0 flex-1 items-center">
+              <div data-sidebar-dim className="flex min-w-0 flex-1 items-center">
                 {workspaces && <TeamSwitcher {...workspaces} />}
               </div>
               {headerAction && (
-                <div className="flex size-13 shrink-0 items-center justify-center group-data-[collapsible=icon]:hidden">
+                <div data-sidebar-dim className="flex size-13 shrink-0 items-center justify-center group-data-[collapsible=icon]:hidden">
                   {headerAction}
                 </div>
               )}
             </div>
           </SidebarHeader>
-          <SidebarContent>
+          <SidebarContent data-sidebar-dim>
             {mainNavigationGroups &&
               mainNavigationGroups.map((navGroup, index) => (
                 <div className='mx-2 group-data-[collapsible=icon]:mx-0'  key={index}>
                   <SidebarNavigation {...navGroup} />
                 </div>
               ))}
+            {secondaryNavigationGroups.map((navGroup, index) => (
+              <div className='mx-2 group-data-[collapsible=icon]:mx-0' key={index}>
+                <SidebarNavigation {...navGroup} />
+              </div>
+            ))}
           </SidebarContent>
           <SidebarFooter className={'p-0'}>
-            {footerNavigationGroups &&
-              footerNavigationGroups.map((navGroup, index) => (
-                <div className='mx-2 group-data-[collapsible=icon]:mx-0'  key={index}>
-                  <SidebarNavigation
-                    sectionName={navGroup.sectionName}
-                    items={navGroup.items}
-                  />
-                </div>
-              ))}
-            <div className={'p-2 pt-0 gap-2 flex flex-col'}>
+            <div data-sidebar-dim className={'p-2 pt-0 gap-2 flex flex-col'}>
               {cardPlan}
               {version && (
-                <span className="text-xs text-muted-foreground text-center group-data-[collapsible=icon]:hidden">
+                <span className="body-sm text-muted-foreground text-center group-data-[collapsible=icon]:hidden">
                   {t('layout.version', {version})}
                 </span>
               )}
@@ -130,7 +138,6 @@ function UserLayoutShell(props: LayoutProps) {
 
             </div>
           </SidebarFooter>
-          <SidebarRail />
         </Sidebar>
         )}
         <SidebarInset>

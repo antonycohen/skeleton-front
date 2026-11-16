@@ -3,6 +3,7 @@ import { CreateProduct } from '@skeleton/core-api-models';
 import {
   Button,
   Dialog,
+  DialogBody,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -36,7 +37,7 @@ export const NewProductModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-xl max-h-[90vh] overflow-y-auto">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>{t('adminPayment.product.new.title')}</DialogTitle>
           <DialogDescription>
@@ -44,28 +45,30 @@ export const NewProductModal = ({
           </DialogDescription>
         </DialogHeader>
         <FormProvider {...form}>
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <ControlledTextInput
-              name="id"
-              label={t('adminPayment.product.id')}
-              placeholder={t('adminPayment.product.idPlaceholder')}
-            />
-            <ControlledTextInput
-              name="name"
-              label={t('adminPayment.product.name')}
-              placeholder={t('adminPayment.product.namePlaceholder')}
-            />
-            <ControlledTextareaInput
-              name="description"
-              label={t('adminPayment.product.description')}
-              placeholder={t('adminPayment.product.descriptionPlaceholder')}
-            />
-            <ControlledSwitchInput
-              name="active"
-              label={t('adminPayment.product.active')}
-              description={t('adminPayment.product.activeDescription')}
-            />
-            <QuotasEditor />
+          <form onSubmit={handleSubmit} className="contents">
+            <DialogBody className="flex flex-col gap-4">
+              <ControlledTextInput
+                name="id"
+                label={t('adminPayment.product.id')}
+                placeholder={t('adminPayment.product.idPlaceholder')}
+              />
+              <ControlledTextInput
+                name="name"
+                label={t('adminPayment.product.name')}
+                placeholder={t('adminPayment.product.namePlaceholder')}
+              />
+              <ControlledTextareaInput
+                name="description"
+                label={t('adminPayment.product.description')}
+                placeholder={t('adminPayment.product.descriptionPlaceholder')}
+              />
+              <ControlledSwitchInput
+                name="active"
+                label={t('adminPayment.product.active')}
+                description={t('adminPayment.product.activeDescription')}
+              />
+              <QuotasEditor />
+            </DialogBody>
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
                 {t('common.cancel')}

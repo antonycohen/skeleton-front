@@ -48,7 +48,7 @@ export function ListAiConversationsPage() {
               onClick={() => createConversation.mutate({ organizationId, data: {} })}
               isLoading={createConversation.isPending}
             >
-              <Plus className="size-4" />
+              <Plus />
               {t('ai.conversation.new')}
             </Button>
           }
@@ -67,7 +67,12 @@ export function ListAiConversationsPage() {
             updatedAt: null,
           }}
           onRowClick={(conversation) => navigate(conversationUrl(conversation))}
-          emptyState={t('ai.conversation.empty')}
+          emptyState={
+            <div className="flex flex-col items-center justify-center py-16">
+              <p className="label text-foreground">{t('ai.conversation.empty')}</p>
+              <p className="body text-muted-foreground">{t('ai.conversation.listEmptyDescription')}</p>
+            </div>
+          }
         />
       </LayoutContent>
 

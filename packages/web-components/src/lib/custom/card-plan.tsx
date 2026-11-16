@@ -6,89 +6,106 @@ import {useTranslation} from '@skeleton/core-translations';
 import {ComponentProps} from "react";
 
 export type UsageStat = {
-  value: string | number;
+  /** The headline (first stat) reads "3 seats"; the other rows read "Projects   3/5". */
   label: string;
-  percent: number;
+  remaining: number;
+  /** The quota's size; unknown or unlimited (null, 0) shows the remaining count alone. */
+  limit?: number | null;
 };
 
 export type CardPlanProps = {
   className?: string;
   variant?: 'free' | 'paid';
+  /** The plan the usage is on ("Free", "Pro"), shown above it as "Free plan". */
+  planName?: string;
   buttonProps?: ComponentProps<typeof Button>;
-  title?: string;
   buttonText?: string;
+  /** The first stat is the headline, with its gauge; the others are rows below it. */
   usageStats?: UsageStat[];
   onAction?: () => void;
   hideAction?: boolean;
 };
 
-function formatStatValue(value: string | number): string {
-  if (typeof value === 'string') return value;
+/** At or under this share left, the headline gauge turns amber. */
+const LOW_REMAINING_SHARE = 0.3;
+
+function formatStatValue(value: number): string {
   if (value >= 1_000_000) return `${Math.round(value / 1_000_000)}M`;
   if (value >= 1_000) return `${Math.round(value / 1_000)}K`;
   return String(value);
 }
 
+/** Share of the quota still available, in whole percents (only called with a known limit). */
+function remainingPercent({remaining, limit}: UsageStat): number {
+  if (!limit) return 0;
+  return Math.max(0, Math.min(100, Math.floor((remaining / limit) * 100)));
+}
+
 export function CardPlan({
   className,
   variant = 'free',
+  planName,
   buttonProps,
-  title,
   buttonText,
   usageStats = [],
   onAction,
   hideAction = false,
 }: CardPlanProps) {
   const {t} = useTranslation();
-  const defaultTitle = variant === 'paid' ? t('components.cardPlan.paidTitle') : t('components.cardPlan.freeTitle');
   const defaultButtonText = variant === 'paid' ? t('components.cardPlan.manage') : t('components.cardPlan.upgrade');
+  const [headline, ...rows] = usageStats;
+  const isLow = !!headline?.limit && headline.remaining / headline.limit <= LOW_REMAINING_SHARE;
 
   return (
     <div
       data-slot="card-plan"
-      className={cn(
-        'relative w-full rounded-2xl p-[3px]',
-        variant === 'free'
-          ? 'bg-[conic-gradient(from_90deg,var(--color-cyan-300),var(--color-indigo-500),var(--color-pink-300),var(--color-primary),var(--color-cyan-300))]'
-          : 'bg-border',
-        className
-      )}
+      className={cn('flex w-full flex-col gap-3 rounded-2xl outline outline-1 outline-offset-[-1px] outline-border-subtle bg-card p-4', className)}
     >
-      <div className="flex flex-col gap-4 rounded-[13px] bg-background p-5">
-        <p className="text-sm font-semibold text-popover-foreground">
-          {title ?? defaultTitle}
-        </p>
-
-        {usageStats.length > 0 && (
-        <div className="flex flex-col gap-3">
-          {usageStats.map((stat, index) => (
-            <div key={index} className="flex flex-col gap-0.5">
-              <div className="flex items-baseline gap-1">
-                <span className="text-base font-semibold text-card-foreground">
-                  {formatStatValue(stat.value)}
-                </span>
-                <span className="text-xs font-medium text-muted-foreground">
-                  {stat.label}
-                </span>
-              </div>
-              <Progress value={stat.percent} className="h-2" />
-            </div>
-          ))}
+      {planName && <span className="label-sm text-muted-foreground">{t('components.cardPlan.planName', { name: planName })}</span>}
+      {headline && (
+        <div className="flex flex-col gap-2">
+          <div className="flex items-baseline justify-between gap-2">
+            <span className="title text-card-foreground">
+              {formatStatValue(headline.remaining)} {headline.label}
+            </span>
+            {!!headline.limit && (
+              <span className="body text-muted-foreground">/{formatStatValue(headline.limit)}</span>
+            )}
+          </div>
+          {!!headline.limit && (
+            <Progress
+              value={remainingPercent(headline)}
+              aria-label={t('components.cardPlan.left', { label: headline.label })}
+              className={cn(
+                'h-1.5',
+                isLow && 'bg-amber-100 dark:bg-amber-500/20 [&>[data-slot=progress-indicator]]:bg-amber-500',
+              )}
+            />
+          )}
         </div>
-        )}
+      )}
 
-        {!hideAction && (
-          <Button
-            variant={variant === 'paid' ? 'outline' : 'default'}
-            className="w-full"
-            onClick={onAction}
-            {...buttonProps}
-          >
-            <Zap className="size-4" />
-            {buttonText ?? defaultButtonText}
-          </Button>
-        )}
-      </div>
+      {rows.map((stat) => (
+        <div key={stat.label} className="flex items-baseline justify-between gap-2 body-sm">
+          <span className="text-muted-foreground">{stat.label}</span>
+          <span className="tabular-nums">
+            <span className="text-card-foreground">{formatStatValue(stat.remaining)}</span>
+            {!!stat.limit && <span className="text-muted-foreground">/{formatStatValue(stat.limit)}</span>}
+          </span>
+        </div>
+      ))}
+
+      {!hideAction && (
+        <Button
+          variant={variant === 'paid' ? 'outline' : 'default'}
+          className="w-full"
+          onClick={onAction}
+          {...buttonProps}
+        >
+          {variant === 'free' && <Zap className="size-4" />}
+          {buttonText ?? defaultButtonText}
+        </Button>
+      )}
     </div>
   );
 }

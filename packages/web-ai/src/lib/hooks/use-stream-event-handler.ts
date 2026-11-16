@@ -65,7 +65,9 @@ export function useStreamEventHandler({
 }: UseStreamEventHandlerOptions): UseStreamEventHandlerReturn {
   // Keep callback in a ref to avoid stale closures
   const onStreamCompleteRef = useRef(onStreamComplete);
-  onStreamCompleteRef.current = onStreamComplete;
+  useEffect(() => {
+    onStreamCompleteRef.current = onStreamComplete;
+  });
 
   // The streaming message ref — single source of truth during streaming
   const messageRef = useRef<ChatMessage | null>(null);

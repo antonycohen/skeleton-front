@@ -3,6 +3,7 @@ import {
   AlertDescription,
   Button,
   Dialog,
+  DialogBody,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -34,22 +35,23 @@ export const RemoveSsoDomainModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent size="sm">
         <DialogHeader>
           <DialogTitle>{t('security.domains.removeTitle', { domain })}</DialogTitle>
-          <DialogDescription>
+        </DialogHeader>
+        <DialogBody className="flex flex-col gap-4">
+          <DialogDescription className="text-foreground">
             {t('security.domains.removeDescription')}
           </DialogDescription>
-        </DialogHeader>
-
-        {isLastVerifiedOfActiveConnection && (
-          <Alert variant="important">
-            <TriangleAlertIcon />
-            <AlertDescription>
-              {t('security.domains.removeLastWarning')}
-            </AlertDescription>
-          </Alert>
-        )}
+          {isLastVerifiedOfActiveConnection && (
+            <Alert variant="warning">
+              <TriangleAlertIcon />
+              <AlertDescription>
+                {t('security.domains.removeLastWarning')}
+              </AlertDescription>
+            </Alert>
+          )}
+        </DialogBody>
 
         <DialogFooter>
           <Button

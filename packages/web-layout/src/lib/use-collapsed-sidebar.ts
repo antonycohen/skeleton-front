@@ -9,7 +9,10 @@ import {useSidebar} from '@skeleton/web-components';
 export function useCollapsedSidebar(enabled = true) {
   const { open, setOpen, isMobile } = useSidebar();
   const openRef = useRef(open);
-  openRef.current = open;
+  // Declared before the effect below, so it runs first in the same commit.
+  useEffect(() => {
+    openRef.current = open;
+  });
 
   useEffect(() => {
     if (!enabled || isMobile) return;

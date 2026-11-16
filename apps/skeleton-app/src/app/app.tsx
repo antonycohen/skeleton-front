@@ -8,10 +8,10 @@ import {SessionProvider} from '@skeleton/core-store-session';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {ReactQueryDevtools} from '@tanstack/react-query-devtools';
 import {RootRoutes} from './routes/root-routes';
-import {Toaster} from 'sonner';
+import {ThemeProvider} from 'next-themes';
 import {PostHogErrorBoundary, PostHogProvider} from '@posthog/react'
 import type {CaptureResult} from 'posthog-js'
-import {Button, ErrorPlaceholder} from "@skeleton/web-components";
+import {Button, ErrorPlaceholder, Toaster} from "@skeleton/web-components";
 import {useStaticAssetsUrl} from "@skeleton/core-utils";
 import {ConfigProvider} from "@skeleton/core-config";
 
@@ -100,26 +100,29 @@ const AnalyticsProvider = ({children}: {children: ReactNode}) => {
 export function App() {
 
   return (
-    <AnalyticsProvider>
-      <PostHogErrorBoundary
-        fallback={YourFallbackComponent}
-      >
-        <QueryClientProvider client={queryClient}>
-          <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left"/>
-          <Toaster offset={{right: '96px', bottom: '16px'}} mobileOffset={{right: '96px', bottom: '16px'}}/>
-          <BrowserRouter>
-            <TranslationProvider>
-              <SessionProvider>
-                <ConfigProvider>
-                  <RootRoutes/>
-                </ConfigProvider>
-              </SessionProvider>
-            </TranslationProvider>
-          </BrowserRouter>
-        </QueryClientProvider>
-      </PostHogErrorBoundary>
-    </AnalyticsProvider>
-
+    // `.dark` on <html> switches the web-themes tokens. By default it follows the computer's
+    // setting, live; the user menu's Appearance submenu overrides it (stored under storageKey).
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange storageKey="skeleton-theme">
+      <AnalyticsProvider>
+        <PostHogErrorBoundary
+          fallback={YourFallbackComponent}
+        >
+          <QueryClientProvider client={queryClient}>
+            <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left"/>
+            <Toaster/>
+            <BrowserRouter>
+              <TranslationProvider>
+                <SessionProvider>
+                  <ConfigProvider>
+                    <RootRoutes/>
+                  </ConfigProvider>
+                </SessionProvider>
+              </TranslationProvider>
+            </BrowserRouter>
+          </QueryClientProvider>
+        </PostHogErrorBoundary>
+      </AnalyticsProvider>
+    </ThemeProvider>
   );
 }
 

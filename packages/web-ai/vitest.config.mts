@@ -2,15 +2,22 @@ import { resolve } from 'node:path';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig(() => ({
-  root: __dirname,
+  root: import.meta.dirname,
   cacheDir: '../../node_modules/.vite/packages/web-ai',
   resolve: {
     // Workspace packages are wired through tsconfig `paths`, which vitest does
     // not read — mirror the relevant entry of tsconfig.base.json here.
     alias: [
       {
+        find: /^@skeleton\/web-components\/markdown$/,
+        replacement: resolve(
+          import.meta.dirname,
+          '../web-components/src/lib/custom/markdown.tsx',
+        ),
+      },
+      {
         find: /^@skeleton\/([^/]+)$/,
-        replacement: resolve(__dirname, '../$1/src/index.ts'),
+        replacement: resolve(import.meta.dirname, '../$1/src/index.ts'),
       },
     ],
   },

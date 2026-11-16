@@ -32,9 +32,9 @@ export const UpdateLocalizationPreferencesSection = ({
   return (
     <FormProvider {...form}>
       <form id="update-localization-preferences-form" onSubmit={handleSubmit}>
-        <Card className="rounded-2xl">
+        <Card>
           <CardHeader>
-            <CardTitle className="font-heading text-xl tracking-[-0.3px]">
+            <CardTitle size="lg">
               {t('account.preferences.display.title')}
             </CardTitle>
           </CardHeader>

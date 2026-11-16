@@ -10,7 +10,7 @@ export function AccountSettingsPage({baseUrl} : {baseUrl: string}) {
   const { t } = useTranslation();
   const tabItems = [
     { title: t('account.tabs.profile'), url: `${baseUrl}/account/profile` },
-    { title: t('account.tabs.connexion'), url: `${baseUrl}/account/connexion` },
+    { title: t('account.tabs.security'), url: `${baseUrl}/account/security` },
     { title: t('account.tabs.preferences'), url: `${baseUrl}/account/preferences` },
   ];
   const connectedUser = useConnectedUser();
@@ -34,12 +34,12 @@ export function AccountSettingsPage({baseUrl} : {baseUrl: string}) {
       <header className="sticky top-0 z-30">
         <LayoutTopbar />
       </header>
-      <LayoutContent className={'gap-8'}>
+      <LayoutContent width="narrow" className={'gap-8'}>
         <LayoutHeader
           pageTitle={displayName}
         />
-        <TabNavLinks items={tabItems} />
-        <div className="flex flex-col h-full  max-w-4xl">
+        <TabNavLinks items={tabItems} fullWidth />
+        <div className="flex flex-col h-full">
           <div className="flex-1">
             <Outlet context={outletContext} />
           </div>

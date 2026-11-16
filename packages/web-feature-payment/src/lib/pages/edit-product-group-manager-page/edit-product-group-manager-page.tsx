@@ -46,7 +46,7 @@ export function ProductGroupEditManagerPage() {
       </header>
       <LayoutContent>
         <LayoutHeader pageTitle={displayName} />
-        <TabNavLinks items={getTabItems(t, productGroupId)} />
+        <TabNavLinks items={getTabItems(t, productGroupId)} fullWidth />
         <div className="flex flex-col h-full max-w-4xl">
           <div className="flex-1">
             <Outlet />

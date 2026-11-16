@@ -40,7 +40,7 @@ export function SsoSamlConnectionForm({
             <SsoSamlFields />
 
             {rootError && (
-              <p className="text-sm text-destructive">{rootError}</p>
+              <p className="body text-destructive">{rootError}</p>
             )}
 
             <div className="flex justify-end">

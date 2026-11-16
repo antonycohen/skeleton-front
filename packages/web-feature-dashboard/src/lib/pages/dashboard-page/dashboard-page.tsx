@@ -2,7 +2,7 @@ import {useCurrentWorkspaceUrlPrefix, useGetCurrentWorkspaceId} from '@skeleton/
 import {useCancelOrganizationDeletion, useGetOrganizationById} from '@skeleton/core-api';
 import {MetricCard} from '@skeleton/web-components';
 import {toast} from 'sonner';
-import {LayoutTopbar, useBreadcrumb} from '@skeleton/web-layout';
+import {LayoutContent, LayoutTopbar, useBreadcrumb} from '@skeleton/web-layout';
 import {useConnectedUser} from '@skeleton/core-store-session';
 import {DashboardHeader} from './components/dashboard-header';
 import {DeletionAlert} from './components/deletion-alert';
@@ -47,7 +47,7 @@ export function DashboardPage() {
         <LayoutTopbar breadcrumbs={breadcrumbs} />
       </header>
       <div>
-        <div className="flex flex-col gap-12 px-8 pt-8 pb-12 max-w-7xl mx-auto">
+        <LayoutContent>
           <DashboardHeader />
 
           {organization?.deleteAt && (
@@ -58,19 +58,21 @@ export function DashboardPage() {
             />
           )}
 
-          <WelcomeBanner
-            firstName={connectedUser?.firstName}
-            workspaceBaseUrl={workspaceBaseUrl}
-          />
-
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            <MetricCard
-              headerText={t('dashboard.members')}
-              statisticText={String(statistics?.activeMembersCount ?? 0)}
-              variant={(statistics?.activeMembersCount ?? 0) === 0 ? 'empty' : 'default'}
+          <div className="flex flex-col gap-4">
+            <WelcomeBanner
+              firstName={connectedUser?.firstName}
+              workspaceBaseUrl={workspaceBaseUrl}
             />
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <MetricCard
+                headerText={t('dashboard.members')}
+                statisticText={String(statistics?.activeMembersCount ?? 0)}
+                variant={(statistics?.activeMembersCount ?? 0) === 0 ? 'empty' : 'default'}
+              />
+            </div>
           </div>
-        </div>
+        </LayoutContent>
       </div>
     </div>
   );

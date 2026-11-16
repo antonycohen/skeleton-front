@@ -85,7 +85,7 @@ export function ControlledAssociativeTokenInput<T extends FieldValues>(
 
   return (
     <Field data-invalid={fieldState.invalid} orientation={direction} className={className}>
-      <FieldLabel htmlFor={id} className={direction === 'horizontal' ? 'font-semibold basis-1/2' : ''}>
+      <FieldLabel htmlFor={id} className={direction === 'horizontal' ? 'basis-1/2' : ''}>
         {label}
       </FieldLabel>
       <div className={direction === 'horizontal' ? 'basis-1/2' : ''}>
@@ -96,7 +96,7 @@ export function ControlledAssociativeTokenInput<T extends FieldValues>(
               <Badge
                 key={key}
                 variant="secondary"
-                className="gap-1 pr-1 text-sm"
+                className="gap-1 pr-1 label"
               >
                 <span className="font-medium">{key}:</span>
                 <span>{value}</span>
@@ -117,7 +117,7 @@ export function ControlledAssociativeTokenInput<T extends FieldValues>(
       {/* Add new token */}
       <div className="flex gap-2 items-end">
         <div className="flex-1">
-          <label className="text-xs text-muted-foreground mb-1 block">
+          <label className="body-sm text-muted-foreground mb-1 block">
             {keyLabel ?? t('form.associativeToken.key')}
           </label>
           <Input
@@ -129,7 +129,7 @@ export function ControlledAssociativeTokenInput<T extends FieldValues>(
           />
         </div>
         <div className="flex-1">
-          <label className="text-xs text-muted-foreground mb-1 block">
+          <label className="body-sm text-muted-foreground mb-1 block">
             {valueLabel ?? t('form.associativeToken.value')}
           </label>
           <Input

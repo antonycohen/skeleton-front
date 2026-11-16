@@ -61,6 +61,8 @@ export const QuotasEditor = () => {
   // Re-sync when the form's quotas change externally (e.g. async values: reset).
   useEffect(() => {
     const current = getValues('quotas') as Record<string, number> | undefined;
+    // Reads the form (an external store here) once mounted, which rendering cannot.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setEntries(buildEntries(current));
     // We intentionally re-derive on every mount of a freshly-keyed editor.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -101,7 +103,7 @@ export const QuotasEditor = () => {
       <FieldLabel id={labelId}>{t('adminPayment.quotas.label')}</FieldLabel>
       <div className="flex flex-col gap-2" aria-labelledby={labelId}>
         {entries.length === 0 ? (
-          <p className="text-sm text-muted-foreground">{t('adminPayment.quotas.empty')}</p>
+          <p className="body text-muted-foreground">{t('adminPayment.quotas.empty')}</p>
         ) : (
           entries.map((entry) => {
             const usedKeys = new Set(

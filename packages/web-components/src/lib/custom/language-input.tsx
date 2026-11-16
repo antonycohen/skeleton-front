@@ -68,7 +68,7 @@ export function LanguageInput({
           onBlur={onBlur}
           disabled={disabled}
           className={cn(
-            "justify-between font-normal",
+            "justify-between body",
             !value && "text-muted-foreground",
             className
           )}

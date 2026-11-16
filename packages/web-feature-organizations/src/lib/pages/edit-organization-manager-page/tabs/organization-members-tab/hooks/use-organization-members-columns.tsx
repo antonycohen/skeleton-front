@@ -1,4 +1,3 @@
-import { ColumnDef } from '@tanstack/react-table';
 import { OrganizationMember } from '@skeleton/core-api-models';
 import {
   Avatar,
@@ -11,6 +10,7 @@ import {
 import {
   CollectionColumnHeader,
   CollectionRowActions,
+  type CollectionColumnDef,
 } from '@skeleton/web-collection';
 import { Link } from 'react-router-dom';
 import { IconEye, IconShieldCheck, IconShieldOff } from '@tabler/icons-react';
@@ -34,7 +34,7 @@ const getFullName = (member: OrganizationMember) => {
   return name || member.email || '-';
 };
 
-export function useOrganizationMembersColumns(): ColumnDef<OrganizationMember>[] {
+export function useOrganizationMembersColumns(): CollectionColumnDef<OrganizationMember>[] {
   const { t } = useTranslation();
   return [
     {
@@ -59,16 +59,16 @@ export function useOrganizationMembersColumns(): ColumnDef<OrganizationMember>[]
               {userId ? (
                 <Button variant="link" className="h-auto justify-start p-0" asChild>
                   <Link to={`/users/${userId}`}>
-                    <LongText className="max-w-48 font-semibold">
+                    <LongText className="max-w-48 body">
                       {fullName}
                     </LongText>
                   </Link>
                 </Button>
               ) : (
-                <LongText className="max-w-48 font-semibold">{fullName}</LongText>
+                <LongText className="max-w-48 body">{fullName}</LongText>
               )}
               {member.email ? (
-                <span className="text-xs text-muted-foreground truncate">
+                <span className="body-sm text-muted-foreground truncate">
                   {member.email}
                 </span>
               ) : null}

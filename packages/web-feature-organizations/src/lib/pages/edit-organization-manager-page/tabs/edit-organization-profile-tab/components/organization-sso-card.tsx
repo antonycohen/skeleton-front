@@ -1,7 +1,6 @@
 import { ReactNode, useState } from 'react';
 import { useGetSsoConnection, useGetSsoDomains } from '@skeleton/core-api';
 import { ReadSsoDomain, SsoConnectionStatus } from '@skeleton/core-api-models';
-import { cn } from '@skeleton/core-utils';
 import {
   Badge,
   BadgeStatus,
@@ -43,10 +42,11 @@ const protocolLabels: Record<string, string> = {
 const formatDay = (value: string | null | undefined) =>
   value ? format(new Date(value), 'dd/MM/yyyy') : null;
 
+/** One line of a read-only state block: a label, and its value on the right. */
 const Row = ({ label, children }: { label: string; children: ReactNode }) => (
   <div className="flex items-start justify-between gap-4 border-t py-3 first:border-t-0">
-    <span className="text-sm font-medium">{label}</span>
-    <div className="text-right text-sm text-muted-foreground">{children}</div>
+    <span className="label">{label}</span>
+    <div className="text-right body text-muted-foreground">{children}</div>
   </div>
 );
 
@@ -111,7 +111,7 @@ const OrganizationSsoState = ({ organizationId }: { organizationId: string }) =>
   // means the workspace described no provider yet — it is entitled, or this block would not render.
   if (connectionError) {
     return (
-      <p className="border-t pt-4 text-sm text-muted-foreground">
+      <p className="border-t pt-4 body text-muted-foreground">
         {connectionError.httpCode === 403
           ? t('adminOrganizations.sso.state.forbidden')
           : connectionError.httpCode === 404
@@ -261,11 +261,9 @@ export const OrganizationSsoCard = ({
 
   return (
     <>
-      <Card className={cn('rounded-2xl', className)}>
+      <Card className={className}>
         <CardHeader>
-          <CardTitle className="text-xl">
-            {t('adminOrganizations.sso.title')}
-          </CardTitle>
+          <CardTitle>{t('adminOrganizations.sso.title')}</CardTitle>
           <CardDescription>
             {t('adminOrganizations.sso.description')}
           </CardDescription>
@@ -275,11 +273,11 @@ export const OrganizationSsoCard = ({
             <div className="flex flex-col gap-1">
               <Label
                 htmlFor="organization-sso-available"
-                className="text-sm font-medium"
+                className="label"
               >
                 {t('adminOrganizations.sso.availableLabel')}
               </Label>
-              <span className="text-sm text-muted-foreground">
+              <span className="body text-muted-foreground">
                 {t('adminOrganizations.sso.availableHint')}
               </span>
             </div>

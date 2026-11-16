@@ -212,18 +212,19 @@ See the `translations` rule (`.claude/rules/translations.md`).
 
 ### Technology Stack
 
-- React 19 with TypeScript (strict mode)
+- React 19 with TypeScript 6 (strict mode)
 - React Router v7 for routing
-- Vite 7 for building and dev server
+- Vite 8 for building and dev server
 - Tailwind CSS v4 with `@tailwindcss/vite` plugin
 - TanStack Query v5 for server state
+- TanStack Table 9 for data tables (via `web-collection`)
 - Zustand v5 for client state
 - Zod 4 for schemas and validation
 - react-intl for internationalization
 - Radix UI primitives for accessible components
-- Vitest for testing
+- Vitest 5 for testing
 - ESLint with TypeScript rules
-- Nx 22 for monorepo orchestration
+- Nx 24 for monorepo orchestration
 
 ### Tailwind Integration
 

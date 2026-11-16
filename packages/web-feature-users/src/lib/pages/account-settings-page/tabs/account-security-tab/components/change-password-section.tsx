@@ -18,9 +18,9 @@ export const ChangePasswordSection = ({user}: ChangePasswordSectionProps) => {
   return (
     <form id="change-password-form" onSubmit={handleSubmit} className="flex flex-col">
       <FormProvider {...form}>
-        <Card className="rounded-2xl">
+        <Card>
           <CardHeader>
-            <CardTitle className="text-xl">{t('account.password.title')}</CardTitle>
+            <CardTitle size="lg">{t('account.password.title')}</CardTitle>
             <CardDescription>
               {t('account.password.description')}
             </CardDescription>

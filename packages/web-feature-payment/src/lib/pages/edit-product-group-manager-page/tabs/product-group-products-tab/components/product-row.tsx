@@ -61,8 +61,8 @@ export const ProductRow = ({
         <IconGripVertical className="size-4" />
       </button>
       <div className="flex flex-col min-w-0 flex-1 gap-1">
-        <span className="font-medium truncate">{product.name ?? '-'}</span>
-        <div className="flex items-center gap-2 text-xs text-muted-foreground min-w-0">
+        <span className="label-lg truncate">{product.name ?? '-'}</span>
+        <div className="flex items-center gap-2 body-sm text-muted-foreground min-w-0">
           {product.id ? (
             <code className="rounded bg-muted px-1.5 py-0.5 font-mono truncate">
               {product.id}

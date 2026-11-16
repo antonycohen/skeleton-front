@@ -2,8 +2,9 @@ import {
   ColumnFiltersState,
   OnChangeFn,
   PaginationState,
+  RowSelectionState,
   SortingState,
-  VisibilityState,
+  ColumnVisibilityState,
 } from '@tanstack/react-table';
 import { useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
@@ -11,11 +12,21 @@ import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 interface UseCollectionStateProps {
   useLocationAsState?: boolean;
   defaultSorting?: SortingState;
+  defaultColumnVisibility?: ColumnVisibilityState;
+  /** Rows per page until the user picks another size (10 when unset). */
+  defaultPageSize?: number;
+  /** The sizes the user can pick: a `pageSize` from the address bar that is not one of them is ignored. */
+  pageSizeOptions?: number[];
 }
+
+export const DEFAULT_PAGE_SIZE_OPTIONS = [10, 20, 30, 40, 50];
 
 export function useCollectionState({
   useLocationAsState = false,
   defaultSorting,
+  defaultColumnVisibility,
+  defaultPageSize = 10,
+  pageSizeOptions = DEFAULT_PAGE_SIZE_OPTIONS,
 }: UseCollectionStateProps = {}) {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -24,13 +35,13 @@ export function useCollectionState({
   const [globalFilter, setGlobalFilterState] = useState(() =>
     useLocationAsState ? searchParams.get('search') || '' : '',
   );
-  const [rowSelection, setRowSelection] = useState({});
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
+  const [columnVisibility, setColumnVisibility] = useState<ColumnVisibilityState>(
     () => {
-      if (!useLocationAsState) return {};
+      if (!useLocationAsState) return defaultColumnVisibility ?? {};
       const visibility = searchParams.get('visibility');
-      return visibility ? JSON.parse(visibility) : {};
+      return visibility ? JSON.parse(visibility) : defaultColumnVisibility ?? {};
     },
   );
 
@@ -50,10 +61,11 @@ export function useCollectionState({
   });
 
   const [pagination, setPagination] = useState<PaginationState>(() => {
-    if (!useLocationAsState) return { pageIndex: 0, pageSize: 10 };
+    if (!useLocationAsState) return { pageIndex: 0, pageSize: defaultPageSize };
+    const fromAddress = Number(searchParams.get('pageSize'));
     return {
       pageIndex: Number(searchParams.get('page')) || 0,
-      pageSize: Number(searchParams.get('pageSize')) || 10,
+      pageSize: pageSizeOptions.includes(fromAddress) ? fromAddress : defaultPageSize,
     };
   });
 
@@ -93,7 +105,7 @@ export function useCollectionState({
     if (globalFilter) params.set('search', globalFilter);
     if (pagination.pageIndex > 0)
       params.set('page', String(pagination.pageIndex));
-    if (pagination.pageSize !== 10)
+    if (pagination.pageSize !== defaultPageSize)
       params.set('pageSize', String(pagination.pageSize));
     if (columnFilters.length > 0)
       params.set('filters', JSON.stringify(columnFilters));

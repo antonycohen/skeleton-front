@@ -1,13 +1,14 @@
 /// <reference types='vitest' />
 import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
+import { nxReadySignal } from '@nx/vite/plugins/nx-ready-signal.plugin';
 
 export default defineConfig(() => ({
   root: import.meta.dirname,
   cacheDir: '../../node_modules/.vite/packages/web-components',
-  plugins: [],
-  // No tsconfig.spec.json here: tell esbuild the JSX runtime a component spec needs.
-  esbuild: { jsx: 'automatic' },
+  plugins: [nxReadySignal()],
+  // No tsconfig.spec.json here: tell the transformer the JSX runtime a component spec needs.
+  oxc: { jsx: { runtime: 'automatic' } },
   resolve: {
     // Workspace packages are wired through tsconfig `paths`, which vitest does
     // not read — mirror the entry of tsconfig.base.json here so a component

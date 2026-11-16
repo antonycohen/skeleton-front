@@ -1,14 +1,15 @@
 import {
   Button,
   Dialog,
+  DialogBody,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@skeleton/web-components';
 import { AiConversation } from '@skeleton/core-api-models';
 import { useDeleteAiConversation } from '@skeleton/core-api';
-import { IconAlertTriangle } from '@tabler/icons-react';
 import { toast } from 'sonner';
 import { Trash } from 'lucide-react';
 import { useTranslation } from '@skeleton/core-translations';
@@ -47,33 +48,25 @@ export const DeleteAiConversationModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent size="sm">
         <DialogHeader>
           <DialogTitle>{t('ai.conversation.deleteTitle')}</DialogTitle>
         </DialogHeader>
 
-        <div className="flex gap-3 items-start rounded-lg border border-rose-200 bg-rose-50 px-4 py-3">
-          <div className="pt-0.5">
-            <IconAlertTriangle className="size-4 text-destructive" />
-          </div>
-          <div className="flex flex-col gap-1 flex-1 text-destructive">
-            <p className="text-sm font-medium">
+        <DialogBody className="flex flex-col gap-4">
+          <DialogDescription className="text-foreground">
+            <span className="font-semibold">
               {t('ai.conversation.deleteName', {
                 title: conversation.title ?? t('ai.conversation.untitled'),
               })}
-            </p>
-            <p className="text-sm">
-              {t('ai.conversation.deleteWarning')}
-            </p>
-          </div>
-        </div>
+            </span>
+            <br />
+            {t('ai.conversation.deleteWarning')}
+          </DialogDescription>
+        </DialogBody>
 
-        <DialogFooter>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => onOpenChange(false)}
-          >
+        <DialogFooter className="sm:justify-between">
+          <Button type="button" variant="ghost" onClick={() => onOpenChange(false)}>
             {t('common.cancel')}
           </Button>
           <Button
@@ -82,7 +75,7 @@ export const DeleteAiConversationModal = ({
             onClick={handleDelete}
             isLoading={deleteAiConversation.isPending}
           >
-            <Trash className="size-4" />
+            <Trash />
             {t('common.delete')}
           </Button>
         </DialogFooter>

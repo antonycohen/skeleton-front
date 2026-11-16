@@ -1,6 +1,6 @@
 {
   "account.tabs.profile": "Profile",
-  "account.tabs.connexion": "Sign-in & security",
+  "account.tabs.security": "Security",
   "account.tabs.preferences": "Preferences",
   "account.userNotFound": "User not found",
   "account.myAccount": "My account",

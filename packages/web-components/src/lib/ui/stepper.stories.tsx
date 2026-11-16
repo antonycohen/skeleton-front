@@ -45,6 +45,7 @@ const meta = {
   args: { defaultValue: 2, indicators: INDICATORS, onValueChange: fn() },
   argTypes: {
     orientation: { control: 'inline-radio', options: ['horizontal', 'vertical'] },
+    layout: { control: 'inline-radio', options: ['stretch', 'compact'] },
   },
   render: (args, { parameters }) => (
     <Stepper {...args} className="max-w-2xl flex-col gap-8">
@@ -79,6 +80,9 @@ export const Default: Story = {};
 export const FirstStep: Story = { args: { defaultValue: 1 } };
 
 export const LastStep: Story = { args: { defaultValue: 4 } };
+
+/** Steps sized to their content, 32px separators between them. */
+export const Compact: Story = { args: { layout: 'compact' } };
 
 /** The active step shows a spinner. */
 export const Loading: Story = { parameters: { loading: true } };

@@ -10,17 +10,17 @@ Out of the box it provides:
 
 ## Stack
 
-- React 19 + TypeScript (strict), React Router v7
-- Vite 7, Tailwind CSS v4, Radix UI / shadcn/ui
-- TanStack Query v5 (server state), Zustand v5 (client state)
+- React 19 + TypeScript 6 (strict), React Router v7
+- Vite 8, Tailwind CSS v4, Radix UI / shadcn/ui
+- TanStack Query v5 (server state), Zustand v5 (client state), TanStack Table 9
 - Zod 4, react-hook-form, react-intl
-- Vitest, ESLint
-- Nx 22, pnpm
+- Vitest 5, ESLint
+- Nx 24, pnpm
 
 ## Requirements
 
-- **Node.js** >= 20
-- **pnpm** >= 9
+- **Node.js** 24 (see `.nvmrc`; Vitest 5 and jsdom 30 need >= 22.22.2 or >= 24.15.0)
+- **pnpm** 10
 
 ```sh
 npm install -g pnpm
@@ -41,18 +41,18 @@ cp apps/skeleton-app/.env.example apps/skeleton-app/.env
 cp apps/skeleton-bo-app/.env.example apps/skeleton-bo-app/.env
 ```
 
-| Variable | Purpose |
-|----------|---------|
-| `VITE_API_URL` | Backend base URL (API and OAuth2 server), e.g. `http://localhost:8080` |
-| `VITE_OAUTH_CLIENT_ID` | OAuth2 public client id — one per app (`oidc-client-public`, `oidc-client-backoffice`) |
-| `VITE_AUTH_COOKIE_NAME` | Cookie holding the tokens (`skeleton-auth-store`, `skeleton-auth-store-bo`) |
-| `VITE_STATIC_ASSETS_URL` | Static assets base (`/static`, served from each app's `public/static`) |
-| `VITE_PUBLIC_POSTHOG_KEY` / `VITE_PUBLIC_POSTHOG_HOST` | PostHog analytics (optional; empty key disables it) |
-| `VITE_SALES_URL` | "Talk to sales" link (paywall, enterprise features) |
-| `VITE_SUPPORT_EMAIL` | Support contact |
-| `VITE_DOCUMENTATION_URL` | Documentation link |
-| `VITE_PAYWALL_PRODUCT_GROUP_ID` | Product group whose plans the paywall offers |
-| `VITE_ALLOW_INSECURE_URLS` | Dev server only: accept `http://` where `https://` is required (e.g. a local SSO provider) |
+| Variable                                               | Purpose                                                                                    |
+| ------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| `VITE_API_URL`                                         | Backend base URL (API and OAuth2 server), e.g. `http://localhost:8080`                     |
+| `VITE_OAUTH_CLIENT_ID`                                 | OAuth2 public client id — one per app (`oidc-client-public`, `oidc-client-backoffice`)     |
+| `VITE_AUTH_COOKIE_NAME`                                | Cookie holding the tokens (`skeleton-auth-store`, `skeleton-auth-store-bo`)                |
+| `VITE_STATIC_ASSETS_URL`                               | Static assets base (`/static`, served from each app's `public/static`)                     |
+| `VITE_PUBLIC_POSTHOG_KEY` / `VITE_PUBLIC_POSTHOG_HOST` | PostHog analytics (optional; empty key disables it)                                        |
+| `VITE_SALES_URL`                                       | "Talk to sales" link (paywall, enterprise features)                                        |
+| `VITE_SUPPORT_EMAIL`                                   | Support contact                                                                            |
+| `VITE_DOCUMENTATION_URL`                               | Documentation link                                                                         |
+| `VITE_PAYWALL_PRODUCT_GROUP_ID`                        | Product group whose plans the paywall offers                                               |
+| `VITE_ALLOW_INSECURE_URLS`                             | Dev server only: accept `http://` where `https://` is required (e.g. a local SSO provider) |
 
 3. Start the apps (with the backend running):
 
@@ -121,17 +121,17 @@ return <Button>{t('common.save')}</Button>;
 
 When starting a product from this skeleton, search and replace these identifiers across the repository (excluding `node_modules`, `dist`, `pnpm-lock.yaml` — reinstall afterwards):
 
-| Identifier | Where |
-|------------|-------|
-| `@skeleton/` (package scope) | every `package.json`, `tsconfig.base.json` paths, imports, `nx` commands, docs |
-| `@skeleton/source` | root `package.json` name |
-| `skeleton-app`, `skeleton-bo-app` | `apps/` folder names, project names, docs |
-| `skeletonApi` / `SkeletonApi` | `packages/core-api/src/lib/api.ts` and every query hook |
-| `X-Skeleton-OrganizationId` | request header (`core-api` api-client) — must match the backend |
-| `skeleton-auth-store`, `skeleton-auth-store-bo` | auth cookie names (`.env*`, `core-store-oauth`) |
-| `skeleton-job-store` | background jobs storage key (`web-layout`) |
-| `skeleton-locale` | locale storage key (`core-translations`) |
-| `Skeleton` | page titles, `index.html`, manifest, logos in `apps/*/public` |
+| Identifier                                      | Where                                                                          |
+| ----------------------------------------------- | ------------------------------------------------------------------------------ |
+| `@skeleton/` (package scope)                    | every `package.json`, `tsconfig.base.json` paths, imports, `nx` commands, docs |
+| `@skeleton/source`                              | root `package.json` name                                                       |
+| `skeleton-app`, `skeleton-bo-app`               | `apps/` folder names, project names, docs                                      |
+| `skeletonApi` / `SkeletonApi`                   | `packages/core-api/src/lib/api.ts` and every query hook                        |
+| `X-Skeleton-OrganizationId`                     | request header (`core-api` api-client) — must match the backend                |
+| `skeleton-auth-store`, `skeleton-auth-store-bo` | auth cookie names (`.env*`, `core-store-oauth`)                                |
+| `skeleton-job-store`                            | background jobs storage key (`web-layout`)                                     |
+| `skeleton-locale`                               | locale storage key (`core-translations`)                                       |
+| `Skeleton`                                      | page titles, `index.html`, manifest, logos in `apps/*/public`                  |
 
 Then run `pnpm install`, `npx nx reset`, `npx nx sync` and `npx nx run-many -t lint,test,typecheck`.
 
@@ -164,28 +164,28 @@ The frontend expects a backend that provides the following.
 }
 ```
 
-  `error` (or `message`) becomes the displayed message, `error_code` (or `code`) is an application code, and `parameters_errors` maps field names to messages that `handleApiError` puts on the matching form fields.
+`error` (or `message`) becomes the displayed message, `error_code` (or `code`) is an application code, and `parameters_errors` maps field names to messages that `handleApiError` puts on the matching form fields.
 
 ### Endpoint families
 
 All under `/api/v1`:
 
-| Base path | Used for |
-|-----------|----------|
-| `/users`, `/users/{id}` | users; `/organizations`, `/change-email-request`, `/change-password-request`, `/mfa` (`/totp`, `/totp/activate`, `/disable`, `/recovery-codes`, `/reset`) |
-| `/organizations`, `/organizations/{id}` | workspaces; `/cancel-deletion`, `/mfa-requirement`, `/sso-availability` |
-| `/organizations/{id}/members` | members, `/{memberId}/suspension` |
-| `/organizations/{id}/service-accounts` | service accounts, `/permission-catalog`, `/{id}/enable`, `/disable`, `/rotate-secret` |
-| `/organizations/{id}/sso-connection` | SSO connection, `/certificates`, `/enablement`, `/enforcement`, `/metadata-import`, `/test` |
-| `/organizations/{id}/sso-domains` | SSO verified domains, `/{domainId}/verification` |
-| `/organizations/{id}/ai-conversations` | AI conversations; `/{id}/messages` (GET newest-first, POST streams Anthropic-format SSE events) |
-| `/admin/organizations/{id}/quota-credits` | back office quota adjustments |
-| `/quotas`, `/quota-transactions` | quotas and their transactions |
-| `/product-groups`, `/products`, `/prices` | catalog (back office); `/product-groups/{id}/reposition-products`; public `/public/product-groups/{id}` |
-| `/subscriptions`, `/subscriptions/checkout-session` | subscriptions and checkout |
-| `/customers` | billing customers |
-| `/customer-portal/sessions` | billing portal sessions (`/payment-method-update`, `/subscription-update`, `/subscription-cancel`) |
-| `/jobs` | background jobs (polled by the job alerts widget) |
-| `/app-configuration` | feature flags (`features_configurations`) |
+| Base path                                           | Used for                                                                                                                                                  |
+| --------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/users`, `/users/{id}`                             | users; `/organizations`, `/change-email-request`, `/change-password-request`, `/mfa` (`/totp`, `/totp/activate`, `/disable`, `/recovery-codes`, `/reset`) |
+| `/organizations`, `/organizations/{id}`             | workspaces; `/cancel-deletion`, `/mfa-requirement`, `/sso-availability`                                                                                   |
+| `/organizations/{id}/members`                       | members, `/{memberId}/suspension`                                                                                                                         |
+| `/organizations/{id}/service-accounts`              | service accounts, `/permission-catalog`, `/{id}/enable`, `/disable`, `/rotate-secret`                                                                     |
+| `/organizations/{id}/sso-connection`                | SSO connection, `/certificates`, `/enablement`, `/enforcement`, `/metadata-import`, `/test`                                                               |
+| `/organizations/{id}/sso-domains`                   | SSO verified domains, `/{domainId}/verification`                                                                                                          |
+| `/organizations/{id}/ai-conversations`              | AI conversations; `/{id}/messages` (GET newest-first, POST streams Anthropic-format SSE events)                                                           |
+| `/admin/organizations/{id}/quota-credits`           | back office quota adjustments                                                                                                                             |
+| `/quotas`, `/quota-transactions`                    | quotas and their transactions                                                                                                                             |
+| `/product-groups`, `/products`, `/prices`           | catalog (back office); `/product-groups/{id}/reposition-products`; public `/public/product-groups/{id}`                                                   |
+| `/subscriptions`, `/subscriptions/checkout-session` | subscriptions and checkout                                                                                                                                |
+| `/customers`                                        | billing customers                                                                                                                                         |
+| `/customer-portal/sessions`                         | billing portal sessions (`/payment-method-update`, `/subscription-update`, `/subscription-cancel`)                                                        |
+| `/jobs`                                             | background jobs (polled by the job alerts widget)                                                                                                         |
+| `/app-configuration`                                | feature flags (`features_configurations`)                                                                                                                 |
 
 The exact calls are in `packages/core-api/src/lib/endpoints/*.ts`.

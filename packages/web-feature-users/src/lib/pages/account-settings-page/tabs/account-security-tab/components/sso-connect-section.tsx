@@ -25,9 +25,9 @@ export const SsoConnectSection = ({user}: {user: ReadUser}) => {
 
   return <div className="flex gap-8 hidden">
     {/* Main content */}
-    <Card className="flex-1 rounded-2xl basis-1/2">
+    <Card className="flex-1 basis-1/2">
       <CardHeader className="border-b">
-        <CardTitle className="text-xl">{t('account.sso.title')}</CardTitle>
+        <CardTitle size="lg">{t('account.sso.title')}</CardTitle>
         <CardDescription>
           {t('account.sso.description')}
         </CardDescription>
@@ -64,7 +64,7 @@ export const SsoConnectSection = ({user}: {user: ReadUser}) => {
     <div className="w-80 shrink-0 basis-1/2">
       <div className="self-stretch px-4 py-3 bg-card rounded-[10px] border inline-flex justify-start items-center gap-3">
         <InfoIcon className="size-5 shrink-0 text-muted-foreground" />
-        <p className="text-sm text-muted-foreground">
+        <p className="body text-muted-foreground">
           {t('account.sso.info')}
         </p>
       </div>

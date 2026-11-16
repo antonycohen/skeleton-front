@@ -24,6 +24,7 @@ import { useGetUserById } from '@skeleton/core-api';
 import type { ReadUser } from '@skeleton/core-api-models';
 import { useTranslation } from '@skeleton/core-translations';
 import { UserStatusBadge } from '../shared';
+import { UserWorkspacesSection } from './components/user-workspaces-section';
 import { ResetUserMfaModal } from './modals/reset-user-mfa-modal';
 
 function getFullName(user: Pick<ReadUser, 'firstName' | 'lastName'>): string | null {
@@ -49,10 +50,10 @@ function formatDate(value: string | null | undefined): string {
 function DetailRow({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="flex flex-col gap-1 py-2">
-      <span className="text-muted-foreground text-xs font-medium uppercase tracking-wide">
+      <span className="text-muted-foreground label-sm">
         {label}
       </span>
-      <span className="text-sm text-foreground break-words">{value}</span>
+      <span className="body text-foreground break-words">{value}</span>
     </div>
   );
 }
@@ -166,21 +167,21 @@ export function UserDetailManagerPage() {
             {profileImageUrl && (
               <AvatarImage src={profileImageUrl} alt={fullName ?? user.email ?? ''} />
             )}
-            <AvatarFallback className="text-lg font-semibold">
+            <AvatarFallback className="title-lg">
               {getInitials(user)}
             </AvatarFallback>
           </Avatar>
           <div className="flex flex-col gap-1">
             <div className="flex items-center gap-3">
-              <h1 className="font-heading text-foreground text-3xl font-semibold leading-9">
+              <h1 className="text-foreground heading-lg">
                 {fullName ?? user.email ?? t('adminUsers.detail.fallbackName')}
               </h1>
               {user.status && <UserStatusBadge status={user.status} />}
             </div>
             {user.email && (
-              <span className="text-muted-foreground text-sm">{user.email}</span>
+              <span className="text-muted-foreground body">{user.email}</span>
             )}
-            <span className="text-muted-foreground text-xs">
+            <span className="text-muted-foreground body-sm">
               {t('adminUsers.detail.createdUpdated', {
                 created: formatDate(user.createdAt),
                 updated: formatDate(user.updatedAt),
@@ -207,6 +208,8 @@ export function UserDetailManagerPage() {
             </div>
           </CardContent>
         </Card>
+
+        <UserWorkspacesSection userId={userId} />
 
         <Card>
           <CardHeader>

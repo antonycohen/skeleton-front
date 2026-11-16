@@ -138,7 +138,7 @@ function SidebarProvider({
 
   return (
     <SidebarContext.Provider value={contextValue}>
-      <TooltipProvider delayDuration={0}>
+      <TooltipProvider>
         <div
           data-slot="sidebar-wrapper"
           style={
@@ -323,8 +323,9 @@ function SidebarInset({ className, ...props }: React.ComponentProps<"main">) {
     <main
       data-slot="sidebar-inset"
       className={cn(
-        // Keeps the content under the job alert bar, like the sidebar container.
-        "bg-background relative flex w-full flex-1 flex-col pt-[var(--job-alert-height,0px)]",
+        // Keeps the content under the job alert bar, like the sidebar container. Clips what runs
+        // past its sides (a page's full-width tab rule) without becoming a scroll container.
+        "bg-background relative flex w-full flex-1 flex-col overflow-x-clip pt-[var(--job-alert-height,0px)]",
         "md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow-sm md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2",
         className
       )}
@@ -383,15 +384,54 @@ function SidebarSeparator({
   )
 }
 
-function SidebarContent({ className, ...props }: React.ComponentProps<"div">) {
+// The nav's content fading out at an edge where more of it is scrolled away or cut off, as a
+// scrollable dialog marks its edges: a mask, so it fades into whatever the sidebar's background is.
+const SIDEBAR_CONTENT_FADE = "32px"
+
+function SidebarContent({ className, style, ref, ...props }: React.ComponentProps<"div">) {
+  const element = React.useRef<HTMLDivElement | null>(null)
+  const [edges, setEdges] = React.useState({ above: false, below: false })
+  React.useLayoutEffect(() => {
+    const node = element.current
+    if (!node) return
+    const update = () =>
+      setEdges({
+        above: node.scrollTop > 0,
+        below: node.scrollTop + node.clientHeight < node.scrollHeight - 1,
+      })
+    update()
+    node.addEventListener("scroll", update, { passive: true })
+    // The sidebar's height, or its groups opening and closing, change what overflows.
+    const observer = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(update)
+    observer?.observe(node)
+    Array.from(node.children).forEach((child) => observer?.observe(child))
+    return () => {
+      node.removeEventListener("scroll", update)
+      observer?.disconnect()
+    }
+  }, [])
+  const setRef = (node: HTMLDivElement | null) => {
+    element.current = node
+    if (typeof ref === "function") ref(node)
+    else if (ref) ref.current = node
+  }
+  const top = edges.above ? SIDEBAR_CONTENT_FADE : "0px"
+  const bottom = edges.below ? SIDEBAR_CONTENT_FADE : "0px"
   return (
     <div
+      ref={setRef}
       data-slot="sidebar-content"
       data-sidebar="content"
+      data-overflow-above={edges.above || undefined}
+      data-overflow-below={edges.below || undefined}
       className={cn(
         "flex min-h-0 flex-1 flex-col gap-2 overflow-auto group-data-[collapsible=icon]:overflow-hidden",
         className
       )}
+      style={{
+        maskImage: `linear-gradient(to bottom, transparent, #000 ${top}, #000 calc(100% - ${bottom}), transparent)`,
+        ...style,
+      }}
       {...props}
     />
   )
@@ -420,8 +460,10 @@ function SidebarGroupLabel({
       data-slot="sidebar-group-label"
       data-sidebar="group-label"
       className={cn(
-        "text-muted-foreground ring-sidebar-ring flex h-9 shrink-0 items-center rounded-md pl-3 pr-2 text-xs font-medium outline-hidden transition-[margin,opacity] duration-200 ease-linear focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
-        "group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0",
+        "text-muted-foreground ring-sidebar-ring flex h-6 shrink-0 items-center rounded-md px-2 label-sm outline-hidden transition-opacity duration-200 ease-linear focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        // Collapsed to the icon rail, the label fades out but keeps its height: the groups stay as far
+        // apart as on the open sidebar.
+        "group-data-[collapsible=icon]:opacity-0",
         className
       )}
       {...props}
@@ -460,7 +502,7 @@ function SidebarGroupContent({
     <div
       data-slot="sidebar-group-content"
       data-sidebar="group-content"
-      className={cn("w-full text-sm", className)}
+      className={cn("w-full body", className)}
       {...props}
     />
   )
@@ -489,7 +531,7 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<"li">) {
 }
 
 const sidebarMenuButtonVariants = cva(
-  "peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md px-3 py-2.5 text-left text-sm outline-hidden ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0",
+  "peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md text-left body outline-hidden ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -498,9 +540,11 @@ const sidebarMenuButtonVariants = cva(
           "bg-background shadow-[0_0_0_1px_hsl(var(--sidebar-border))] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-[0_0_0_1px_hsl(var(--sidebar-accent))]",
       },
       size: {
-        default: "h-9 text-sm",
-        sm: "h-7 text-xs",
-        lg: "h-12 text-sm group-data-[collapsible=icon]:p-0!",
+        // 32px with an 8px padding, so the navigation fits small screens (T-181).
+        default: "h-8 p-2 body",
+        sm: "h-7 px-3 py-2.5 body-sm",
+        // The workspace switcher and the user menu: 8px each side, their mark 8px in.
+        lg: "h-12 px-2 py-2.5 body group-data-[collapsible=icon]:p-0!",
       },
     },
     defaultVariants: {
@@ -601,7 +645,7 @@ function SidebarMenuBadge({
       data-slot="sidebar-menu-badge"
       data-sidebar="menu-badge"
       className={cn(
-        "text-sidebar-foreground pointer-events-none absolute right-1 flex h-5 min-w-5 items-center justify-center rounded-md px-1 text-xs font-medium tabular-nums select-none",
+        "text-sidebar-foreground pointer-events-none absolute right-1 flex h-5 min-w-5 items-center justify-center rounded-md px-1 label-sm tabular-nums select-none",
         "peer-hover/menu-button:text-sidebar-accent-foreground peer-data-[active=true]/menu-button:text-sidebar-accent-foreground",
         "peer-data-[size=sm]/menu-button:top-1",
         "peer-data-[size=default]/menu-button:top-1.5",
@@ -705,8 +749,8 @@ function SidebarMenuSubButton({
       className={cn(
         "text-sidebar-foreground ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground active:bg-sidebar-accent active:text-sidebar-accent-foreground [&>svg]:text-sidebar-accent-foreground flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 outline-hidden focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0",
         "data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground",
-        size === "sm" && "text-xs",
-        size === "md" && "text-sm",
+        size === "sm" && "body-sm",
+        size === "md" && "body",
         "group-data-[collapsible=icon]:hidden",
         className
       )}

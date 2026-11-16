@@ -6,7 +6,7 @@ import {ChangeEmailSection} from "./components/change-email-section";
 import {ChangePasswordSection} from "./components/change-password-section";
 import {TwoFactorSection} from "./components/two-factor-section";
 
-export const AccountConnexionTab = () => {
+export const AccountSecurityTab = () => {
   const { user, isLoading } = useOutletContext<EditUserOutletContext>();
   const { t } = useTranslation();
 

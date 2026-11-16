@@ -1,7 +1,6 @@
-import { ColumnDef } from '@tanstack/react-table';
 import { ReadQuotaTransaction } from '@skeleton/core-api-models';
 import { Badge, LongText } from '@skeleton/web-components';
-import { CollectionColumnHeader } from '@skeleton/web-collection';
+import { CollectionColumnHeader, type CollectionColumnDef } from '@skeleton/web-collection';
 import { cn } from '@skeleton/core-utils';
 import { format } from 'date-fns';
 import { useTranslation } from '@skeleton/core-translations';
@@ -67,7 +66,7 @@ const amountToneClass = (amount: number | null, operationType: string | null) =>
   return '';
 };
 
-export function useOrganizationQuotaTransactionsColumns(): ColumnDef<ReadQuotaTransaction>[] {
+export function useOrganizationQuotaTransactionsColumns(): CollectionColumnDef<ReadQuotaTransaction>[] {
   const { t } = useTranslation();
   return [
     {
@@ -102,7 +101,7 @@ export function useOrganizationQuotaTransactionsColumns(): ColumnDef<ReadQuotaTr
         return (
           <div
             className={cn(
-              'text-right tabular-nums font-medium',
+              'text-right tabular-nums label',
               amountToneClass(amount, operationType),
             )}
           >
@@ -145,7 +144,7 @@ export function useOrganizationQuotaTransactionsColumns(): ColumnDef<ReadQuotaTr
               <span className="capitalize">{referenceType}</span>
             ) : null}
             {referenceId ? (
-              <span className="text-xs text-muted-foreground truncate max-w-48">
+              <span className="body-sm text-muted-foreground truncate max-w-48">
                 {referenceId}
               </span>
             ) : null}

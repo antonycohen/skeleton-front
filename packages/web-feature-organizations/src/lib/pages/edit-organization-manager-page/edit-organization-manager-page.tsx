@@ -64,7 +64,7 @@ export function OrganizationEditManagerPage() {
       </header>
       <LayoutContent>
         <LayoutHeader pageTitle={displayName} />
-        <TabNavLinks items={getTabItems(organizationId, t)} />
+        <TabNavLinks items={getTabItems(organizationId, t)} fullWidth />
         {/*
           No max-width here: over half these tabs are Collections whose columns
           need the full page. Tabs that read better narrow (cards, forms) set

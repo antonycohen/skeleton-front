@@ -52,7 +52,7 @@ export function StepButton({
         ) : (
           <span
             className={cn(
-              'text-center font-semibold text-xs leading-4',
+              'text-center label-sm-dense',
               isActive && 'text-primary-foreground',
               isDisabled && 'text-muted-foreground'
             )}
@@ -65,8 +65,7 @@ export function StepButton({
       {/* Label */}
       <span
         className={cn(
-          'font-medium',
-          'text-xs truncate w-full text-center',
+          'label-sm truncate w-full text-center',
           '@3xl:w-auto @3xl:overflow-visible @3xl:text-left',
           (isFilled || isActive) && 'text-foreground',
           isDisabled && 'text-muted-foreground'

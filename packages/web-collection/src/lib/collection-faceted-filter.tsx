@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { CheckIcon, PlusCircledIcon } from '@radix-ui/react-icons';
-import { Column } from '@tanstack/react-table';
+import { CellData, RowData } from '@tanstack/react-table';
 import {
   Badge,
   Button,
@@ -20,9 +20,10 @@ import {
 } from '@skeleton/web-components';
 import { cn } from '@skeleton/core-utils';
 import { useTranslation } from '@skeleton/core-translations';
+import { CollectionColumn } from './collection-features';
 
-export interface CollectionFacetedFilterProps<TData, TValue> {
-  column?: Column<TData, TValue>;
+export interface CollectionFacetedFilterProps<TData extends RowData, TValue extends CellData> {
+  column?: CollectionColumn<TData, TValue>;
   title?: string;
   options: {
     label: string;
@@ -31,7 +32,7 @@ export interface CollectionFacetedFilterProps<TData, TValue> {
   }[];
 }
 
-export function CollectionFacetedFilter<TData, TValue>({
+export function CollectionFacetedFilter<TData extends RowData, TValue extends CellData>({
   column,
   title,
   options,
@@ -50,7 +51,7 @@ export function CollectionFacetedFilter<TData, TValue>({
               <Separator orientation="vertical" className="mx-2 h-4" />
               <Badge
                 variant="secondary"
-                className="rounded-sm px-1 font-normal lg:hidden"
+                className="px-1 body-sm-dense lg:hidden"
               >
                 {selectedValues.size}
               </Badge>
@@ -58,7 +59,7 @@ export function CollectionFacetedFilter<TData, TValue>({
                 {selectedValues.size > 2 ? (
                   <Badge
                     variant="secondary"
-                    className="rounded-sm px-1 font-normal"
+                    className="px-1 body-sm-dense"
                   >
                     {t('collection.filter.selectedCount', { count: selectedValues.size })}
                   </Badge>
@@ -69,7 +70,7 @@ export function CollectionFacetedFilter<TData, TValue>({
                       <Badge
                         variant="secondary"
                         key={option.value}
-                        className="rounded-sm px-1 font-normal"
+                        className="px-1 body-sm-dense"
                       >
                         {option.label}
                       </Badge>
@@ -118,7 +119,7 @@ export function CollectionFacetedFilter<TData, TValue>({
                     )}
                     <span>{option.label}</span>
                     {facets?.get(option.value) && (
-                      <span className="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">
+                      <span className="ml-auto flex h-4 w-4 items-center justify-center code">
                         {facets.get(option.value)}
                       </span>
                     )}

@@ -24,7 +24,7 @@ export function TooltipBanner({
         className
       )}
     >
-      <p className="flex-1 font-heading text-lg font-semibold leading-[26px] tracking-[-0.15px] text-primary-foreground">
+      <p className="flex-1 heading-sm text-primary-foreground">
         {children}
       </p>
 

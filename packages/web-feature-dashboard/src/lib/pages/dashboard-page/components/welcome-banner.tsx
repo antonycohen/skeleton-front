@@ -11,18 +11,15 @@ interface WelcomeBannerProps {
 export function WelcomeBanner({firstName, workspaceBaseUrl}: WelcomeBannerProps) {
   const {t} = useTranslation();
   return (
-    <div className="relative flex items-center overflow-hidden rounded-2xl border bg-primary p-10 lg:p-16">
+    <div className="relative flex items-center overflow-hidden rounded-2xl bg-primary p-8 outline outline-1 outline-offset-[-1px] outline-border-subtle">
       <div className="relative z-10 flex max-w-md flex-col gap-6">
-        <h2
-          className="font-heading text-4xl font-semibold leading-tight tracking-tight text-primary-foreground">
+        <h2 className="heading-md text-primary-foreground">
           {firstName ? t('dashboard.welcome.titleWithName', {firstName}) : t('dashboard.welcome.title')}
         </h2>
-        <p className="text-base text-primary-foreground/80">
-          {t('dashboard.welcome.description')}
-        </p>
-        <Button variant="outline" className="w-fit bg-white px-3" asChild>
-          <Link to={`${workspaceBaseUrl}/assistant`} className={'flex items-center justify-center gap-2'}>
-            <SparklesIcon className="size-4"/>
+        <p className="body-lg text-primary-foreground/80">{t('dashboard.welcome.description')}</p>
+        <Button className="w-fit px-3" asChild>
+          <Link to={`${workspaceBaseUrl}/assistant`} className="flex items-center justify-center gap-2">
+            <SparklesIcon className="size-4" />
             {t('dashboard.welcome.openAssistant')}
           </Link>
         </Button>

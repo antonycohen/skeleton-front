@@ -14,12 +14,13 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Free plan: the gradient border and the upgrade button. */
+/** Free plan: the plan name, the headline quota with its gauge, the other quotas as rows, the upgrade button. */
 export const Free: Story = {
   args: {
+    planName: 'Free',
     usageStats: [
-      { value: 3, label: 'seats left', percent: 30 },
-      { value: 2, label: 'projects left', percent: 40 },
+      { label: 'seats', remaining: 3, limit: 10 },
+      { label: 'Projects', remaining: 2, limit: 5 },
     ],
   },
 };
@@ -27,9 +28,32 @@ export const Free: Story = {
 export const Paid: Story = {
   args: {
     variant: 'paid',
+    planName: 'Pro',
     usageStats: [
-      { value: 38, label: 'seats left', percent: 76 },
-      { value: 18, label: 'projects left', percent: 72 },
+      { label: 'seats', remaining: 38, limit: 50 },
+      { label: 'Projects', remaining: 18, limit: 25 },
+    ],
+  },
+};
+
+/** At or under 30% left, the headline gauge turns amber. */
+export const LowRemaining: Story = {
+  args: {
+    planName: 'Free',
+    usageStats: [
+      { label: 'seats', remaining: 2, limit: 10 },
+      { label: 'Projects', remaining: 4, limit: 5 },
+    ],
+  },
+};
+
+/** No limit known: the remaining count alone, no gauge. */
+export const UnknownLimit: Story = {
+  args: {
+    planName: 'Free',
+    usageStats: [
+      { label: 'seats', remaining: 0, limit: null },
+      { label: 'Projects', remaining: 0, limit: null },
     ],
   },
 };
@@ -38,29 +62,29 @@ export const Paid: Story = {
 export const MultiWorkspace: Story = {
   args: {
     variant: 'paid',
-    title: 'Business plan',
+    planName: 'Business',
     buttonText: 'Manage billing',
     usageStats: [
-      { value: 4, label: 'workspaces left', percent: 40 },
-      { value: 58, label: 'seats left', percent: 77 },
-      { value: 28, label: 'projects left', percent: 56 },
+      { label: 'workspaces', remaining: 4, limit: 10 },
+      { label: 'Seats', remaining: 58, limit: 75 },
+      { label: 'Projects', remaining: 28, limit: 50 },
     ],
   },
 };
 
-/** Large counts are abbreviated (K, M); a string is shown as is. */
+/** Large counts are abbreviated (K, M); a quota without a limit shows the remaining count alone. */
 export const LargeValues: Story = {
   args: {
     variant: 'paid',
     usageStats: [
-      { value: 1_250_000, label: 'API calls left', percent: 62 },
-      { value: 48_200, label: 'emails left', percent: 96 },
-      { value: 'Unlimited', label: 'projects', percent: 100 },
+      { label: 'API calls', remaining: 1_250_000, limit: 2_000_000 },
+      { label: 'Emails', remaining: 48_200, limit: 50_000 },
+      { label: 'Projects', remaining: 12, limit: null },
     ],
   },
 };
 
-/** No usage stats: the title and the action alone. */
+/** No usage stats: the action alone. */
 export const WithoutStats: Story = {};
 
 export const WithoutAction: Story = { args: { variant: 'paid', hideAction: true } };

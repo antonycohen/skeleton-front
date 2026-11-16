@@ -1,8 +1,8 @@
 'use client';
 
 import {useMemo} from 'react';
-import {Streamdown} from 'streamdown';
 import {cn} from '@skeleton/core-utils';
+import {Markdown} from '@skeleton/web-components/markdown';
 
 // ============================================================================
 // Types
@@ -53,9 +53,9 @@ export function TextContent({
 
   return (
     <div className={cn(className)}>
-      <Streamdown parseIncompleteMarkdown={true}>
+      <Markdown parseIncompleteMarkdown={true}>
         {cleanText}
-      </Streamdown>
+      </Markdown>
     </div>
   );
 }

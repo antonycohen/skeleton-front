@@ -41,7 +41,7 @@ export function ControlledSwitchInput<T extends FieldValues>(
       <div className="flex flex-col gap-0.5">
         <Label htmlFor={id}>{label}</Label>
         {description && (
-          <span className="text-xs text-muted-foreground">{description}</span>
+          <span className="body-sm text-muted-foreground">{description}</span>
         )}
       </div>
       {fieldState.invalid && <FieldError errors={[fieldState.error]} />}

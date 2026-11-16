@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { ChartLineIcon } from 'lucide-react';
 import { daysAgo } from '@skeleton/storybook-support';
 import { LineChartCard, type LineChartCardDataPoint, type LineChartCardSeries } from './line-chart-card';
 import { EmptyChartContent } from './empty-chart-content';
@@ -28,10 +27,6 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
-
-export const WithHeader: Story = {
-  args: { headerIcon: <ChartLineIcon />, headerLabel: 'Acme — Q4 Roadmap' },
-};
 
 export const SingleSeries: Story = {
   args: { series: series.slice(0, 1), title: 'Active users' },

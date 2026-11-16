@@ -6,6 +6,9 @@ import { useTranslation } from '@skeleton/core-translations';
 import {ArrowRight, ArrowUp, Pencil, X} from 'lucide-react';
 import type {AiChatInputPluginContext} from '../types';
 
+// How long an answer blocks another one when no reply has started.
+const RESEND_AFTER_MS = 3000;
+
 interface SuggestionChipsProps {
   suggestions: string[];
   question?: string;
@@ -35,13 +38,30 @@ export function SuggestionChips({suggestions, question, ctx}: SuggestionChipsPro
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      handleSubmitCustom();
+      handleSubmitCustom(e.timeStamp);
     }
   };
 
-  const handleSubmitCustom = () => {
-    if (customText.trim() && !ctx.isStreaming) {
-      ctx.sendMessageContent(customText.trim());
+  // One answer per question. The chips stay enabled until the reply starts
+  // streaming, so a double click would send the answer twice. A send that never
+  // starts a reply frees them again after a moment. The time is the click's or
+  // key's own (event.timeStamp), never read during render.
+  const answeredAtRef = useRef<number | null>(null);
+  const suggestionsKey = suggestions.join('\n');
+  useEffect(() => {
+    answeredAtRef.current = null;
+  }, [suggestionsKey, ctx.isStreaming]);
+
+  const send = (content: string, at: number) => {
+    const answeredAt = answeredAtRef.current;
+    if (ctx.isStreaming || (answeredAt !== null && at - answeredAt < RESEND_AFTER_MS)) return;
+    answeredAtRef.current = at;
+    ctx.sendMessageContent(content);
+  };
+
+  const handleSubmitCustom = (at: number) => {
+    if (customText.trim()) {
+      send(customText.trim(), at);
     }
   };
 
@@ -52,13 +72,13 @@ export function SuggestionChips({suggestions, question, ctx}: SuggestionChipsPro
     return (
       <div className="p-1">
         <div
-          className="flex cursor-text flex-col rounded-2xl overflow-hidden"
+          className="flex cursor-text flex-col rounded-[12px] overflow-hidden"
           onClick={() => textareaRef.current?.focus()}
         >
           <div className="p-4">
             <textarea
               ref={textareaRef}
-              className="w-full resize-none bg-transparent text-base leading-6 text-foreground placeholder:text-muted-foreground focus:outline-none max-h-[200px] min-h-[24px]"
+              className="w-full resize-none bg-transparent body-lg text-foreground placeholder:text-muted-foreground focus:outline-none max-h-[200px] min-h-[24px]"
               placeholder={t('ai.chat.replyPlaceholder')}
               value={customText}
               onChange={(e) => setCustomText(e.target.value)}
@@ -76,7 +96,7 @@ export function SuggestionChips({suggestions, question, ctx}: SuggestionChipsPro
               )}
               onClick={(e) => {
                 e.stopPropagation();
-                handleSubmitCustom();
+                handleSubmitCustom(e.timeStamp);
               }}
               disabled={!canSubmit}
             >
@@ -95,7 +115,7 @@ export function SuggestionChips({suggestions, question, ctx}: SuggestionChipsPro
         <div className="p-3">
           <div className="flex gap-6 items-start w-full">
             <div className="flex-1 min-w-0 py-1">
-              <p className="text-base font-medium leading-[23px] text-foreground">
+              <p className="title-md text-foreground">
                 {question}
               </p>
             </div>
@@ -111,7 +131,8 @@ export function SuggestionChips({suggestions, question, ctx}: SuggestionChipsPro
       )}
 
       {/* Suggestion items + input field */}
-      <div className="flex flex-col overflow-hidden rounded-2xl">
+      {/* Concentric with the input's 16px frame, 8px inside it. */}
+      <div className="flex flex-col overflow-hidden rounded-md">
         {suggestions.map((suggestion, idx) => {
           const isHovered = hoveredIndex === idx;
 
@@ -119,7 +140,7 @@ export function SuggestionChips({suggestions, question, ctx}: SuggestionChipsPro
             <button
               key={idx}
               type="button"
-              onClick={() => ctx.sendMessageContent(suggestion)}
+              onClick={(e) => send(suggestion, e.timeStamp)}
               disabled={ctx.isStreaming}
               onMouseEnter={() => setHoveredIndex(idx)}
               onMouseLeave={() => setHoveredIndex(null)}
@@ -137,12 +158,12 @@ export function SuggestionChips({suggestions, question, ctx}: SuggestionChipsPro
                     isHovered ? 'bg-input' : 'bg-muted'
                   )}
                 >
-                  <span className="text-sm font-semibold leading-5 text-muted-foreground">
+                  <span className="title text-muted-foreground">
                     {idx + 1}
                   </span>
                 </div>
                 {/* Text */}
-                <span className="flex-1 min-w-0 truncate text-sm leading-5 text-foreground">
+                <span className="flex-1 min-w-0 truncate body text-foreground">
                   {suggestion}
                 </span>
                 {/* Arrow right (visible on hover) */}
@@ -179,7 +200,7 @@ export function SuggestionChips({suggestions, question, ctx}: SuggestionChipsPro
             {/* Text input */}
             <textarea
               ref={textareaRef}
-              className="flex-1 min-w-0 resize-none bg-transparent text-sm leading-5 text-foreground placeholder:text-muted-foreground focus:outline-none max-h-[200px] min-h-[20px]"
+              className="flex-1 min-w-0 resize-none bg-transparent body text-foreground placeholder:text-muted-foreground focus:outline-none max-h-[200px] min-h-[20px]"
               placeholder={t('ai.suggestions.somethingElse')}
               value={customText}
               onChange={(e) => setCustomText(e.target.value)}
@@ -196,7 +217,7 @@ export function SuggestionChips({suggestions, question, ctx}: SuggestionChipsPro
               )}
               onClick={(e) => {
                 e.stopPropagation();
-                handleSubmitCustom();
+                handleSubmitCustom(e.timeStamp);
               }}
               disabled={!canSubmit}
             >

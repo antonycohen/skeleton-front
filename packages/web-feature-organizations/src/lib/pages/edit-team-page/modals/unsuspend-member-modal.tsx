@@ -1,14 +1,18 @@
+import { InfoIcon } from 'lucide-react';
 import {
   Button,
   Dialog,
+  DialogBody,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  Alert,
+  AlertDescription,
+  AlertTitle,
 } from '@skeleton/web-components';
 import { OrganizationMember } from '@skeleton/core-api-models';
 import { useUnsuspendOrganizationMember } from '@skeleton/core-api';
-import { IconCircleCheck } from '@tabler/icons-react';
 import { toast } from 'sonner';
 import { useTranslation } from '@skeleton/core-translations';
 
@@ -33,6 +37,8 @@ export const UnsuspendMemberModal = ({
     },
     onError: (error) => {
       toast.error(error.message || t('teams.unsuspend.error'));
+      // 409: last admin, or a member the directory manages. The row was stale and refreshes.
+      if (error.httpCode === 409) onOpenChange(false);
     },
   });
 
@@ -46,25 +52,19 @@ export const UnsuspendMemberModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent size="sm">
         <DialogHeader>
           <DialogTitle>{t('teams.actions.restoreAccess')}</DialogTitle>
         </DialogHeader>
-
-        <div className="flex gap-3 items-start rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3">
-          <div className="pt-0.5">
-            <IconCircleCheck className="size-4 text-emerald-600" />
-          </div>
-          <div className="flex flex-col gap-1 flex-1 text-emerald-700">
-            <p className="text-sm font-medium">
-              {t('teams.memberEmail', { email: member.email })}
-            </p>
-            <p className="text-sm">
+        <DialogBody className="flex flex-col gap-4">
+          <Alert>
+            <InfoIcon />
+            <AlertTitle>{t('teams.memberEmail', { email: member.email })}</AlertTitle>
+            <AlertDescription>
               {t('teams.unsuspend.description')}
-            </p>
-          </div>
-        </div>
-
+            </AlertDescription>
+          </Alert>
+        </DialogBody>
         <DialogFooter>
           <Button
             type="button"

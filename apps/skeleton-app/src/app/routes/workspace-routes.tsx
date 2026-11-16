@@ -65,7 +65,7 @@ export const WorkspaceRoutes = () => {
                   items: mainNavigation,
                 },
               ]}
-              footerNavigationGroups={[
+              secondaryNavigationGroups={[
                 {
                   sectionName: t('navigation.support.section'),
                   items: supportNavigation,

@@ -132,8 +132,8 @@ export const OauthCallbackPage = () => {
   if (exchangeFailed || (providerRefusal && retryAlreadySpent)) {
     return (
       <div className="flex h-screen flex-col items-center justify-center gap-3 text-center">
-        <h1 className="text-2xl font-bold">{t('login.callback.failedTitle')}</h1>
-        <p className="text-muted-foreground">
+        <h1>{t('login.callback.failedTitle')}</h1>
+        <p className="body text-muted-foreground">
           {refusal
             ? t(SIGN_IN_REFUSALS[refusal].i18nKey)
             : t('login.callback.linkExpired')}
@@ -151,7 +151,7 @@ export const OauthCallbackPage = () => {
 
   return (
     <div className="flex h-screen items-center justify-center">
-      <h1 className="text-2xl font-bold">{t('login.callback.signingIn')}</h1>
+      <h1>{t('login.callback.signingIn')}</h1>
     </div>
   );
 };

@@ -70,7 +70,7 @@ export function ControlledSelectInput<T extends FieldValues>(
 
   return (
     <Field data-invalid={fieldState.invalid} orientation={direction} className={className}>
-      <FieldLabel htmlFor={id} className={direction === 'horizontal' ? 'font-semibold basis-1/2' : ''}>
+      <FieldLabel htmlFor={id} className={direction === 'horizontal' ? 'basis-1/2' : ''}>
         {label}
       </FieldLabel>
       {direction === 'horizontal' ? (

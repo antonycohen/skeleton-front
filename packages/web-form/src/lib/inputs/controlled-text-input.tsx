@@ -93,6 +93,7 @@ export function ControlledTextInput<T extends FieldValues>(
       </InputGroupAddon>
       <InputGroupInput
         {...field}
+        value={field.value ?? ''}
         onBlur={normalizeOnBlur ? handleBlur : field.onBlur}
         onPaste={handlePaste}
         aria-invalid={fieldState.invalid}
@@ -110,6 +111,7 @@ export function ControlledTextInput<T extends FieldValues>(
       )}
       <InputGroupInput
         {...field}
+        value={field.value ?? ''}
         onBlur={normalizeOnBlur ? handleBlur : field.onBlur}
         onPaste={trimEnd ? handlePaste : undefined}
         aria-invalid={fieldState.invalid}
@@ -126,6 +128,7 @@ export function ControlledTextInput<T extends FieldValues>(
   ) : (
     <Input
       {...field}
+      value={field.value ?? ''}
       onBlur={normalizeOnBlur ? handleBlur : field.onBlur}
       onPaste={trimEnd ? handlePaste : undefined}
       aria-invalid={fieldState.invalid}
@@ -139,7 +142,7 @@ export function ControlledTextInput<T extends FieldValues>(
 
   return (
     <Field data-invalid={fieldState.invalid} orientation={direction} className={className}>
-      <FieldLabel htmlFor={id} className={cn(direction === 'horizontal' ? 'font-semibold basis-1/2' : '', hideLabel && 'sr-only')}>
+      <FieldLabel htmlFor={id} className={cn(direction === 'horizontal' ? 'basis-1/2' : '', hideLabel && 'sr-only')}>
         {label}
       </FieldLabel>
       {direction === 'horizontal' ? (

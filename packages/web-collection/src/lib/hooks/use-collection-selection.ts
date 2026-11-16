@@ -1,16 +1,17 @@
 import { useCallback, useEffect, useRef } from 'react';
-import { Row, Table } from '@tanstack/react-table';
+import { RowData, RowSelectionState } from '@tanstack/react-table';
 import { dequal } from 'dequal';
+import { CollectionRow, CollectionTable } from '../collection-features';
 
 type SelectionMode = 'single' | 'multiple';
 
-interface UseCollectionSelectionProps<T> {
-  table: Table<T>;
+interface UseCollectionSelectionProps<T extends RowData> {
+  table: CollectionTable<T>;
   mode: SelectionMode;
   selection?: T | T[] | null;
   onSelectionChange?: ((selected: T) => void) | ((selected: T[]) => void);
-  setRowSelection: (selection: Record<string, boolean>) => void;
-  rowSelection: Record<string, boolean>;
+  setRowSelection: (selection: RowSelectionState) => void;
+  rowSelection: RowSelectionState;
 }
 
 function getItemId<T>(item: T): string | undefined {
@@ -23,7 +24,7 @@ function getSelectionIds<T>(selection: T | T[] | null | undefined): string[] {
   return items.map(getItemId).filter((id): id is string => !!id);
 }
 
-export function useCollectionSelection<T>({
+export function useCollectionSelection<T extends RowData>({
   table,
   mode,
   selection,
@@ -47,7 +48,7 @@ export function useCollectionSelection<T>({
     if (idsKey === lastSyncedIdsRef.current) return;
     lastSyncedIdsRef.current = idsKey;
 
-    const newRowSelection: Record<string, boolean> = {};
+    const newRowSelection: RowSelectionState = {};
     selectionIds.forEach(id => {
       newRowSelection[id] = true;
     });
@@ -56,7 +57,7 @@ export function useCollectionSelection<T>({
   }, [selection, isControlled, setRowSelection]);
 
   // Handle row click selection
-  const handleRowSelect = useCallback((row: Row<T>) => {
+  const handleRowSelect = useCallback((row: CollectionRow<T>) => {
     isInternalUpdateRef.current = true;
 
     if (mode === 'single') {

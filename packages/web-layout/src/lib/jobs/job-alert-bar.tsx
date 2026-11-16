@@ -28,10 +28,11 @@ export interface JobAlertBarOptions {
 // Variant styles
 // ---------------------------------------------------------------------------
 
+// The status tones of web-themes, shared with Alert: info is the `important` tone.
 const variantStyles = {
-  info: 'bg-indigo-50 border-indigo-100 text-indigo-600',
-  warning: 'bg-amber-50 border-amber-100 text-amber-700',
-  destructive: 'bg-red-50 border-red-100 text-red-600',
+  info: 'bg-important-surface border-important-border text-important-on-surface',
+  warning: 'bg-warning-surface border-warning-border text-warning-on-surface',
+  destructive: 'bg-destructive-surface border-destructive-border text-destructive-on-surface',
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -56,7 +57,7 @@ export function JobAlertBar({
         <div className="flex size-8 shrink-0 items-center justify-center">
           {alert.icon ?? <LoaderCircle className="size-4 animate-spin" />}
         </div>
-        <p className="flex-1 truncate text-sm font-medium leading-5">
+        <p className="flex-1 truncate label">
           {alert.message}
         </p>
       </div>

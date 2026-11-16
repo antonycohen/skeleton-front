@@ -1,28 +1,24 @@
 import {
-  ColumnDef,
   ColumnFiltersState,
-  getCoreRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
+  ColumnVisibilityState,
   PaginationState,
+  RowData,
+  RowSelectionState,
   SortingState,
-  useReactTable,
-  VisibilityState,
+  useTable,
 } from '@tanstack/react-table';
+import { CollectionColumnDef, collectionFeatures } from '../collection-features';
 
-interface UseCollectionTableProps<T> {
+interface UseCollectionTableProps<T extends RowData> {
   items: T[];
-  columns: ColumnDef<T>[];
+  columns: CollectionColumnDef<T>[];
   totalCount: number;
   sorting: SortingState;
   setSorting: (sorting: SortingState | ((prev: SortingState) => SortingState)) => void;
-  columnVisibility: VisibilityState;
-  setColumnVisibility: (visibility: VisibilityState | ((prev: VisibilityState) => VisibilityState)) => void;
-  rowSelection: Record<string, boolean>;
-  setRowSelection: (selection: Record<string, boolean> | ((prev: Record<string, boolean>) => Record<string, boolean>)) => void;
+  columnVisibility: ColumnVisibilityState;
+  setColumnVisibility: (visibility: ColumnVisibilityState | ((prev: ColumnVisibilityState) => ColumnVisibilityState)) => void;
+  rowSelection: RowSelectionState;
+  setRowSelection: (selection: RowSelectionState | ((prev: RowSelectionState) => RowSelectionState)) => void;
   columnFilters: ColumnFiltersState;
   setColumnFilters: (filters: ColumnFiltersState | ((prev: ColumnFiltersState) => ColumnFiltersState)) => void;
   pagination: PaginationState;
@@ -31,7 +27,7 @@ interface UseCollectionTableProps<T> {
   setGlobalFilter: (filter: string | ((prev: string) => string)) => void;
 }
 
-export function useCollectionTable<T>({
+export function useCollectionTable<T extends RowData>({
   items,
   columns,
   totalCount,
@@ -48,7 +44,8 @@ export function useCollectionTable<T>({
   globalFilter,
   setGlobalFilter,
 }: UseCollectionTableProps<T>) {
-  const table = useReactTable({
+  const table = useTable({
+    features: collectionFeatures,
     data: items,
     columns,
     state: {
@@ -71,12 +68,6 @@ export function useCollectionTable<T>({
     onColumnVisibilityChange: setColumnVisibility,
     onPaginationChange: setPagination,
     onGlobalFilterChange: setGlobalFilter,
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
   return table;

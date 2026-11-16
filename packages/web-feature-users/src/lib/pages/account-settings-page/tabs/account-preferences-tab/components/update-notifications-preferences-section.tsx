@@ -28,9 +28,9 @@ export const UpdateNotificationsPreferencesSection = ({
         id="update-notifications-preferences-form"
         onSubmit={handleSubmit}
       >
-        <Card className="rounded-2xl">
+        <Card>
           <CardHeader>
-            <CardTitle className="text-xl">{t('account.preferences.notifications.title')}</CardTitle>
+            <CardTitle size="lg">{t('account.preferences.notifications.title')}</CardTitle>
           </CardHeader>
           <CardContent className="pt-2">
 

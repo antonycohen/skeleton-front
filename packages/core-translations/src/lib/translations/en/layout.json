@@ -1,5 +1,7 @@
 {
   "layout.jobs.title": "Background Jobs",
+  "layout.jobs.remove": "Remove",
+  "layout.splitLayout.resize": "Resize the main column and the panel",
   "layout.version": "v{version}",
   "layout.guestUser": "Guest User"
 }

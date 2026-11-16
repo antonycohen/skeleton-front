@@ -30,7 +30,7 @@ const ValueRow = ({ label, value }: ValueRowProps) => (
   <div className="flex flex-col gap-1.5">
     <Label>{label}</Label>
     <div className="flex items-center gap-2 rounded-lg bg-muted/50 p-3">
-      <span className="break-all font-mono text-xs">{value}</span>
+      <span className="break-all code">{value}</span>
       {value && <CopyButton value={value} />}
     </div>
   </div>
@@ -92,9 +92,9 @@ export function SsoServiceProviderValues({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-col gap-0.5">
-        <span className="font-semibold">{t('security.sp.title')}</span>
-        <span className="text-sm text-muted-foreground">
+      <div className="flex flex-col gap-1">
+        <span className="title-md">{t('security.sp.title')}</span>
+        <span className="body text-muted-foreground">
           {t('security.sp.description')}
         </span>
       </div>
@@ -109,7 +109,7 @@ export function SsoServiceProviderValues({
         <div className="flex flex-col gap-1.5">
           <Label>{t('security.sp.metadata')}</Label>
           <div className="flex items-center gap-2 rounded-lg bg-muted/50 p-3">
-            <span className="break-all font-mono text-xs">
+            <span className="break-all code">
               {connection.spMetadataUrl}
             </span>
             <CopyButton value={connection.spMetadataUrl} />
@@ -141,7 +141,7 @@ export function SsoServiceProviderValues({
       {connection.spCertificate && (
         <div className="flex flex-col gap-1.5">
           <Label>{t('security.sp.certificate')}</Label>
-          <span className="text-sm text-muted-foreground">
+          <span className="body text-muted-foreground">
             {connection.spCertificateNotAfter
               ? t('security.sp.certificateHintUntil', {
                   date: format(connection.spCertificateNotAfter, 'dd/MM/yyyy'),

@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import {useMemo, useState} from 'react';
-import {CheckIcon, ChevronsUpDown, GalleryVerticalEnd, MonitorCheckIcon, MonitorIcon, Plus, Settings} from 'lucide-react';
+import {CheckIcon, ChevronsUpDown, GalleryVerticalEnd, MonitorCheckIcon, MonitorIcon, Plus, Settings, UserPlusIcon} from 'lucide-react';
 import {SidebarMenu, SidebarMenuButton, SidebarMenuItem} from '../ui/sidebar';
 import {
   DropdownMenu,
@@ -23,6 +23,8 @@ export type TeamSwitcherProps = {
   selectedWorkspaceId?: string;
   onAddWorkspace?: () => void;
   settingsUrl?: string;
+  /** Under Settings: inviting someone opens this workspace to them, so it belongs to its menu. */
+  inviteUrl?: string;
   /**
    * Rendered above the workspace list in the switch submenu, which then becomes
    * a cmdk `Command` (keyboard: arrows + Enter) — pass a `CommandInput`. The
@@ -45,6 +47,8 @@ export type TeamSwitcherProps = {
    * truncated.
    */
   totalCount?: number;
+  /** After Settings and Invite, before the other workspaces: what belongs to the workspace shown, as its plan's usage. */
+  content?: React.ReactNode;
   workspaces: {
     name: string;
     logo: React.ElementType;
@@ -57,9 +61,11 @@ export function TeamSwitcher({
   selectedWorkspaceId,
   onAddWorkspace,
   settingsUrl,
+  inviteUrl,
   searchInput,
   activeWorkspace,
   totalCount,
+  content,
   workspaces,
 }: TeamSwitcherProps) {
   const navigate = useNavigate();
@@ -84,18 +90,19 @@ export function TeamSwitcher({
         <team.logo className="w-6 h-6 relative rounded-lg" />
       </div>
       <span className="flex-1">{team.name}</span>
-      {selectedWorkspaceId === team.id && (<CheckIcon />)}
+      {selectedWorkspaceId === team.id && (<CheckIcon className="text-foreground" />)}
     </>
   );
 
   const truncationHint = totalCount !== undefined && totalCount > workspaces.length && (
-    <div className="px-2 py-1.5 text-xs text-muted-foreground">
+    <div className="px-2 py-1.5 body-sm text-muted-foreground">
       {t('components.teamSwitcher.truncated', {count: workspaces.length, total: totalCount})}
     </div>
   );
 
   return (
-    <SidebarMenu>
+    // 8px off the screen's edge, as the navigation's groups (mx-2); the icon rail centres it itself.
+    <SidebarMenu className="pl-2 group-data-[collapsible=icon]:pl-0">
       <SidebarMenuItem>
         <DropdownMenu open={open} onOpenChange={setOpen}>
           <DropdownMenuTrigger asChild>
@@ -106,8 +113,8 @@ export function TeamSwitcher({
               <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
                 <ActiveLogo className="size-4" />
               </div>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">
+              <div className="grid flex-1 text-left body-dense">
+                <span className="truncate label-dense">
                   {activeTeam?.name ?? t('components.teamSwitcher.workspace')}
                 </span>
               </div>
@@ -115,11 +122,15 @@ export function TeamSwitcher({
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
-            align="end"
+            className="w-60"
+            // From the trigger's left, 8px off the screen's edge; as wide as the sidebar (16rem) less 8px
+            // each side (portalled, it can't read --sidebar-width). Aligned on its end, it ran off the screen.
+            align="start"
             side={'bottom'}
             sideOffset={4}
           >
+            {/* As Lovable's and Toggl's: the workspace's own actions, then its usage, then the other
+                workspaces (switch, manage, create) as one group. */}
             {settingsUrl && (
               <DropdownMenuItem asChild>
                 <Link to={settingsUrl}>
@@ -128,7 +139,21 @@ export function TeamSwitcher({
                 </Link>
               </DropdownMenuItem>
             )}
-            <DropdownMenuSeparator />
+            {inviteUrl && (
+              <DropdownMenuItem asChild>
+                <Link to={inviteUrl}>
+                  <UserPlusIcon className="size-4" />
+                  {t('components.teamSwitcher.invite')}
+                </Link>
+              </DropdownMenuItem>
+            )}
+            {(settingsUrl || inviteUrl) && <DropdownMenuSeparator />}
+            {content && (
+              <>
+                {content}
+                <DropdownMenuSeparator />
+              </>
+            )}
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>
                 <MonitorIcon />
@@ -188,15 +213,14 @@ export function TeamSwitcher({
                   )}
                 </DropdownMenuSubContent>
               </DropdownMenuPortal>
-              <DropdownMenuItem className="gap-2 p-2">
+              <DropdownMenuItem className="gap-2">
                 <MonitorCheckIcon className="size-4" />
                 <NavLink to={`/w/${selectedWorkspaceId}/workspaces`} className="text-foreground">
                   {t('components.teamSwitcher.manage')}
                 </NavLink>
               </DropdownMenuItem>
             </DropdownMenuSub>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="gap-2 p-2">
+            <DropdownMenuItem className="gap-2">
               <Plus className="size-4" />
               <div className="text-foreground" onClick={onAddWorkspace}>
                 {t('components.teamSwitcher.create')}

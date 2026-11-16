@@ -3,6 +3,7 @@ import {
   AlertDescription,
   Button,
   Dialog,
+  DialogBody,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -35,22 +36,23 @@ export const RemoveSsoCertificateModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent size="sm">
         <DialogHeader>
           <DialogTitle>{t('security.certificates.removeTitle')}</DialogTitle>
-          <DialogDescription>
+        </DialogHeader>
+        <DialogBody className="flex flex-col gap-4">
+          <DialogDescription className="text-foreground">
             {t('security.certificates.removeDescription', { label })}
           </DialogDescription>
-        </DialogHeader>
-
-        {isLastValid && (
-          <Alert variant="important">
-            <TriangleAlertIcon />
-            <AlertDescription>
-              {t('security.certificates.removeLastWarning')}
-            </AlertDescription>
-          </Alert>
-        )}
+          {isLastValid && (
+            <Alert variant="warning">
+              <TriangleAlertIcon />
+              <AlertDescription>
+                {t('security.certificates.removeLastWarning')}
+              </AlertDescription>
+            </Alert>
+          )}
+        </DialogBody>
 
         <DialogFooter>
           <Button

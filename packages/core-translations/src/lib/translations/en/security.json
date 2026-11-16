@@ -126,7 +126,7 @@
   "security.oidc.clientSecret": "Client secret",
   "security.oidc.clientSecretSaved": "Saved — type a new one to replace it",
   "security.oidc.clientSecretPlaceholder": "Paste the client secret",
-  "security.oidc.trustNotice": "Changing the issuer or the client ID sends the connection back to draft: single sign-on is switched off and the requirement lifted until a new test sign-in succeeds. A new client secret does not: run a test sign-in to check it.",
+  "security.oidc.trustNotice": "Changing the issuer or the client ID sends the connection back to draft: single sign-on is switched off and the requirement lifted until a new test sign-in succeeds. A new issuer also deletes the saved client secret: enter the new provider's secret in the same save. A new client secret does not send the connection back to draft: run a test sign-in to check it.",
   "security.fileInput.tooLarge": "{name} is too large for this field",
   "security.fileInput.unreadable": "{name} could not be read",
   "security.fileInput.choose": "Choose a file",

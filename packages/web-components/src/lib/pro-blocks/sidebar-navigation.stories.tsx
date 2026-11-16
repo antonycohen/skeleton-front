@@ -78,6 +78,45 @@ export const WithoutSectionName: Story = {
   },
 };
 
+/**
+ * A section and what its pages are built from (`collapsible: false`): the section stays a link to
+ * its own list, its sub-item listed under it, as a store's sales channels: a button as the others,
+ * its label set in from the section's, an elbow from the section's icon.
+ */
+export const ListedSubItems: Story = {
+  parameters: { router: { url: '/segments' } },
+  args: {
+    sectionName: 'Pages',
+    items: [
+      {
+        title: 'Accounts',
+        url: '/accounts',
+        icon: Building2Icon,
+        collapsible: false,
+        items: [{ title: 'Segments', url: '/segments' }],
+      },
+      { title: 'Projects', url: '/projects', icon: FolderIcon },
+      { title: 'Analytics', url: '/analytics', icon: BarChart3Icon },
+    ],
+  },
+};
+
+/** On the icon rail the listed sub-items are left out: the section's icon only. */
+export const ListedSubItemsCollapsed: Story = {
+  ...ListedSubItems,
+  decorators: [
+    (Story) => (
+      <SidebarProvider defaultOpen={false}>
+        <Sidebar collapsible="icon">
+          <SidebarContent>
+            <Story />
+          </SidebarContent>
+        </Sidebar>
+      </SidebarProvider>
+    ),
+  ],
+};
+
 /** Collapsed to the icon rail (hover an icon for its tooltip). */
 export const Collapsed: Story = {
   decorators: [
@@ -95,15 +134,15 @@ export const Collapsed: Story = {
 
 /** An icon-less list of recent items, then a "View more" link kept inactive by `isActive: false`. `hiddenWhenCollapsed` hides it on the icon rail. */
 export const RecentItems: Story = {
-  parameters: { router: { url: '/projects/2' } },
+  parameters: { router: { url: '/projects/2', status: { variant: 'green', label: 'Active' } } },
   args: {
     sectionName: 'Recent projects',
     hiddenWhenCollapsed: true,
     items: [
-      { title: 'EMEA | Digital transformation', url: '/projects/1' },
+      { title: 'EMEA | Digital transformation', url: '/projects/1', status: { variant: 'primary', label: 'Ready' } },
       { title: 'NAM | Enterprise cloud migration', url: '/projects/2' },
-      { title: 'EMEA | Omnichannel support', url: '/projects/3' },
-      { title: 'NAM | Supply chain review', url: '/projects/4' },
+      { title: 'EMEA | Omnichannel support', url: '/projects/3', status: { variant: 'red', label: 'Archived' } },
+      { title: 'NAM | Supply chain review', url: '/projects/4', status: { variant: 'pending', label: 'Draft' } },
       { title: 'View more', url: '/projects', isActive: false },
     ],
   },

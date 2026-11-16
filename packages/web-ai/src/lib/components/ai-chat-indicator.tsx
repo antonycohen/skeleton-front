@@ -1,6 +1,6 @@
 'use client';
 
-import Lottie from 'lottie-react';
+import { Lottie } from 'lottie-react';
 import {AnimatePresence, motion} from 'motion/react';
 import {cn} from '@skeleton/core-utils';
 import {ThinkingContent} from '../plugins/block-plugins/thinking';
@@ -15,7 +15,7 @@ const TRANSITION_DURATION = 0.55;
 export type AiChatIndicatorStatus = 'idle' | 'thinking' | 'success' | 'error';
 
 interface LottieConfig {
-  data: unknown;
+  data: object;
   loop: boolean;
 }
 
@@ -63,7 +63,7 @@ export function AiChatIndicator({ status, thinking, className, size = 32 }: AiCh
             style={{ transformOrigin: '50% 55%', willChange: 'transform, opacity, filter' }}
           >
             <Lottie
-              animationData={data}
+              src={data}
               loop={loop}
               autoplay
               rendererSettings={{ preserveAspectRatio: 'xMidYMid meet' }}

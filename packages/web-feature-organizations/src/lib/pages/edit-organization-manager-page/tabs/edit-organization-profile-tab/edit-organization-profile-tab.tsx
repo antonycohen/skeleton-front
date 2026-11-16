@@ -51,11 +51,9 @@ export const EditOrganizationProfileTab = () => {
   return (
     <FormProvider {...form}>
       <form onSubmit={handleSubmit} className="max-w-4xl">
-        <Card className="rounded-2xl gap-0">
+        <Card className="gap-0">
           <CardHeader>
-            <CardTitle className="text-xl">
-              {t('adminOrganizations.profile.title')}
-            </CardTitle>
+            <CardTitle>{t('adminOrganizations.profile.title')}</CardTitle>
             <CardDescription>
               {t('adminOrganizations.profile.description')}
             </CardDescription>
@@ -64,7 +62,7 @@ export const EditOrganizationProfileTab = () => {
             <div className="flex flex-col divide-y">
               {/* Type is immutable after creation. */}
               <div className="flex items-center justify-between py-6">
-                <span className="text-sm font-medium">
+                <span className="label">
                   {t('adminOrganizations.profile.type')}
                 </span>
                 <Badge variant="outline" className="capitalize">

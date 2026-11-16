@@ -8,7 +8,6 @@ const meta = {
   title: 'Components/UI/Card',
   component: Card,
   parameters: { layout: 'centered' },
-  argTypes: { variant: { control: 'inline-radio', options: ['default', 'subtle'] } },
   render: (args) => (
     <Card {...args} className="w-96">
       <CardHeader>
@@ -55,6 +54,3 @@ export const HeaderOnly: Story = {
     </Card>
   ),
 };
-
-/** `subtle`: the subtle surface and outline, for a card nested in a page section. */
-export const Subtle: Story = { args: { variant: 'subtle' } };

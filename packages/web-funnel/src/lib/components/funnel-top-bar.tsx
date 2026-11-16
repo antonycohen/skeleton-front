@@ -50,7 +50,7 @@ export const FunnelTopBar = memo(({className, leftComponent}: FunnelTopBarProps)
                 <FunnelButton
                   key={action.id}
                   variant={action.variant}
-                  className="h-9 px-4 text-sm font-medium"
+                  className="h-9 px-4 label"
                   onClick={() => {
                     action.onClick?.(context, state);
                   }}

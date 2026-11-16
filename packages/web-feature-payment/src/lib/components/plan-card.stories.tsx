@@ -30,3 +30,6 @@ export const Default: Story = {};
 export const Free: Story = { parameters: { workspace: 'free' } };
 
 export const OverQuota: Story = { parameters: { workspace: 'overQuota' } };
+
+/** In the workspace menu: the plan is named above the usage, which shows the first quota alone. */
+export const InMenu: Story = { args: { inMenu: true } };

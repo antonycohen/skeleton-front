@@ -5,6 +5,7 @@ import { useRegenerateMfaRecoveryCodes } from '@skeleton/core-api';
 import {
   Button,
   Dialog,
+  DialogBody,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -45,12 +46,14 @@ export const RegenerateRecoveryCodesModal = ({ open, onOpenChange, user }: Regen
   if (recoveryCodes) {
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="sm:max-w-lg">
+        <DialogContent>
           <DialogHeader>
             <DialogTitle>{t('account.mfa.regenerateModal.doneTitle')}</DialogTitle>
             <DialogDescription>{t('account.mfa.regenerateModal.doneDescription')}</DialogDescription>
           </DialogHeader>
-          <RecoveryCodesList codes={recoveryCodes.recoveryCodes} accountEmail={user.email} />
+          <DialogBody className="flex flex-col gap-4">
+            <RecoveryCodesList codes={recoveryCodes.recoveryCodes} accountEmail={user.email} />
+          </DialogBody>
           <DialogFooter>
             <Button type="button" onClick={() => onOpenChange(false)}>
               {t('account.mfa.savedRecoveryCodes')}
@@ -63,7 +66,7 @@ export const RegenerateRecoveryCodesModal = ({ open, onOpenChange, user }: Regen
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent>
         <form id="regenerate-recovery-codes-form" onSubmit={handleSubmit} className="contents">
           <FormProvider {...form}>
             <DialogHeader>
@@ -72,9 +75,9 @@ export const RegenerateRecoveryCodesModal = ({ open, onOpenChange, user }: Regen
                 {t('account.mfa.regenerateModal.description')}
               </DialogDescription>
             </DialogHeader>
-
-            <MfaFreshProofFields allowCode={allowCode} />
-
+            <DialogBody className="flex flex-col gap-4">
+              <MfaFreshProofFields allowCode={allowCode} />
+            </DialogBody>
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
                 {t('common.cancel')}

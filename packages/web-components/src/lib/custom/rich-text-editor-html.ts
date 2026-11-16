@@ -18,6 +18,12 @@ export function toContentHtml(html: string): string {
   const doc = new DOMParser().parseFromString(html, "text/html");
   const body = doc.body;
 
+  // Lexical (0.50+) closes a paragraph that ends on a line break with an extra terminator `<br>` so
+  // the break shows in a browser. It is the editor's rendering, not the user's content.
+  for (const terminator of Array.from(body.querySelectorAll("br[data-lexical-managed-linebreak]"))) {
+    terminator.remove();
+  }
+
   for (const element of Array.from(body.querySelectorAll("*"))) {
     element.removeAttribute("class");
     element.removeAttribute("style");

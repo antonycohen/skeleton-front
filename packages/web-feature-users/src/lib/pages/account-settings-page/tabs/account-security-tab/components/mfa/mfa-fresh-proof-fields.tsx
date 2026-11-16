@@ -29,7 +29,7 @@ export const MfaFreshProofFields = ({ allowCode }: MfaFreshProofFieldsProps) => 
         />
       )}
       {rootError && (
-        <p role="alert" className="text-sm text-destructive">
+        <p role="alert" className="body text-destructive">
           {tIfKey(rootError)}
         </p>
       )}

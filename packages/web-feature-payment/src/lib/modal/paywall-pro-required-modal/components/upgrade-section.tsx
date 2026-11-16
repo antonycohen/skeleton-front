@@ -44,16 +44,16 @@ export function UpgradeSection({
   return (
     <>
       <div className="flex flex-col gap-4 rounded-md border bg-muted p-3">
-        <p className="font-heading text-lg font-semibold">{t('billing.paywall.upgrade')}</p>
+        <p className="title-md">{t('billing.paywall.upgrade')}</p>
 
         <div className="flex flex-col gap-4">
           <Separator />
           <div className="flex items-center justify-between pr-6">
             <div className="flex items-end gap-0.5">
-              <span className="font-heading text-4xl font-semibold tracking-[-1px]">
+              <span className="heading-lg">
                 {displayPrice ?? '—'}
               </span>
-              <span className="text-sm text-muted-foreground">
+              <span className="body text-muted-foreground">
                 {t('billing.paywall.perMonth')}
               </span>
             </div>
@@ -64,7 +64,7 @@ export function UpgradeSection({
                 onCheckedChange={onAnnualChange}
               />
               <div className="flex items-center gap-2.5 pt-[3px]">
-                <span className="text-sm font-medium leading-none">{t('billing.paywall.annual')}</span>
+                <span className="label-dense">{t('billing.paywall.annual')}</span>
                 {annualSavings && (
                   <BadgeStatus variant="pricing">{annualSavings}</BadgeStatus>
                 )}
@@ -95,10 +95,10 @@ export function UpgradeSection({
 
       <Collapsible open={showAllFeatures} onOpenChange={setShowAllFeatures} className="flex flex-col gap-3">
         <div className="flex items-center justify-between">
-          <p className="text-sm font-medium">{t('billing.paywall.youWillUnlock')}</p>
+          <p className="label">{t('billing.paywall.youWillUnlock')}</p>
           {features.length > 2 && (
             <CollapsibleTrigger asChild>
-              <Button variant="ghost" size="sm" className="text-xs">
+              <Button variant="ghost" size="sm" className="label-sm">
                 {showAllFeatures ? t('billing.paywall.showLess') : t('billing.paywall.showMore')}
                 {showAllFeatures ? (
                   <ChevronUpIcon className="size-4" />
@@ -131,7 +131,7 @@ function FeatureRow({ feature }: { feature: PlanFeature }) {
       ) : (
         <XIcon className="size-5 shrink-0 text-muted-foreground" />
       )}
-      <span className={`text-sm ${included ? 'text-muted-foreground' : 'text-muted-foreground line-through'}`}>
+      <span className={`body ${included ? 'text-muted-foreground' : 'text-muted-foreground line-through'}`}>
         {feature.name}
       </span>
     </div>

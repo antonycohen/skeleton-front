@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Line, LineChart, XAxis, YAxis, CartesianGrid } from 'recharts';
 import { cn } from '@skeleton/core-utils';
 import { useTranslation } from '@skeleton/core-translations';
-import { Card } from '../ui/card';
+import { Card, CardTitle } from '../ui/card';
 import {
   ChartConfig,
   ChartContainer,
@@ -28,8 +28,6 @@ export type LineChartCardDataPoint = {
 
 export type LineChartCardProps = {
   className?: string;
-  headerIcon?: React.ReactNode;
-  headerLabel?: string;
   title?: string;
   description?: string;
   data?: LineChartCardDataPoint[];
@@ -51,8 +49,6 @@ const defaultValueFormatter = (value: number): string => {
 
 export function LineChartCard({
   className,
-  headerIcon,
-  headerLabel,
   title,
   description,
   data = [],
@@ -81,30 +77,16 @@ export function LineChartCard({
       data-slot="line-chart-card"
       className={cn('gap-0 overflow-hidden p-0', className)}
     >
-      {/* Header bar */}
-      {headerLabel && (
-        <div className="flex items-center gap-1.5 border-b border-border px-3 py-2.5">
-          {headerIcon && (
-            <div className="flex size-4 items-center justify-center text-foreground">
-              {headerIcon}
-            </div>
-          )}
-          <span className="text-sm text-muted-foreground">{headerLabel}</span>
-        </div>
-      )}
-
       {/* Title section */}
-      <div className="flex flex-col gap-1.5 px-6 pt-6">
-        <h3 className="text-xl font-semibold tracking-tight text-foreground">
-          {title ?? t('components.lineChart.title')}
-        </h3>
+      <div className="flex flex-col gap-1 px-6 pt-6">
+        <CardTitle>{title ?? t('components.lineChart.title')}</CardTitle>
         {description && (
-          <p className="text-sm text-muted-foreground">{description}</p>
+          <p className="body text-muted-foreground">{description}</p>
         )}
       </div>
 
       {/* Chart */}
-      <div className="h-[264px] w-full px-2 pb-4 pt-4">
+      <div className="h-[264px] w-full p-6">
         {hasData ? (
           <ChartContainer config={chartConfig} className="h-full w-full">
             <LineChart
@@ -147,13 +129,13 @@ export function LineChartCard({
                   activeDot={{ r: 5 }}
                 />
               ))}
-              <ChartLegend content={<ChartLegendContent />} />
+              <ChartLegend align="left" wrapperStyle={{ left: 0 }} content={<ChartLegendContent className="justify-start pt-4" />} />
             </LineChart>
           </ChartContainer>
         ) : (
-          <ChartEmptyFrame dateFormatter={dateFormatter}>
+          <ChartEmptyFrame>
             {emptyState ?? (
-              <p className="text-sm text-muted-foreground">{emptyMessage ?? t('components.chart.noData')}</p>
+              <p className="body text-muted-foreground">{emptyMessage ?? t('components.chart.noData')}</p>
             )}
           </ChartEmptyFrame>
         )}

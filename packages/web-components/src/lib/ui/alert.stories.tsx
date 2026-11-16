@@ -1,13 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { CircleAlertIcon, InfoIcon } from 'lucide-react';
-import { Alert, AlertDescription, AlertTitle } from './alert';
+import { CircleAlertIcon, CircleCheckIcon, InfoIcon, TriangleAlertIcon } from 'lucide-react';
+import { Button } from './button';
+import { Alert, AlertAction, AlertDescription, AlertTitle } from './alert';
 
-const VARIANTS = ['default', 'important', 'destructive'] as const;
+const VARIANTS = ['default', 'important', 'success', 'warning', 'destructive'] as const;
 
 /** The colour says how much it matters, the icon what kind of message it is. */
 const ICONS = {
   default: InfoIcon,
   important: InfoIcon,
+  success: CircleCheckIcon,
+  warning: TriangleAlertIcon,
   destructive: CircleAlertIcon,
 } as const;
 
@@ -32,7 +35,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
-/** Not to be missed, but no risk: a prerequisite, an upsell, something ready to review. */
+/** Not to be missed, but no risk: a prerequisite, an upsell, something ready to review. A risk is a `warning`. */
 export const Important: Story = {
   args: { variant: 'important' },
   render: (args) => (
@@ -40,6 +43,29 @@ export const Important: Story = {
       <InfoIcon />
       <AlertTitle>Your own account needs 2FA first</AlertTitle>
       <AlertDescription>Turn on two-factor authentication on your account before enforcing it for the workspace.</AlertDescription>
+    </Alert>
+  ),
+};
+
+export const Success: Story = {
+  args: { variant: 'success' },
+  render: (args) => (
+    <Alert {...args} className="max-w-lg">
+      <CircleCheckIcon />
+      <AlertTitle>Import complete</AlertTitle>
+      <AlertDescription>248 contacts were added to the Enterprise accounts list.</AlertDescription>
+    </Alert>
+  ),
+};
+
+/** Consequences to read before confirming: removing SSO, codes shown once, irreversible changes. */
+export const Warning: Story = {
+  args: { variant: 'warning' },
+  render: (args) => (
+    <Alert {...args} className="max-w-lg">
+      <TriangleAlertIcon />
+      <AlertTitle>Recovery codes are shown only once</AlertTitle>
+      <AlertDescription>Copy or download them now. You won't be able to see them again after closing.</AlertDescription>
     </Alert>
   ),
 };
@@ -64,7 +90,49 @@ export const TitleOnly: Story = {
   ),
 };
 
-/** Every variant, in light and dark. */
+/** `AlertAction` sits on the right, centred on the text: a small outline button, or a link before it. */
+export const WithAction: Story = {
+  args: { variant: 'destructive' },
+  render: (args) => (
+    <div className="flex max-w-2xl flex-col gap-3">
+      <Alert {...args}>
+        <CircleAlertIcon />
+        <AlertTitle>This workspace is scheduled for deletion</AlertTitle>
+        <AlertDescription>Deletion will occur on November 4, 2026. All actions are limited to read-only.</AlertDescription>
+        <AlertAction>
+          <Button variant="outline" size="sm">Cancel deletion</Button>
+        </AlertAction>
+      </Alert>
+      <Alert variant="important">
+        <InfoIcon />
+        <AlertTitle>12 members have not accepted their invitation</AlertTitle>
+        <AlertAction>
+          <Button variant="link" size="sm" className="px-0 text-current">Learn more</Button>
+          <Button variant="outline" size="sm">Manage</Button>
+        </AlertAction>
+      </Alert>
+    </div>
+  ),
+};
+
+/** Titles wrap instead of being cut. */
+export const LongTitle: Story = {
+  args: { variant: 'destructive' },
+  render: (args) => (
+    <Alert {...args} className="max-w-lg">
+      <CircleAlertIcon />
+      <AlertTitle>
+        Your subscription is past due. Change your payment method and pay your overdue invoice, or cancel your
+        subscription.
+      </AlertTitle>
+      <AlertAction>
+        <Button variant="outline" size="sm">Update</Button>
+      </AlertAction>
+    </Alert>
+  ),
+};
+
+/** Every variant, with and without an action, in light and dark. */
 export const Matrix: Story = {
   render: (args) => (
     <div className="grid gap-6 md:grid-cols-2">
@@ -77,6 +145,11 @@ export const Matrix: Story = {
                 <Icon />
                 <AlertTitle className="capitalize">{variant}</AlertTitle>
                 <AlertDescription>Add the DNS record to acme.com to verify your domain.</AlertDescription>
+                {variant !== 'default' && variant !== 'success' && (
+                  <AlertAction>
+                    <Button variant="outline" size="sm">Action</Button>
+                  </AlertAction>
+                )}
               </Alert>
             );
           })}

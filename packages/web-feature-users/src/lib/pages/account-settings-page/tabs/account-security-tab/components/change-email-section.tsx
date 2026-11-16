@@ -30,21 +30,21 @@ export const ChangeEmailSection = ({ user }: ChangeEmailSectionProps) => {
   return (
     <form id="change-email-form" onSubmit={handleSubmit}>
       <FormProvider {...form}>
-        <Card className="rounded-2xl">
+        <Card>
           <CardHeader>
             <div className="flex items-center gap-2">
-              <CardTitle className="text-xl">{t('account.email.title')}</CardTitle>
+              <CardTitle size="lg">{t('account.email.title')}</CardTitle>
               <Badge
                 variant="outline"
                 className={
                   isVerified
-                    ? 'gap-1.5 rounded-md border-emerald-200 bg-emerald-50 px-2 py-0.5 text-xs text-emerald-700'
-                    : 'gap-1.5 rounded-md border-muted bg-muted/50 px-2 py-0.5 text-xs text-muted-foreground'
+                    ? 'gap-1.5 border-success-border bg-success-surface px-2 py-0.5 body-sm text-success-on-surface'
+                    : 'gap-1.5 border-muted bg-muted/50 px-2 py-0.5 body-sm text-muted-foreground'
                 }
               >
               <span
                 className={`size-2 rounded-full ${
-                  isVerified ? 'bg-emerald-400' : 'bg-muted-foreground/50'
+                  isVerified ? 'bg-success-on-surface' : 'bg-muted-foreground/50'
                 }`}
               />
                 {isVerified ? t('account.email.verified') : t('account.email.notVerified')}

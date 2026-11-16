@@ -104,12 +104,12 @@ export const FunnelStepper = memo(({className, compact: forcedCompact = false}: 
               style={!isCompact ? { minWidth: `calc(${step.label.length}ch + 24px)` } : undefined}
             >
               <StepperTrigger className={cn(isCompact && 'flex-col')}>
-                <StepperIndicator className="size-5 text-xs data-[state=inactive]:text-ring">
+                <StepperIndicator className="size-5 label-sm-dense data-[state=inactive]:text-ring">
                   {index + 1}
                 </StepperIndicator>
                 <StepperTitle
                   className={cn(
-                    'px-1 text-xs font-medium',
+                    'px-1 label-sm',
                     isCompact ? 'w-full truncate text-center' : 'whitespace-nowrap',
                     index <= stepperActiveStepIndex ? 'text-foreground' : 'text-ring',
                   )}

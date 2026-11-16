@@ -60,6 +60,8 @@ export type ColorPickerProps = HTMLAttributes<HTMLDivElement> & {
   onChange?: (value: Parameters<typeof Color.rgb>[0]) => void;
 };
 
+const UNSYNCED = Symbol('unsynced');
+
 export const ColorPicker = ({
   value,
   defaultValue = '#000000',
@@ -84,8 +86,11 @@ export const ColorPicker = ({
   );
   const [mode, setMode] = useState('hex');
 
-  // Update color when controlled value changes
-  useEffect(() => {
+  // Update color when controlled value changes: adjusted while rendering, as React recommends,
+  // rather than in an effect. `syncedValue` starts unset so the first value is applied too.
+  const [syncedValue, setSyncedValue] = useState<ColorPickerProps['value'] | typeof UNSYNCED>(UNSYNCED);
+  if (value !== syncedValue) {
+    setSyncedValue(value);
     if (value) {
       const color = Color.rgb(value).rgb().object();
 
@@ -94,7 +99,7 @@ export const ColorPicker = ({
       setLightness(color.b);
       setAlpha(color.a);
     }
-  }, [value]);
+  }
 
   // Notify parent of changes
   useEffect(() => {
@@ -327,12 +332,12 @@ export const ColorPickerOutput = ({
 
   return (
     <Select onValueChange={setMode} value={mode}>
-      <SelectTrigger className="h-8 w-20 shrink-0 text-xs" {...props}>
+      <SelectTrigger className="h-8 w-20 shrink-0 body-sm" {...props}>
         <SelectValue placeholder={t('components.colorPicker.mode')} />
       </SelectTrigger>
       <SelectContent>
         {formats.map((format) => (
-          <SelectItem className="text-xs" key={format} value={format}>
+          <SelectItem className="body-sm" key={format} value={format}>
             {format.toUpperCase()}
           </SelectItem>
         ))}
@@ -351,11 +356,11 @@ const PercentageInput = ({ className, ...props }: PercentageInputProps) => {
         type="text"
         {...props}
         className={cn(
-          'h-8 w-[3.25rem] rounded-l-none bg-secondary px-2 text-xs shadow-none',
+          'h-8 w-[3.25rem] rounded-l-none bg-secondary px-2 body-sm shadow-none',
           className
         )}
       />
-      <span className="absolute top-1/2 right-2 -translate-y-1/2 text-xs text-muted-foreground">
+      <span className="absolute top-1/2 right-2 -translate-y-1/2 body-sm text-muted-foreground">
         %
       </span>
     </div>
@@ -386,7 +391,7 @@ export const ColorPickerFormat = ({
         {...props}
       >
         <Input
-          className="h-8 rounded-r-none bg-secondary px-2 text-xs shadow-none"
+          className="h-8 rounded-r-none bg-secondary px-2 body-sm shadow-none"
           type="text"
           value={displayHex}
           onFocus={() => {
@@ -430,7 +435,7 @@ export const ColorPickerFormat = ({
         {rgb.map((value: number, index: number) => (
           <Input
             className={cn(
-              'h-8 rounded-r-none bg-secondary px-2 text-xs shadow-none',
+              'h-8 rounded-r-none bg-secondary px-2 body-sm shadow-none',
               index && 'rounded-l-none',
               className
             )}
@@ -454,7 +459,7 @@ export const ColorPickerFormat = ({
     return (
       <div className={cn('w-full rounded-md shadow-sm', className)} {...props}>
         <Input
-          className="h-8 w-full bg-secondary px-2 text-xs shadow-none"
+          className="h-8 w-full bg-secondary px-2 body-sm shadow-none"
           readOnly
           type="text"
           value={`rgba(${rgb.join(', ')}, ${alpha}%)`}
@@ -480,7 +485,7 @@ export const ColorPickerFormat = ({
         {hsl.map((value: number, index: number) => (
           <Input
             className={cn(
-              'h-8 rounded-r-none bg-secondary px-2 text-xs shadow-none',
+              'h-8 rounded-r-none bg-secondary px-2 body-sm shadow-none',
               index && 'rounded-l-none',
               className
             )}

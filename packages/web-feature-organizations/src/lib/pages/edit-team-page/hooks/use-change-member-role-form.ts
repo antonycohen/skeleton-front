@@ -15,12 +15,15 @@ type UseChangeMemberRoleFormOptions = {
   organizationId: string;
   member: OrganizationMember;
   onSuccess?: () => void;
+  /** The API refused the change (409): the member is the last admin, or the directory sets their role. */
+  onConflict?: () => void;
 };
 
 export const useChangeMemberRoleForm = ({
   organizationId,
   member,
   onSuccess,
+  onConflict,
 }: UseChangeMemberRoleFormOptions) => {
   const { t } = useTranslation();
   const form = useForm<UpdateOrganizationMemberRole>({
@@ -35,7 +38,16 @@ export const useChangeMemberRoleForm = ({
       toast.success(t('teams.changeRole.success'));
       onSuccess?.();
     },
-    onError: (error) => handleApiError(error, form),
+    onError: (error) => {
+      // A 409 is about the member, not the form (last admin, or a role the directory sets): the
+      // row was stale, the list refreshes, and the message is what the admin needs.
+      if (error.httpCode === 409) {
+        toast.error(error.error);
+        onConflict?.();
+        return;
+      }
+      handleApiError(error, form);
+    },
   });
 
   const handleSubmit = form.handleSubmit((data) => {

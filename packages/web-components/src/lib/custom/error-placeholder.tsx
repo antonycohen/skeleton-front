@@ -18,10 +18,10 @@ export const ErrorPlaceholder = ({
       <div className="flex w-full max-w-[672px] flex-col items-center gap-6">
         <div className="flex w-full flex-col items-center gap-4">
           {image}
-          <h2 className="w-full text-center font-heading text-3xl font-semibold tracking-tight text-card-foreground">
+          <h2 className="w-full text-center heading-lg text-card-foreground">
             {title}
           </h2>
-          <p className="w-full text-center text-sm text-foreground">
+          <p className="w-full text-center body text-foreground">
             {description}
           </p>
         </div>

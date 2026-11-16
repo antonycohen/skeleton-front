@@ -69,7 +69,7 @@ export function SsoIdentityProviderCard({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-xl">{t('security.idp.title')}</CardTitle>
+        <CardTitle size="lg">{t('security.idp.title')}</CardTitle>
         <CardDescription>{t('security.idp.description')}</CardDescription>
       </CardHeader>
 
@@ -96,11 +96,11 @@ export function SsoIdentityProviderCard({
                     <div className="flex flex-col">
                       <Label
                         htmlFor={`sso-protocol-${option.value}`}
-                        className="font-normal"
+                        className="body-dense"
                       >
                         {option.label}
                       </Label>
-                      <span className="text-xs text-muted-foreground">
+                      <span className="body-sm text-muted-foreground">
                         {t(option.hintKey)}
                       </span>
                     </div>

@@ -59,7 +59,7 @@ export function DocumentationSearchInput({
   const defaultCategory = t("components.documentationSearch.results");
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [options, setOptions] = useState<DocumentationSearchOption[]>([]);
+  const [fetchedOptions, setFetchedOptions] = useState<DocumentationSearchOption[]>([]);
   const [loading, setLoading] = useState(false);
 
   const isAsync = typeof source === "function";
@@ -80,19 +80,16 @@ export function DocumentationSearchInput({
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [shortcut]);
 
-  // For static source, filter options based on query
-  useEffect(() => {
-    if (!isAsync) {
-      const filtered = query
-        ? source.filter(
-            (option) =>
-              option.label.toLowerCase().includes(query.toLowerCase()) ||
-              option.description?.toLowerCase().includes(query.toLowerCase())
-          )
-        : source;
-      setOptions(filtered);
-    }
-  }, [source, query, isAsync]);
+  // For static source, filter options based on query (while rendering); an async one is fetched below
+  const options = isAsync
+    ? fetchedOptions
+    : query
+      ? source.filter(
+          (option) =>
+            option.label.toLowerCase().includes(query.toLowerCase()) ||
+            option.description?.toLowerCase().includes(query.toLowerCase())
+        )
+      : source;
 
   // For async source, fetch options when query changes
   useEffect(() => {
@@ -102,9 +99,9 @@ export function DocumentationSearchInput({
       setLoading(true);
       try {
         const results = await source(query);
-        setOptions(results);
+        setFetchedOptions(results);
       } catch {
-        setOptions([]);
+        setFetchedOptions([]);
       } finally {
         setLoading(false);
       }
@@ -148,7 +145,7 @@ export function DocumentationSearchInput({
         onClick={() => setOpen(true)}
         disabled={disabled}
         className={cn(
-          "border-input bg-input-background flex h-9 w-full items-center gap-2 rounded-md border px-3 text-sm shadow-xs transition-[color,box-shadow]",
+          "border-input bg-input-background flex h-9 w-full items-center gap-2 rounded-md border px-3 body shadow-xs transition-[color,box-shadow]",
           "hover:bg-accent/50",
           "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-none focus-visible:ring-[3px]",
           "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
@@ -160,7 +157,7 @@ export function DocumentationSearchInput({
           {placeholder}
         </span>
         {shortcut && (
-          <kbd className="bg-muted text-muted-foreground pointer-events-none flex h-5 min-w-5 items-center justify-center rounded px-1 text-xs font-medium">
+          <kbd className="bg-muted text-muted-foreground pointer-events-none flex h-5 min-w-5 items-center justify-center rounded px-1 label-sm">
             {shortcut}
           </kbd>
         )}
@@ -168,11 +165,11 @@ export function DocumentationSearchInput({
 
       {/* Search dialog */}
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="gap-0 overflow-hidden p-0 sm:max-w-xl" showCloseButton={false}>
+        <DialogContent scrollable={false} className="gap-0 overflow-hidden rounded-2xl p-0 sm:max-w-xl" showCloseButton={false}>
           <VisuallyHidden.Root>
             <DialogTitle>{t("components.documentationSearch.title")}</DialogTitle>
           </VisuallyHidden.Root>
-          <Command shouldFilter={!isAsync} className="[&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-input-wrapper]_svg]:size-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-3 [&_[cmdk-item]]:py-3">
+          <Command shouldFilter={!isAsync} className="[&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:label-sm [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-input-wrapper]_svg]:size-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-3 [&_[cmdk-item]]:py-3">
             <CommandInput
               placeholder={searchPlaceholder}
               value={query}
@@ -180,7 +177,7 @@ export function DocumentationSearchInput({
             />
             <CommandList className="max-h-[400px]">
               {loading ? (
-                <div className="text-muted-foreground py-6 text-center text-sm">
+                <div className="text-muted-foreground py-6 text-center body">
                   {t("components.documentationSearch.searching")}
                 </div>
               ) : (
@@ -199,7 +196,7 @@ export function DocumentationSearchInput({
                           <div className="flex flex-col gap-0.5">
                             <span className="font-medium">{option.label}</span>
                             {option.description && (
-                              <span className="text-muted-foreground text-xs">
+                              <span className="text-muted-foreground body-sm">
                                 {option.description}
                               </span>
                             )}

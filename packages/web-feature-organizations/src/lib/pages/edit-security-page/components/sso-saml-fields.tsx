@@ -22,7 +22,7 @@ import {
   SsoSamlConnectionFormValues,
   SsoSamlSource,
 } from '@skeleton/core-api-models';
-import { InfoIcon } from 'lucide-react';
+import { TriangleAlertIcon } from 'lucide-react';
 import { toPemCertificate } from '../certificate-file';
 import { FileOrPasteInput } from './file-or-paste-input';
 import { useTranslation } from '@skeleton/core-translations';
@@ -133,11 +133,11 @@ export function SsoSamlFields() {
                   <div className="flex flex-col">
                     <Label
                       htmlFor={`sso-saml-source-${option.value}`}
-                      className="font-normal"
+                      className="body-dense"
                     >
                       {t(option.labelKey)}
                     </Label>
-                    <span className="text-xs text-muted-foreground">
+                    <span className="body-sm text-muted-foreground">
                       {t(option.hintKey)}
                     </span>
                   </div>
@@ -226,10 +226,10 @@ export function SsoSamlFields() {
         />
       ) : (
         <div className="flex items-center justify-between gap-4">
-          <span className="text-sm font-semibold">
+          <span className="title">
             {t('security.saml.binding')}
           </span>
-          <span className="text-sm text-muted-foreground">
+          <span className="body text-muted-foreground">
             {t('security.saml.bindingFromMetadata', {
               binding: t(BINDING_LABEL_KEYS[form.getValues('idpSsoBinding')]),
             })}
@@ -242,11 +242,11 @@ export function SsoSamlFields() {
           <div className="flex flex-col gap-0.5">
             <Label
               htmlFor="sso-saml-attribute-preset"
-              className="font-semibold"
+              className="title-dense"
             >
               {t('security.saml.attributeNames')}
             </Label>
-            <span className="text-sm text-muted-foreground">
+            <span className="body text-muted-foreground">
               {t('security.saml.attributeNamesHint')}
             </span>
           </div>
@@ -296,8 +296,8 @@ export function SsoSamlFields() {
         />
       </div>
 
-      <Alert>
-        <InfoIcon />
+      <Alert variant="warning">
+        <TriangleAlertIcon />
         <AlertDescription>{t('security.saml.trustNotice')}</AlertDescription>
       </Alert>
     </>

@@ -1,6 +1,6 @@
 import { cn } from '@skeleton/core-utils';
 import { useTranslation } from '@skeleton/core-translations';
-import { Card } from '../ui/card';
+import { Card, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 
@@ -38,9 +38,9 @@ export function AlertCard({
       data-slot="alert-card"
       className={cn('gap-2 p-6', className)}
     >
-      <span className="text-sm font-medium text-card-foreground">{title}</span>
-      <span className="text-2xl font-bold text-card-foreground">{value}</span>
-      <Badge variant="secondary" className="w-fit rounded-md">
+      <CardTitle>{title}</CardTitle>
+      <span className="heading-md text-card-foreground">{value}</span>
+      <Badge variant="secondary" className="w-fit">
         <span className={cn('size-2 rounded-full', statusDotColors[status])} />
         {statusLabel}
       </Badge>

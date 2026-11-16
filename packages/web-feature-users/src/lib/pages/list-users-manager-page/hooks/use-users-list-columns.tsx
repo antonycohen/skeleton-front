@@ -1,4 +1,3 @@
-import {ColumnDef} from '@tanstack/react-table';
 import {User} from '@skeleton/core-api-models';
 import {
   Avatar,
@@ -10,7 +9,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@skeleton/web-components';
-import {CollectionColumnHeader, CollectionRowActions,} from '@skeleton/web-collection';
+import {CollectionColumnHeader, CollectionRowActions, type CollectionColumnDef} from '@skeleton/web-collection';
 import {Link} from 'react-router-dom';
 import {format} from 'date-fns';
 import {IconEye} from '@tabler/icons-react';
@@ -25,7 +24,7 @@ const getInitials = (user: User) =>
     .slice(0, 2)
     .toUpperCase() || '?';
 
-export function useUsersListColumns(): ColumnDef<User>[] {
+export function useUsersListColumns(): CollectionColumnDef<User>[] {
   const {t} = useTranslation();
 
   return [
@@ -43,7 +42,7 @@ export function useUsersListColumns(): ColumnDef<User>[] {
                 alt={`${user.firstName ?? ''} ${user.lastName ?? ''}`.trim()}
               />
             )}
-            <AvatarFallback className="text-xs">
+            <AvatarFallback className="body-sm">
               {getInitials(user)}
             </AvatarFallback>
           </Avatar>

@@ -1,14 +1,18 @@
+import { TriangleAlertIcon } from 'lucide-react';
 import {
   Button,
   Dialog,
+  DialogBody,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  Alert,
+  AlertDescription,
+  AlertTitle,
 } from '@skeleton/web-components';
 import { OrganizationMember } from '@skeleton/core-api-models';
 import { useSuspendOrganizationMember } from '@skeleton/core-api';
-import { IconCircleCheck } from '@tabler/icons-react';
 import { toast } from 'sonner';
 import { useTranslation } from '@skeleton/core-translations';
 
@@ -33,6 +37,8 @@ export const SuspendMemberModal = ({
     },
     onError: (error) => {
       toast.error(error.message || t('teams.suspend.error'));
+      // 409: last admin, or a member the directory manages. The row was stale and refreshes.
+      if (error.httpCode === 409) onOpenChange(false);
     },
   });
 
@@ -46,25 +52,19 @@ export const SuspendMemberModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent size="sm">
         <DialogHeader>
           <DialogTitle>{t('teams.actions.suspendAccess')}</DialogTitle>
         </DialogHeader>
-
-        <div className="flex gap-3 items-start rounded-lg border border-rose-200 bg-rose-50 px-4 py-3">
-          <div className="pt-0.5">
-            <IconCircleCheck className="size-4 text-destructive" />
-          </div>
-          <div className="flex flex-col gap-1 flex-1 text-destructive">
-            <p className="text-sm font-medium">
-              {t('teams.memberEmail', { email: member.email })}
-            </p>
-            <p className="text-sm">
+        <DialogBody className="flex flex-col gap-4">
+          <Alert variant="warning">
+            <TriangleAlertIcon />
+            <AlertTitle>{t('teams.memberEmail', { email: member.email })}</AlertTitle>
+            <AlertDescription>
               {t('teams.suspend.description')}
-            </p>
-          </div>
-        </div>
-
+            </AlertDescription>
+          </Alert>
+        </DialogBody>
         <DialogFooter>
           <Button
             type="button"

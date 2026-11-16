@@ -37,9 +37,9 @@ export const AccountProfileTab = () => {
       <div className="flex flex-col gap-8">
         {/* Profile Card */}
         <form onSubmit={handleSubmit}>
-          <Card className="rounded-2xl gap-0">
+          <Card className="gap-0">
             <CardHeader>
-              <CardTitle className="text-xl">{t('account.profile.title')}</CardTitle>
+              <CardTitle size="lg">{t('account.profile.title')}</CardTitle>
               <CardDescription>
                 {t('account.profile.description')}
               </CardDescription>
@@ -73,15 +73,15 @@ export const AccountProfileTab = () => {
         </form>
 
         {/* Delete Account Card */}
-        <Card className="rounded-lg">
+        <Card>
           <CardHeader>
-            <CardTitle className="text-xl">{t('account.deleteAccount.title')}</CardTitle>
+            <CardTitle size="lg">{t('account.deleteAccount.title')}</CardTitle>
             <CardDescription>
               {t('account.deleteAccount.description')}
             </CardDescription>
           </CardHeader>
           <CardFooter className="border-t justify-between">
-            <p className="text-sm text-destructive">
+            <p className="body text-destructive">
               {t('account.deleteAccount.warning')}
             </p>
             <Button

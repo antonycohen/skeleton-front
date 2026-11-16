@@ -49,7 +49,7 @@ export function DatePicker({
           disabled={disabled}
           data-empty={!date}
           aria-invalid={ariaInvalid}
-          className={className ?? "data-[empty=true]:text-muted-foreground w-[280px] justify-start text-left font-normal"}
+          className={className ?? "data-[empty=true]:text-muted-foreground w-[280px] justify-start text-left body"}
         >
           <CalendarIcon />
           {date ? format(date, "PPP") : <span>{placeholder ?? t('components.datePicker.placeholder')}</span>}

@@ -25,12 +25,12 @@ function WebSearchResultItem({ result, className }: WebSearchResultItemProps) {
       )}
     >
       <div className="flex items-start justify-between gap-2">
-        <h4 className="flex-1 text-sm font-medium text-foreground group-hover:text-primary">
+        <h4 className="flex-1 label text-foreground group-hover:text-primary">
           {result.title}
         </h4>
         <ExternalLink className="size-3.5 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
       </div>
-      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+      <div className="flex items-center gap-2 body-sm text-muted-foreground">
         <span className="truncate">{formatUrl(result.url)}</span>
         {result.pageAge && (
           <>
@@ -61,12 +61,12 @@ export function WebSearchContent({ results, isStreaming, className }: WebSearchC
 
   return (
     <div className={cn('my-2', className)}>
-      <div className="mb-2 flex items-center gap-2 text-sm font-medium text-muted-foreground">
+      <div className="mb-2 flex items-center gap-2 label text-muted-foreground">
         <Globe className="size-4" />
         <span>
           {t('ai.webSearch.results')}
           {isStreaming && (
-            <span className="ml-2 inline-flex items-center gap-1 text-xs">
+            <span className="ml-2 inline-flex items-center gap-1 body-sm">
               <span className="inline-block size-1.5 animate-pulse rounded-full bg-current" />
             </span>
           )}

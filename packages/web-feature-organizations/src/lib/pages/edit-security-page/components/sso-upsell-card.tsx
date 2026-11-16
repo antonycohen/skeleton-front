@@ -20,16 +20,16 @@ export function SsoUpsellCard() {
   const { openPaywall } = useOpenPaywall();
 
   return (
-    <Card className="rounded-2xl">
+    <Card>
       <CardHeader>
         <div className="flex items-center gap-3">
-          <CardTitle className="text-xl">{t('security.sso.title')}</CardTitle>
+          <CardTitle size="lg">{t('security.sso.title')}</CardTitle>
           <Badge variant="important">{t('security.sso.upsell.badge')}</Badge>
         </div>
         <CardDescription>{t('security.sso.upsell.description')}</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
-        <div className="flex items-start gap-3 text-sm text-muted-foreground">
+        <div className="flex items-start gap-3 body text-muted-foreground">
           <IconKey className="mt-0.5 size-5 shrink-0" />
           <span>{t('security.sso.upsell.features')}</span>
         </div>

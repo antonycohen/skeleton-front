@@ -21,7 +21,9 @@ import { useTranslation } from '@skeleton/core-translations';
  * are not reset to their defaults by a save of the trust material.
  *
  * The client secret is never read back from the API: the field starts empty and is only sent when
- * the admin typed one, which is what keeps the stored secret on a save of the issuer alone.
+ * the admin typed one. A save without one keeps the stored secret, except when the issuer changed:
+ * the backend then drops it, so that it is never sent to another provider's token endpoint, and the
+ * connection shows no secret until the admin enters the new provider's one.
  */
 export function useSsoConnectionForm(
   organizationId: string,

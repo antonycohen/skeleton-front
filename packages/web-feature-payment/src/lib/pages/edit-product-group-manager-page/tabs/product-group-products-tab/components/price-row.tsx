@@ -36,7 +36,7 @@ export const PriceRow = ({
     <li className="flex items-center justify-between gap-3 rounded-lg px-3 py-3 transition-colors hover:bg-muted/50">
       <div className="flex flex-col min-w-0 flex-1 gap-1">
         <div className="flex items-center gap-2 min-w-0">
-          <span className="font-medium truncate">
+          <span className="label-lg truncate">
             {price.nickname || price.lookupKey || t('adminPayment.prices.untitled')}
           </span>
           {isActive ? (
@@ -45,7 +45,7 @@ export const PriceRow = ({
             <BadgeStatus variant="red">{t('adminPayment.status.inactive')}</BadgeStatus>
           )}
         </div>
-        <div className="flex items-center gap-2 text-xs text-muted-foreground min-w-0">
+        <div className="flex items-center gap-2 body-sm text-muted-foreground min-w-0">
           {price.lookupKey ? (
             <code className="rounded bg-muted px-1.5 py-0.5 font-mono truncate">
               {price.lookupKey}
@@ -64,7 +64,7 @@ export const PriceRow = ({
             {formatAmount(price.unitAmountInCents, price.currency)}
           </span>
           {price.recurringInterval ? (
-            <span className="text-xs text-muted-foreground">
+            <span className="body-sm text-muted-foreground">
               {intervalLabels[price.recurringInterval] ?? `/ ${price.recurringInterval}`}
             </span>
           ) : null}

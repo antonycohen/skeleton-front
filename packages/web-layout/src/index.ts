@@ -2,6 +2,7 @@ export * from './lib/user-layout';
 export * from './lib/layout-header';
 export * from './lib/layout-top-bar';
 export * from './lib/navbar';
+export * from './lib/split-layout';
 export * from './lib/use-collapsed-sidebar';
 export * from './lib/sidebar-visibility';
 export * from './lib/use-breadcrumb';

@@ -4,6 +4,7 @@ import { useDisableMfa } from '@skeleton/core-api';
 import {
   Button,
   Dialog,
+  DialogBody,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -40,18 +41,18 @@ export const DisableMfaModal = ({ open, onOpenChange, user }: DisableMfaModalPro
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent size="sm">
         <form id="disable-mfa-form" onSubmit={handleSubmit} className="contents">
           <FormProvider {...form}>
             <DialogHeader>
               <DialogTitle>{t('account.mfa.disableModal.title')}</DialogTitle>
-              <DialogDescription>
+            </DialogHeader>
+            <DialogBody className="flex flex-col gap-4">
+              <DialogDescription className="text-foreground">
                 {t('account.mfa.disableModal.description')}
               </DialogDescription>
-            </DialogHeader>
-
-            <MfaFreshProofFields allowCode={allowCode} />
-
+              <MfaFreshProofFields allowCode={allowCode} />
+            </DialogBody>
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
                 {t('common.cancel')}

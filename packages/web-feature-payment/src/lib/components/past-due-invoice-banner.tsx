@@ -29,7 +29,7 @@ export function PastDueInvoiceBanner() {
   });
 
   return (
-    <div className="flex items-center justify-between gap-4 border-b border-amber-200 bg-amber-50 px-4 py-2 text-sm text-amber-900">
+    <div className="flex items-center justify-between gap-4 border-b border-warning-border bg-warning-surface px-4 py-2 body text-warning-on-surface">
       <div className="flex items-center gap-2">
         <AlertTriangle className="size-4 shrink-0" />
         <span>

@@ -55,4 +55,28 @@ export const AllBreakpoints: Story = { args: { viewMode: 'canvas' } };
 /** On the original page: no "view original content" segment. */
 export const OriginalPage: Story = { args: { originalContent: undefined } };
 
+/**
+ * On the original page of an embedded page: "Interact with the page" after the tools, checked by
+ * hand or held with ⌘/Ctrl + Shift (the page then takes clicks and hovers as a visitor's).
+ */
+export const InteractWithPage: Story = {
+  args: { originalContent: undefined },
+  render: function Render(args) {
+    const [tool, setTool] = useState<EditorToolbarTool>('select');
+    const [interact, setInteract] = useState(false);
+    return (
+      <EditorToolbar
+        {...args}
+        tool={tool}
+        onToolChange={setTool}
+        interact={interact}
+        onInteractChange={setInteract}
+      />
+    );
+  },
+};
+
 export const ViewModeOnly: Story = { args: { tool: undefined, originalContent: undefined } };
+
+/** A text changed in place: the bar is the edit's — the Text tool, "Unsaved text changes", Cancel (Esc) and Apply (⌘↵). */
+export const Editing: Story = { args: { editing: { onCancel: fn(), onApply: fn() } } };

@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Bar, BarChart, XAxis, YAxis } from 'recharts';
 import { cn } from '@skeleton/core-utils';
 import { useTranslation } from '@skeleton/core-translations';
-import { Card } from '../ui/card';
+import { Card, CardTitle } from '../ui/card';
 import {
   ChartConfig,
   ChartContainer,
@@ -72,15 +72,13 @@ export function BarChartCard({
   return (
     <Card
       data-slot="bar-chart-card"
-      className={cn('gap-2 overflow-hidden p-0 shadow-none', className)}
+      className={cn('gap-2 overflow-hidden p-0', className)}
     >
       {/* Header */}
-      <div className="flex flex-col gap-1.5 px-6 pt-6">
-        <h3 className="text-xl font-semibold tracking-tight text-foreground">
-          {title ?? t('components.barChart.title')}
-        </h3>
+      <div className="flex flex-col gap-1 px-6 pt-6">
+        <CardTitle>{title ?? t('components.barChart.title')}</CardTitle>
         {hasData && description && (
-          <p className="text-sm text-muted-foreground">{description}</p>
+          <p className="body text-muted-foreground">{description}</p>
         )}
       </div>
 
@@ -121,13 +119,13 @@ export function BarChartCard({
             </BarChart>
           </ChartContainer>
         ) : (
-          <ChartEmptyFrame dateFormatter={dateFormatter}>
+          <ChartEmptyFrame>
             {emptyState ?? (
-              <div className="flex flex-col items-center gap-2 text-center">
-                <p className="text-base font-medium text-foreground">
+              <div className="flex flex-col items-center gap-1 text-center">
+                <p className="title text-foreground">
                   {t('components.chart.noDataYet')}
                 </p>
-                <p className="text-sm text-muted-foreground">{emptyMessage ?? t('components.chart.noData')}</p>
+                <p className="body text-muted-foreground">{emptyMessage ?? t('components.chart.noData')}</p>
               </div>
             )}
           </ChartEmptyFrame>

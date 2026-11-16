@@ -11,8 +11,8 @@ const meta = {
   component: SignupPage,
   parameters: { session: 'anonymous', layout: 'centered' },
   render: () => (
-    <div className="max-w-md space-y-2 p-6 text-sm text-muted-foreground">
-      <p className="font-medium text-foreground">Not rendered: redirects on mount</p>
+    <div className="max-w-md space-y-2 p-6 body text-muted-foreground">
+      <p className="label text-foreground">Not rendered: redirects on mount</p>
       <p>
         <code>/signup</code> has no UI. It sends the browser to the authorization server&apos;s
         sign-up form (<code>register=1</code>), which comes back to <code>/login/callback</code>.

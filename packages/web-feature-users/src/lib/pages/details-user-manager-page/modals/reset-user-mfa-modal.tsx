@@ -1,10 +1,14 @@
 import {
   Button,
   Dialog,
+  DialogBody,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  Alert,
+  AlertDescription,
+  AlertTitle,
 } from '@skeleton/web-components';
 import type { ReadUser } from '@skeleton/core-api-models';
 import { useResetUserMfa } from '@skeleton/core-api';
@@ -37,25 +41,17 @@ export const ResetUserMfaModal = ({ open, onOpenChange, user }: ResetUserMfaModa
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent size="sm">
         <DialogHeader>
           <DialogTitle>{t('adminUsers.resetMfa.title')}</DialogTitle>
         </DialogHeader>
-
-        <div className="flex gap-3 items-start rounded-lg border border-rose-200 bg-rose-50 px-4 py-3">
-          <div className="pt-0.5">
-            <TriangleAlertIcon className="size-4 text-destructive" />
-          </div>
-          <div className="flex flex-col gap-1 flex-1 text-destructive">
-            <p className="text-sm font-medium">
-              {t('adminUsers.resetMfa.user', { user: user.email ?? user.id })}
-            </p>
-            <p className="text-sm">
-              {t('adminUsers.resetMfa.warning')}
-            </p>
-          </div>
-        </div>
-
+        <DialogBody className="flex flex-col gap-4">
+          <Alert variant="warning">
+            <TriangleAlertIcon />
+            <AlertTitle>{t('adminUsers.resetMfa.user', { user: user.email ?? user.id })}</AlertTitle>
+            <AlertDescription>{t('adminUsers.resetMfa.warning')}</AlertDescription>
+          </Alert>
+        </DialogBody>
         <DialogFooter>
           <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
             {t('common.cancel')}

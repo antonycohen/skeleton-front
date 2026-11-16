@@ -60,6 +60,12 @@ describe("toContentHtml", () => {
     );
   });
 
+  it("drops the terminator <br> Lexical adds after a trailing line break", () => {
+    expect(
+      toContentHtml(`${P}${SPAN}Line one</span><br><br data-lexical-managed-linebreak="true"></p>`)
+    ).toBe("Line one<br>");
+  });
+
   it("returns an empty string for an empty editor", () => {
     expect(toContentHtml(`${P}<br></p>`)).toBe("");
   });

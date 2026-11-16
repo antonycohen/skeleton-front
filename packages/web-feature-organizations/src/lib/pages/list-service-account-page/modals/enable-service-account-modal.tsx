@@ -1,6 +1,7 @@
 import {
   Button,
   Dialog,
+  DialogBody,
   DialogContent,
   DialogFooter,
   DialogHeader,
@@ -46,25 +47,25 @@ export const EnableServiceAccountModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent size="sm">
         <DialogHeader>
           <DialogTitle>{t('serviceAccounts.enable.title')}</DialogTitle>
         </DialogHeader>
-
-        <div className="flex gap-3 items-start rounded-lg border border-neutral-200 bg-muted px-4 py-3">
-          <div className="pt-0.5">
-            <IconCircleCheck className="size-4" />
+        <DialogBody className="flex flex-col gap-4">
+          <div className="flex gap-3 items-start rounded-lg border border-neutral-200 bg-muted px-4 py-3">
+            <div className="pt-0.5">
+              <IconCircleCheck className="size-4" />
+            </div>
+            <div className="flex flex-col gap-1 flex-1">
+              <p className="label">
+                {t('serviceAccounts.accountName', { name: serviceAccount.name ?? '' })}
+              </p>
+              <p className="body text-muted-foreground">
+                {t('serviceAccounts.enable.warning')}
+              </p>
+            </div>
           </div>
-          <div className="flex flex-col gap-1 flex-1">
-            <p className="text-sm font-medium">
-              {t('serviceAccounts.accountName', { name: serviceAccount.name ?? '' })}
-            </p>
-            <p className="text-sm text-muted-foreground">
-              {t('serviceAccounts.enable.warning')}
-            </p>
-          </div>
-        </div>
-
+        </DialogBody>
         <DialogFooter>
           <Button
             type="button"

@@ -73,7 +73,7 @@ export const ServiceAccountPermissionPicker = ({
 
   if (!catalog?.length) {
     return (
-      <p className="text-sm text-destructive">
+      <p className="body text-destructive">
         {t('serviceAccounts.permissions.loadError')}
       </p>
     );
@@ -132,7 +132,7 @@ export const ServiceAccountPermissionPicker = ({
       <div className="flex items-center justify-between gap-2 border-b border-border bg-muted/40 px-3 py-2.5">
         <label
           className={cn(
-            'flex items-center gap-2.5 text-sm font-medium',
+            'flex items-center gap-2.5 label',
             disabled ? 'cursor-not-allowed' : 'cursor-pointer',
           )}
         >
@@ -143,7 +143,7 @@ export const ServiceAccountPermissionPicker = ({
           />
           {t('serviceAccounts.permissions.selectAll')}
         </label>
-        <span className="text-xs tabular-nums text-muted-foreground">
+        <span className="body-sm tabular-nums text-muted-foreground">
           {t('serviceAccounts.permissions.selectedCount', {
             selected: selectedCount,
             total: allPermissions.length,
@@ -179,11 +179,11 @@ export const ServiceAccountPermissionPicker = ({
                       toggleResource(resource, actions, checked === true)
                     }
                   />
-                  <span className="text-sm font-medium">
+                  <span className="label">
                     {formatResourceLabel(resource)}
                   </span>
                 </label>
-                <code className="shrink-0 font-mono text-[11px] text-muted-foreground">
+                <code className="shrink-0 code text-muted-foreground">
                   {resource}
                 </code>
               </div>
@@ -196,7 +196,7 @@ export const ServiceAccountPermissionPicker = ({
                     <label
                       key={permission}
                       className={cn(
-                        'flex select-none items-center gap-2 text-sm text-foreground',
+                        'flex select-none items-center gap-2 body text-foreground',
                         disabled
                           ? 'cursor-not-allowed opacity-50'
                           : 'cursor-pointer',

@@ -7,6 +7,7 @@ import {Progress} from '../ui/progress';
 import {PlanBadge} from "./plan-badge";
 import {ComponentProps} from "react";
 import {BadgeStatus, BadgeStatusVariant} from "./badge-status";
+import { CardTitle } from '../ui/card';
 
 function formatCompactNumber(value: string | number): string {
   const num = typeof value === 'string' ? Number(value) : value;
@@ -71,12 +72,10 @@ export function PlanSummary({
         <div className="flex flex-col gap-6">
           {/* Header */}
           <div className="flex items-center gap-2">
-            <h2 className="text-xl font-semibold tracking-tight text-card-foreground font-heading">
-              {t('components.planSummary.title')}
-            </h2>
+            <CardTitle size={compact ? 'default' : 'lg'}>{t('components.planSummary.title')}</CardTitle>
             {isPro ? (
               <PlanBadge label={planName} />
-            ) : (<Badge variant="secondary" className="rounded-md">
+            ) : (<Badge variant="secondary">
               {planName}
             </Badge>)}
             <BadgeStatus variant={badgeStatusVariant}>{badgeStatusLabel}</BadgeStatus>
@@ -89,10 +88,10 @@ export function PlanSummary({
               return (
                 <div key={index} className="flex-1 flex flex-col gap-2">
                   <div className="flex items-center gap-1">
-                    <span className="text-base font-bold text-card-foreground">
+                    <span className="title-md text-card-foreground">
                       {formatCompactNumber(metric.value)}
                     </span>
-                    <span className="text-xs font-medium text-muted-foreground">
+                    <span className="label-sm text-muted-foreground">
                       {metric.label}
                     </span>
                   </div>
@@ -106,13 +105,13 @@ export function PlanSummary({
           <div className="flex items-start justify-between">
             {/* Price Column */}
             <div className="flex flex-col gap-2">
-              <p className="text-sm text-muted-foreground">{t('components.planSummary.price')}</p>
+              <p className="body text-muted-foreground">{t('components.planSummary.price')}</p>
               <div className="flex flex-col gap-0.5">
-                <p className="text-base font-semibold text-card-foreground">
+                <p className="title-md text-card-foreground">
                   {price}
                 </p>
                 {priceLabel && (
-                  <p className="text-xs font-medium text-muted-foreground">
+                  <p className="label-sm text-muted-foreground">
                     {priceLabel}
                   </p>
                 )}
@@ -121,14 +120,14 @@ export function PlanSummary({
 
             {/* Included Column */}
             <div className="flex flex-col gap-2">
-              <p className="text-sm text-muted-foreground">{t('components.planSummary.included')}</p>
+              <p className="body text-muted-foreground">{t('components.planSummary.included')}</p>
               <div className="flex flex-col gap-0">
                 {included.map((item, index) => (
                   <div key={index} className="flex items-center gap-1">
-                    <span className="text-base font-bold text-card-foreground">
+                    <span className="title-md text-card-foreground">
                       {formatCompactNumber(item.value)}
                     </span>
-                    <span className="text-xs font-medium text-muted-foreground">
+                    <span className="label-sm text-muted-foreground">
                       {item.label}
                     </span>
                   </div>
@@ -138,21 +137,21 @@ export function PlanSummary({
 
             {/* Subscription Date Column */}
             <div className="flex flex-col gap-2">
-              <p className="text-sm text-muted-foreground">{t('components.planSummary.subscriptionDate')}</p>
-              <p className="text-base font-bold text-card-foreground">
+              <p className="body text-muted-foreground">{t('components.planSummary.subscriptionDate')}</p>
+              <p className="title-md text-card-foreground">
                 {subscriptionDate ?? '-'}
               </p>
             </div>
 
             {/* Usage Period Column */}
             <div className="flex flex-col gap-2">
-              <p className="text-sm text-muted-foreground">{t('components.planSummary.usagePeriod')}</p>
+              <p className="body text-muted-foreground">{t('components.planSummary.usagePeriod')}</p>
               <div className="flex flex-col gap-0.5">
-                <p className="text-base font-bold text-card-foreground">
+                <p className="title-md text-card-foreground">
                   {usagePeriod ?? '-'}
                 </p>
                 {usagePeriodReset && (
-                  <p className="text-xs font-medium text-muted-foreground">
+                  <p className="label-sm text-muted-foreground">
                     {usagePeriodReset}
                   </p>
                 )}

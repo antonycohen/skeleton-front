@@ -1,7 +1,6 @@
-import {ColumnDef} from '@tanstack/react-table';
 import {OrganizationMember} from '@skeleton/core-api-models';
-import {Avatar, AvatarFallback, AvatarImage, Badge} from '@skeleton/web-components';
-import {CollectionColumnHeader, CollectionRowActions,} from '@skeleton/web-collection';
+import {Avatar, AvatarFallback, AvatarImage, Badge, DotStatus, type DotStatusVariant} from '@skeleton/web-components';
+import {CollectionColumnHeader, CollectionRowActions, type CollectionColumnDef} from '@skeleton/web-collection';
 import {format} from 'date-fns';
 import {IconBan, IconCircleCheck, IconKey, IconShieldCheck, IconShieldOff} from '@tabler/icons-react';
 import {Trash, UserCog} from "lucide-react";
@@ -20,10 +19,10 @@ const mfaVariants: Record<'on' | 'off', 'success' | 'warning'> = {
   off: 'warning',
 };
 
-const statusColors: Record<string, string> = {
-  accepted: 'bg-emerald-400',
-  invited: 'bg-amber-400',
-  suspended: 'bg-rose-500',
+const statusDots: Record<string, DotStatusVariant> = {
+  accepted: 'green',
+  invited: 'yellow',
+  suspended: 'red',
 };
 
 const statusLabelKeys: Record<string, string> = {
@@ -58,7 +57,7 @@ type UseTeamMembersColumnsOptions = {
 
 export function useTeamMembersColumns(
   options: UseTeamMembersColumnsOptions,
-): ColumnDef<OrganizationMember>[] {
+): CollectionColumnDef<OrganizationMember>[] {
   const { t } = useTranslation();
   const { onChangeRole, onSuspendMember, onUnsuspendMember, onRemoveMember } = options;
 
@@ -83,12 +82,12 @@ export function useTeamMembersColumns(
           <div className="flex items-center gap-2">
             <Avatar className="size-6">
               <AvatarImage src={user?.profileImage?.url ?? undefined} />
-              <AvatarFallback className="text-xs">{initials}</AvatarFallback>
+              <AvatarFallback className="body-sm">{initials}</AvatarFallback>
             </Avatar>
             <div className="flex flex-col">
-              <span className="text-sm font-semibold">{fullName ?? email}</span>
+              <span className="body">{fullName ?? email}</span>
               {fullName && (
-                <span className="text-xs text-muted-foreground">{email}</span>
+                <span className="body-sm text-muted-foreground">{email}</span>
               )}
             </div>
           </div>
@@ -124,8 +123,8 @@ export function useTeamMembersColumns(
         if (!status) return <span>-</span>;
         return (
           <div className="flex items-center gap-1.5 bg-muted px-2 py-0.5 rounded-md w-fit">
-            <div className={`size-2 rounded-full ${statusColors[status] ?? 'bg-gray-400'}`} />
-            <span className="text-xs font-medium">
+            <DotStatus variant={statusDots[status] ?? 'neutral'} />
+            <span className="label-sm">
               {statusLabelKeys[status] ? t(statusLabelKeys[status]) : status.toLowerCase()}
             </span>
           </div>
@@ -140,7 +139,7 @@ export function useTeamMembersColumns(
         <CollectionColumnHeader column={column} title={t('teams.columns.joined')} />
       ),
       cell: ({ row }) => (
-        <div className="text-sm">
+        <div className="body">
           {row.getValue('createdAt')
             ? format(row.getValue('createdAt'), 'dd/MM/yyyy')
             : '-'}
@@ -213,7 +212,7 @@ export function useTeamMembersColumns(
                 label: t('teams.actions.removeFromWorkspace'),
                 icon: Trash,
                 group: 'danger',
-                className: 'text-red-500!',
+                variant: 'destructive',
                 onClick: (member: OrganizationMember) => {
                   onRemoveMember?.(member);
                 },

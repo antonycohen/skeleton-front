@@ -74,7 +74,7 @@ export const Empty: Story = {
         </TableRow>
       </TableHeader>
       <TableBody>
-        <TableRow>
+        <TableRow className="hover:bg-transparent">
           <TableCell colSpan={3} className="h-24 text-center text-muted-foreground">No workspaces yet.</TableCell>
         </TableRow>
       </TableBody>

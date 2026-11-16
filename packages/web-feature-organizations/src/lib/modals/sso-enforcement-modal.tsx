@@ -4,13 +4,14 @@ import {
   AlertDescription,
   Button,
   Dialog,
+  DialogBody,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@skeleton/web-components';
-import { TriangleAlertIcon } from 'lucide-react';
+import { CircleAlertIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import { TFunction, useTranslation } from '@skeleton/core-translations';
 
@@ -102,14 +103,16 @@ export const SsoEnforcementModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent size="sm">
         <DialogHeader>
           <DialogTitle>
             {enforced
               ? t('security.ssoModal.enforceTitle')
               : t('security.ssoModal.liftTitle')}
           </DialogTitle>
-          <DialogDescription>
+        </DialogHeader>
+        <DialogBody className="flex flex-col gap-4">
+          <DialogDescription className="text-foreground">
             {enforced
               ? describeEnforce(
                   t,
@@ -123,31 +126,29 @@ export const SsoEnforcementModal = ({
                   membersCountIsPartial,
                 )}
           </DialogDescription>
-        </DialogHeader>
+          {enforced && (
+            <div className="flex flex-col gap-2 body text-muted-foreground">
+              <span>{t('security.ssoModal.enforceWarning')}</span>
+              <span>{t('security.ssoModal.enforceUnaffected')}</span>
+            </div>
+          )}
 
-        {enforced && (
-          <div className="flex flex-col gap-2 text-sm text-muted-foreground">
-            <span>{t('security.ssoModal.enforceWarning')}</span>
-            <span>{t('security.ssoModal.enforceUnaffected')}</span>
-          </div>
-        )}
+          {/* Lifting for a customer is a support act, not a setting: the workspace is handed back to
+              passwords on someone's word, so the operator is reminded whose word it has to be. */}
+          {!enforced && surface === 'back-office' && (
+            <div className="flex flex-col gap-2 body text-muted-foreground">
+              <span>{t('security.ssoModal.backOfficeWarning')}</span>
+              <span>{t('security.ssoModal.backOfficeRecorded')}</span>
+            </div>
+          )}
 
-        {/* Lifting for a customer is a support act, not a setting: the workspace is handed back to
-            passwords on someone's word, so the operator is reminded whose word it has to be. */}
-        {!enforced && surface === 'back-office' && (
-          <div className="flex flex-col gap-2 text-sm text-muted-foreground">
-            <span>{t('security.ssoModal.backOfficeWarning')}</span>
-            <span>{t('security.ssoModal.backOfficeRecorded')}</span>
-          </div>
-        )}
-
-        {refusal && (
-          <Alert variant="important">
-            <TriangleAlertIcon />
-            <AlertDescription>{refusal}</AlertDescription>
-          </Alert>
-        )}
-
+          {refusal && (
+            <Alert variant="destructive">
+              <CircleAlertIcon />
+              <AlertDescription>{refusal}</AlertDescription>
+            </Alert>
+          )}
+        </DialogBody>
         <DialogFooter>
           <Button
             type="button"

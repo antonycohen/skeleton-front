@@ -23,6 +23,8 @@ export interface JobDefinition {
   status: JobStatus;
   /** Timestamp when the job was registered */
   createdAt: number;
+  /** Serializable context for whoever reacts to the job's end (e.g. `{recordId}`). Persisted. */
+  meta?: Record<string, string>;
   /** Top-bar alert. Not persisted (callbacks/ReactNodes are non-serializable). */
   alert?: JobAlertBarOptions;
 }

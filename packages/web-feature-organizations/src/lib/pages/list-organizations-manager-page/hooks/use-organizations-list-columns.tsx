@@ -1,4 +1,3 @@
-import { ColumnDef } from '@tanstack/react-table';
 import { ReadOrganization } from '@skeleton/core-api-models';
 import {
   Badge,
@@ -9,6 +8,7 @@ import {
 import {
   CollectionColumnHeader,
   CollectionRowActions,
+  type CollectionColumnDef,
 } from '@skeleton/web-collection';
 import { ensureUrlProtocol } from '@skeleton/core-utils';
 import { Link } from 'react-router-dom';
@@ -21,7 +21,7 @@ const TYPE_LABEL_KEYS: Record<string, string> = {
   individual: 'adminOrganizations.types.individual',
 };
 
-export function useOrganizationsListColumns(): ColumnDef<ReadOrganization>[] {
+export function useOrganizationsListColumns(): CollectionColumnDef<ReadOrganization>[] {
   const { t } = useTranslation();
   return [
     {
@@ -139,7 +139,7 @@ export function useOrganizationsListColumns(): ColumnDef<ReadOrganization>[] {
               label: t('adminOrganizations.list.deleteAction'),
               icon: IconTrash,
               group: 'danger',
-              className: 'text-red-500!',
+              variant: 'destructive',
               linkTo: (org: ReadOrganization) => `/workspaces/${org.id}`,
             },
           ]}

@@ -18,7 +18,7 @@ import {
   CardTitle,
 } from '@skeleton/web-components';
 import { IconShieldCheck, IconShieldOff } from '@tabler/icons-react';
-import { LockIcon, TriangleAlertIcon } from 'lucide-react';
+import { LockIcon, TriangleAlertIcon, CircleAlertIcon } from 'lucide-react';
 import { EnableMfaModal } from './mfa/enable-mfa-modal';
 import { DisableMfaModal } from './mfa/disable-mfa-modal';
 import { RegenerateRecoveryCodesModal } from './mfa/regenerate-recovery-codes-modal';
@@ -83,9 +83,9 @@ export const TwoFactorSection = ({ user }: TwoFactorSectionProps) => {
 
   return (
     <>
-      <Card className="rounded-2xl">
+      <Card>
         <CardHeader>
-          <CardTitle className="text-xl">{t('account.mfa.title')}</CardTitle>
+          <CardTitle size="lg">{t('account.mfa.title')}</CardTitle>
           <CardDescription>
             {t('account.mfa.description')}
           </CardDescription>
@@ -99,8 +99,8 @@ export const TwoFactorSection = ({ user }: TwoFactorSectionProps) => {
                 <IconShieldOff className="size-6 shrink-0 text-muted-foreground" />
               )}
               <div className="flex flex-col">
-                <span className="font-semibold">{t('account.mfa.authenticatorApp')}</span>
-                <span className="text-sm text-muted-foreground">
+                <span className="title">{t('account.mfa.authenticatorApp')}</span>
+                <span className="body text-muted-foreground">
                   {enabled
                     ? enabledAt
                       ? t('account.mfa.enabledSince', {
@@ -121,8 +121,8 @@ export const TwoFactorSection = ({ user }: TwoFactorSectionProps) => {
           {enabled && remaining !== null && (
             <div className="flex items-center justify-between gap-4 border-t py-3">
               <div className="flex flex-col">
-                <span className="text-sm font-medium">{t('account.mfa.recoveryCodes')}</span>
-                <span className="text-sm text-muted-foreground">
+                <span className="label">{t('account.mfa.recoveryCodes')}</span>
+                <span className="body text-muted-foreground">
                   {remaining === 0
                     ? t('account.mfa.recoveryCodesNoneLeft')
                     : t('account.mfa.recoveryCodesRemaining', { count: remaining })}
@@ -135,8 +135,8 @@ export const TwoFactorSection = ({ user }: TwoFactorSectionProps) => {
           )}
 
           {enabled && remaining !== null && remaining < LOW_RECOVERY_CODES && (
-            <Alert variant={remaining === 0 ? 'destructive' : 'important'}>
-              <TriangleAlertIcon />
+            <Alert variant={remaining === 0 ? 'destructive' : 'warning'}>
+              {remaining === 0 ? <CircleAlertIcon /> : <TriangleAlertIcon />}
               <AlertTitle>
                 {remaining === 0
                   ? t('account.mfa.noRecoveryCodesLeft')
@@ -149,7 +149,7 @@ export const TwoFactorSection = ({ user }: TwoFactorSectionProps) => {
           )}
 
           {required && (
-            <div className="flex items-start gap-2 border-t pt-3 text-sm text-muted-foreground">
+            <div className="flex items-start gap-2 border-t pt-3 body text-muted-foreground">
               <LockIcon className="mt-0.5 size-4 shrink-0" />
               <span>
                 {describeRequirement(t, status?.requiredBy)}{' '}

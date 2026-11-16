@@ -8,7 +8,6 @@ import {
   Label,
   Switch,
 } from '@skeleton/web-components';
-import { cn } from '@skeleton/core-utils';
 import { useTranslation } from '@skeleton/core-translations';
 import { useMembersWithoutMfaCount } from '../../../../../hooks/use-members-without-mfa-count';
 import { MfaRequirementModal } from '../../../../../modals/mfa-requirement-modal';
@@ -38,21 +37,19 @@ export const OrganizationMfaRequirementCard = ({
 
   return (
     <>
-      <Card className={cn('rounded-2xl', className)}>
+      <Card className={className}>
         <CardHeader>
-          <CardTitle className="text-xl">
-            {t('adminOrganizations.mfa.title')}
-          </CardTitle>
+          <CardTitle>{t('adminOrganizations.mfa.title')}</CardTitle>
           <CardDescription>
             {t('adminOrganizations.mfa.description')}
           </CardDescription>
         </CardHeader>
         <CardContent className="flex items-center justify-between gap-4">
           <div className="flex flex-col gap-1">
-            <Label htmlFor="organization-mfa-required" className="text-sm font-medium">
+            <Label htmlFor="organization-mfa-required" className="label">
               {t('adminOrganizations.mfa.requireLabel')}
             </Label>
-            <span className="text-sm text-muted-foreground">
+            <span className="body text-muted-foreground">
               {t('adminOrganizations.mfa.requireHint')}
             </span>
           </div>

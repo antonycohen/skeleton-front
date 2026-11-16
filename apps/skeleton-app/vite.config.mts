@@ -2,10 +2,10 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
+import { nxReadySignal } from '@nx/vite/plugins/nx-ready-signal.plugin';
 
 const pkg = JSON.parse(
   readFileSync(
@@ -19,10 +19,11 @@ const pkg = JSON.parse(
 const appVersion = process.env.APP_VERSION || pkg.version;
 
 export default defineConfig(() => ({
-  root: __dirname,
+  root: import.meta.dirname,
   // VITE_CACHE_DIR: a second dev server of the same checkout (the isolated e2e stack) keeps its
   // dependency pre-bundles apart — sharing them makes each re-optimisation reload the other's pages.
-  cacheDir: process.env.VITE_CACHE_DIR || '../../node_modules/.vite/apps/skeleton-app',
+  cacheDir:
+    process.env.VITE_CACHE_DIR || '../../node_modules/.vite/apps/skeleton-app',
   define: {
     __APP_VERSION__: JSON.stringify(appVersion),
   },
@@ -42,27 +43,21 @@ export default defineConfig(() => ({
       },
     },
     react(),
-    nxViteTsPaths(),
     tailwindcss(),
+    nxReadySignal(),
   ],
   resolve: {
+    tsconfigPaths: true,
     dedupe: ['react', 'react-dom'],
   },
   optimizeDeps: {
     include: ['cmdk', 'react', 'react-dom'],
   },
-  // Uncomment this if you are using workers.
-  // worker: {
-  //  plugins: [ nxViteTsPaths() ],
-  // },
   build: {
     outDir: './dist',
     emptyOutDir: true,
     reportCompressedSize: true,
     sourcemap: true,
-    commonjsOptions: {
-      transformMixedEsModules: true,
-    },
   },
   test: {
     watch: false,

@@ -4,13 +4,14 @@ import {
   AlertDescription,
   Button,
   Dialog,
+  DialogBody,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@skeleton/web-components';
-import { TriangleAlertIcon } from 'lucide-react';
+import { CircleAlertIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import { useTranslation } from '@skeleton/core-translations';
 
@@ -60,27 +61,27 @@ export const OrganizationSsoAvailabilityModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent size="sm">
         <DialogHeader>
           <DialogTitle>
             {available
               ? t('adminOrganizations.sso.availability.grantTitle')
               : t('adminOrganizations.sso.availability.withdrawTitle')}
           </DialogTitle>
-          <DialogDescription>
+        </DialogHeader>
+        <DialogBody className="flex flex-col gap-4">
+          <DialogDescription className="text-foreground">
             {available
               ? t('adminOrganizations.sso.availability.grantDescription')
               : t('adminOrganizations.sso.availability.withdrawDescription')}
           </DialogDescription>
-        </DialogHeader>
-
-        {refusal && (
-          <Alert variant="important">
-            <TriangleAlertIcon />
-            <AlertDescription>{refusal}</AlertDescription>
-          </Alert>
-        )}
-
+          {refusal && (
+            <Alert variant="destructive">
+              <CircleAlertIcon />
+              <AlertDescription>{refusal}</AlertDescription>
+            </Alert>
+          )}
+        </DialogBody>
         <DialogFooter>
           <Button
             type="button"

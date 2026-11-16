@@ -88,7 +88,7 @@ function InputGroupActionsBlock({
           onClick={onChatClick}
         >
           <MessagesSquare className="size-4" />
-          <span className="text-xs font-medium">{t('components.prompt.chat')}</span>
+          <span className="label-sm">{t('components.prompt.chat')}</span>
         </Button>
       </div>
       <div className="flex items-center gap-2">
@@ -139,7 +139,7 @@ function InputGroupInstructionBlock({
     <div className={cn('relative flex flex-col gap-6', className)}>
       {showRequest && (
         <div className="pr-40">
-          <p className="text-base leading-normal text-foreground">
+          <p className="body-lg text-foreground">
             {questionText ?? t('components.prompt.question')}
           </p>
         </div>
@@ -157,7 +157,7 @@ function InputGroupInstructionBlock({
                   onOptionChange?.(option.id, checked as boolean)
                 }
               />
-              <span className="text-sm font-medium text-foreground">
+              <span className="label text-foreground">
                 {option.label}
               </span>
             </label>
@@ -237,7 +237,7 @@ export function InputGroupPrompt({
             {/* Textarea */}
             <div className="flex w-full items-center justify-center p-4">
               <textarea
-                className="h-12 min-h-[48px] w-full resize-none bg-transparent text-base text-muted-foreground placeholder:text-muted-foreground focus:outline-none"
+                className="h-12 min-h-[48px] w-full resize-none bg-transparent body-lg text-muted-foreground placeholder:text-muted-foreground focus:outline-none"
                 placeholder={placeholder ?? t('components.prompt.placeholder')}
                 value={value}
                 onChange={(e) => onValueChange?.(e.target.value)}

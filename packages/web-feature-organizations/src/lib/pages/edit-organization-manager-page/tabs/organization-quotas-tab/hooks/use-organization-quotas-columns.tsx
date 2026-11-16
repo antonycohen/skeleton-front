@@ -1,10 +1,10 @@
-import { ColumnDef } from '@tanstack/react-table';
 import { useParams } from 'react-router-dom';
 import { ReadQuota } from '@skeleton/core-api-models';
 import { Badge, BadgeStatus, Progress } from '@skeleton/web-components';
 import {
   CollectionColumnHeader,
   CollectionRowActions,
+  type CollectionColumnDef,
 } from '@skeleton/web-collection';
 import { IconPencil, IconReceipt } from '@tabler/icons-react';
 import { format } from 'date-fns';
@@ -64,7 +64,7 @@ const formatPeriod = (
   return `${fmt(start)} → ${fmt(end)}`;
 };
 
-export function useOrganizationQuotasColumns(): ColumnDef<ReadQuota>[] {
+export function useOrganizationQuotasColumns(): CollectionColumnDef<ReadQuota>[] {
   const { t } = useTranslation();
   const { organizationId = '' } = useParams<{ organizationId: string }>();
 
@@ -80,9 +80,9 @@ export function useOrganizationQuotasColumns(): ColumnDef<ReadQuota>[] {
         const showRawKey = quota.featureKey && quota.feature?.displayName;
         return (
           <div className="flex flex-col">
-            <span className="font-semibold">{label}</span>
+            <span className="body">{label}</span>
             {showRawKey ? (
-              <span className="text-xs text-muted-foreground">
+              <span className="body-sm text-muted-foreground">
                 {quota.featureKey}
               </span>
             ) : null}
@@ -116,7 +116,7 @@ export function useOrganizationQuotasColumns(): ColumnDef<ReadQuota>[] {
         <CollectionColumnHeader column={column} title={t('adminOrganizations.quotas.columns.period')} />
       ),
       cell: ({ row }) => (
-        <span className="text-xs text-muted-foreground">
+        <span className="body-sm text-muted-foreground">
           {formatPeriod(row.original.periodStart, row.original.periodEnd)}
         </span>
       ),
@@ -156,7 +156,7 @@ export function useOrganizationQuotasColumns(): ColumnDef<ReadQuota>[] {
           quota.currentUsage > quota.quotaLimit;
         return (
           <div className="flex flex-col gap-1 min-w-[160px]">
-            <span className="text-sm tabular-nums">
+            <span className="body tabular-nums">
               {quota.currentUsage ?? 0} / {quota.quotaLimit ?? '∞'}
             </span>
             {ratio !== null ? (

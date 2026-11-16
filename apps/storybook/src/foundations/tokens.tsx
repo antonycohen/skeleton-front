@@ -133,6 +133,50 @@ export function TypeScale({ steps }: { steps: { label: string; className: string
   );
 }
 
+/** One text style: its sample in the class, and what the class resolves to (family, size / line height, weight, letter spacing). */
+function TextStyleSample({ className }: { className: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [spec, setSpec] = useState('');
+  useEffect(() => {
+    const read = () => {
+      if (!ref.current) return;
+      const style = getComputedStyle(ref.current);
+      const tracking = style.letterSpacing === 'normal' ? '0' : style.letterSpacing;
+      setSpec(`${style.fontFamily.split(',')[0].replace(/"/g, '')} · ${style.fontSize} / ${style.lineHeight} · ${style.fontWeight} · ${tracking}`);
+    };
+    read();
+    const observer = new MutationObserver(read);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    return () => observer.disconnect();
+  }, [className]);
+  return (
+    <div className="flex min-w-0 flex-col gap-1">
+      <div className="flex items-baseline gap-2">
+        <code className="font-mono text-xs text-foreground">{className}</code>
+        <code className="truncate font-mono text-[11px] text-muted-foreground">{spec}</code>
+      </div>
+      <div ref={ref} className={`truncate text-foreground ${className}`}>
+        Build once, ship everywhere
+      </div>
+    </div>
+  );
+}
+
+/** The named text styles: one row each, its dense variant beside it when it has one (named in full, for Tailwind to find it). */
+export function TextStyles({ styles }: { styles: { name: string; usage: string; dense?: string }[] }) {
+  return (
+    <Frame>
+      {styles.map((style) => (
+        <div key={style.name} className="grid grid-cols-[200px_1fr_1fr] items-start gap-6 border-b border-border py-4">
+          <p className="text-xs text-muted-foreground">{style.usage}</p>
+          <TextStyleSample className={style.name} />
+          {style.dense ? <TextStyleSample className={style.dense} /> : <span />}
+        </div>
+      ))}
+    </Frame>
+  );
+}
+
 export function FontFamilies({ families }: { families: { name: string; className: string; usage: string }[] }) {
   return (
     <Frame className="grid gap-4 md:grid-cols-3">

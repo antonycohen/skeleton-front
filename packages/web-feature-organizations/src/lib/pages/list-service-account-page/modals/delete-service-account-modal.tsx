@@ -1,17 +1,20 @@
 import {
   Button,
   Dialog,
+  DialogBody,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  Alert,
+  AlertDescription,
+  AlertTitle,
 } from '@skeleton/web-components';
 import { ServiceAccount } from '@skeleton/core-api-models';
 import { useDeleteServiceAccount } from '@skeleton/core-api';
-import { IconAlertTriangle } from '@tabler/icons-react';
 import { toast } from 'sonner';
 import { useTranslation } from '@skeleton/core-translations';
-import { Trash } from 'lucide-react';
+import { Trash, TriangleAlertIcon } from 'lucide-react';
 
 type DeleteServiceAccountModalProps = {
   open: boolean;
@@ -47,25 +50,19 @@ export const DeleteServiceAccountModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent size="sm">
         <DialogHeader>
           <DialogTitle>{t('serviceAccounts.delete.title')}</DialogTitle>
         </DialogHeader>
-
-        <div className="flex gap-3 items-start rounded-lg border border-rose-200 bg-rose-50 px-4 py-3">
-          <div className="pt-0.5">
-            <IconAlertTriangle className="size-4 text-destructive" />
-          </div>
-          <div className="flex flex-col gap-1 flex-1 text-destructive">
-            <p className="text-sm font-medium">
-              {t('serviceAccounts.accountName', { name: serviceAccount.name ?? '' })}
-            </p>
-            <p className="text-sm">
+        <DialogBody className="flex flex-col gap-4">
+          <Alert variant="warning">
+            <TriangleAlertIcon />
+            <AlertTitle>{t('serviceAccounts.accountName', { name: serviceAccount.name ?? '' })}</AlertTitle>
+            <AlertDescription>
               {t('serviceAccounts.delete.warning')}
-            </p>
-          </div>
-        </div>
-
+            </AlertDescription>
+          </Alert>
+        </DialogBody>
         <DialogFooter>
           <Button
             type="button"

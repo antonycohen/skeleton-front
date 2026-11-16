@@ -49,7 +49,7 @@ A standalone page that owns its own URL segment. Has its **own shell** (`LayoutT
 Pick the entry point:
 
 - **Sidebar — main nav** → `mainNavigationGroups` (which group/section?).
-- **Sidebar — footer nav** → `footerNavigationGroups`.
+- **Sidebar — secondary nav (Support…)** → `secondaryNavigationGroups`.
 - **User menu** → `navUserItems`.
 - **No link** → reachable only by direct URL / programmatic navigation.
 
@@ -115,7 +115,7 @@ Run these after the sub-skill's kind-specific checklist. Some items only apply a
 - [ ] If `routes/<name>-routes.tsx` did not exist before, create the `*Routes` component (`Admin<Entity>Routes` for admin, `<Feature>Routes` for workspace) and export it from the package's `src/index.ts`
 - [ ] **Admin:** mount `Admin<Entity>Routes` in `apps/skeleton-bo-app/src/app/routes/protected-routes.tsx`
 - [ ] **Workspace:** mount `<Feature>Routes` in `apps/skeleton-app/src/app/routes/workspace-routes.tsx` (or `workspace-settings-routes.tsx`)
-- [ ] Add the sidebar/menu entry chosen in Step 3 — the `UserLayout` nav param + section (`mainNavigationGroups` / `footerNavigationGroups` / `navUserItems`); skip if "no link"
+- [ ] Add the sidebar/menu entry chosen in Step 3 — the `UserLayout` nav param + section (`mainNavigationGroups` / `secondaryNavigationGroups` / `navUserItems`); skip if "no link"
 
 **Nested pages (tab) only:**
 

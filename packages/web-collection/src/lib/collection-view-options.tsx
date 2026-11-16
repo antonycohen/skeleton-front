@@ -1,40 +1,46 @@
 "use client"
 
-import { MixerHorizontalIcon } from "@radix-ui/react-icons"
-import { Table } from "@tanstack/react-table"
+import { RowData } from "@tanstack/react-table"
+import { Eye, EyeOff, SlidersHorizontal } from "lucide-react"
 import {
   Button,
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
 } from '@skeleton/web-components';
 import { useTranslation } from '@skeleton/core-translations';
+import { cn } from '@skeleton/core-utils';
+import { CollectionTable } from './collection-features';
 
-interface Props<TData> {
-  table: Table<TData>
+interface Props<TData extends RowData> {
+  table: CollectionTable<TData>
 }
 
-export function CollectionViewOptions<TData>({ table }: Props<TData>) {
+/**
+ * The columns a person can show or hide (Braintrust, Zoom): each one with an eye when shown and a
+ * crossed-out eye, its name muted, when hidden. The menu stays open while toggling several.
+ */
+export function CollectionViewOptions<TData extends RowData>({ table }: Props<TData>) {
   const { t } = useTranslation()
 
   return (
     <DropdownMenu modal={false}>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className="ml-auto hidden h-8 lg:flex"
-        >
-          <MixerHorizontalIcon className="mr-2 h-4 w-4" />
-          {t('collection.viewOptions.view')}
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[150px]">
-        <DropdownMenuLabel>{t('collection.viewOptions.toggleColumns')}</DropdownMenuLabel>
-        <DropdownMenuSeparator />
+      {/* An icon beside the search (Linear, Vanta, Hex), its name in the tooltip. */}
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="icon" aria-label={t('collection.viewOptions.columns')}>
+              <SlidersHorizontal />
+            </Button>
+          </DropdownMenuTrigger>
+        </TooltipTrigger>
+        <TooltipContent>{t('collection.viewOptions.columns')}</TooltipContent>
+      </Tooltip>
+      <DropdownMenuContent align="start" className="w-[200px]">
         {table
           .getAllColumns()
           .filter(
@@ -42,14 +48,19 @@ export function CollectionViewOptions<TData>({ table }: Props<TData>) {
               typeof column.accessorFn !== "undefined" && column.getCanHide()
           )
           .map((column) => {
+            const visible = column.getIsVisible()
+            const Icon = visible ? Eye : EyeOff
             return (
               <DropdownMenuCheckboxItem
                 key={column.id}
-                className="capitalize"
-                checked={column.getIsVisible()}
+                hideIndicator
+                className={cn("justify-between", !visible && "text-muted-foreground")}
+                checked={visible}
                 onCheckedChange={(value) => column.toggleVisibility(value)}
+                onSelect={(event) => event.preventDefault()}
               >
-                {column.id}
+                {column.columnDef.meta?.label ?? column.id}
+                <Icon className="text-muted-foreground" />
               </DropdownMenuCheckboxItem>
             )
           })}

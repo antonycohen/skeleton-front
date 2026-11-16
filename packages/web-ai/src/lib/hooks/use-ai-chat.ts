@@ -8,11 +8,14 @@ import type {
   AiChatEventBus,
   ChatMessage,
 } from '../types/plugin';
+import {useTranslation} from '@skeleton/core-translations';
 import {generateMessageId} from '../utils/stream-helpers';
 import {useStreamEventHandler} from './use-stream-event-handler';
 import type {AiChatIndicatorStatus} from '../components/ai-chat-indicator';
 
 const SUCCESS_DISPLAY_MS = 2000;
+// How long a streaming reply stays silent before the indicator says it is still working.
+export const STREAM_IDLE_MS = 1500;
 
 // ============================================================================
 // Types
@@ -90,6 +93,7 @@ export function useAiChat({
   onStreamComplete,
   composerContextBlock,
 }: UseAiChatOptions = {}): UseAiChatReturn {
+  const {t} = useTranslation();
   const [messages, setMessages] = useState<ChatMessage[]>(externalMessages ?? initialMessages);
 
   // Sync with external messages when they change (React-recommended pattern)
@@ -134,17 +138,30 @@ export function useAiChat({
         ? 'success'
         : 'idle';
 
+  // A reply silent for a moment while it streams: the model is writing a long
+  // tool call (a whole brief takes 20-30 s) or a tool is running, and nothing
+  // shows it. Set from the timer only, for the messages it was armed on.
+  const [idleOn, setIdleOn] = useState<ChatMessage[] | null>(null);
+  useEffect(() => {
+    if (!isStreaming) return;
+    const timer = setTimeout(() => setIdleOn(messages), STREAM_IDLE_MS);
+    return () => clearTimeout(timer);
+  }, [messages, isStreaming]);
+  const streamIdle = isStreaming && idleOn === messages;
+
   // Surface the in-flight thinking text so <AiChatIndicator> can render it
-  // alongside the lottie. Only the trailing thinking block matters: once the
-  // assistant starts producing the response, the thinking is no longer last.
+  // alongside the lottie: the trailing thinking block (a tool's status), or,
+  // once the reply has gone silent, the last status it gave ("Thinking...").
   const thinkingText = useMemo(() => {
     if (!isStreaming) return undefined;
     const lastMessage = messages[messages.length - 1];
     if (!lastMessage || lastMessage.role !== 'assistant') return undefined;
     const lastBlock = lastMessage.content[lastMessage.content.length - 1];
-    if (!lastBlock || lastBlock.type !== 'thinking') return undefined;
-    return lastBlock.thinking;
-  }, [messages, isStreaming]);
+    if (lastBlock?.type === 'thinking') return lastBlock.thinking;
+    if (!streamIdle) return undefined;
+    const lastThinking = [...lastMessage.content].reverse().find((block) => block.type === 'thinking');
+    return lastThinking?.type === 'thinking' && lastThinking.thinking ? lastThinking.thinking : t('ai.chat.thinking');
+  }, [messages, isStreaming, streamIdle, t]);
 
   // ============================================================================
   // Stream event handling (delegated to dedicated hook)

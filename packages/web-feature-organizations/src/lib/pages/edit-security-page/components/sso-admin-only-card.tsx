@@ -61,9 +61,9 @@ export function SsoAdminOnlyCard({ status }: SsoAdminOnlyCardProps) {
   const { t } = useTranslation();
   const copy = status ? SSO_STATE_COPY[status] : null;
   return (
-    <Card className="rounded-2xl">
+    <Card>
       <CardHeader>
-        <CardTitle className="text-xl">{t('security.sso.title')}</CardTitle>
+        <CardTitle size="lg">{t('security.sso.title')}</CardTitle>
         <CardDescription>{t('security.sso.adminOnly.description')}</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
@@ -72,7 +72,7 @@ export function SsoAdminOnlyCard({ status }: SsoAdminOnlyCardProps) {
             <Badge variant={copy.variant} className="mt-0.5 shrink-0">
               {t(copy.labelKey)}
             </Badge>
-            <span className="text-sm text-muted-foreground">{t(copy.descriptionKey)}</span>
+            <span className="body text-muted-foreground">{t(copy.descriptionKey)}</span>
           </div>
         )}
         <Alert>

@@ -70,6 +70,29 @@ export const Disabled: Story = {
   ),
 };
 
+/** `FieldGroup variant="card"`: horizontal fields as the rows of one bordered block (settings, sync options). */
+export const GroupCard: Story = {
+  name: 'Group — Card',
+  render: () => (
+    <FieldGroup variant="card" className="max-w-lg">
+      <Field orientation="horizontal">
+        <FieldContent>
+          <FieldTitle>Email notifications</FieldTitle>
+          <FieldDescription>Receive an email when someone mentions you.</FieldDescription>
+        </FieldContent>
+        <Switch aria-label="Email notifications" defaultChecked />
+      </Field>
+      <Field orientation="horizontal">
+        <FieldContent>
+          <FieldTitle>Weekly digest</FieldTitle>
+          <FieldDescription>A summary of the activity of your workspace, every Monday.</FieldDescription>
+        </FieldContent>
+        <Switch aria-label="Weekly digest" />
+      </Field>
+    </FieldGroup>
+  ),
+};
+
 /** A complete form section: fieldset, legend, groups, choice cards. */
 export const FieldSetExample: Story = {
   name: 'Field set',

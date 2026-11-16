@@ -1,19 +1,24 @@
-import {useCurrentOrganization} from "@skeleton/core-workspace";
-import {getQuotaUsageMetrics} from "../utils/quota-usage";
+import {useCurrentOrganization, useSubscriptionPlan} from "@skeleton/core-workspace";
+import {getQuotaUsageStats} from "../utils/quota-usage";
 import {useManageSubscription} from "../hooks/use-manage-subscription";
 import {CardPlan} from "@skeleton/web-components";
 import {useOpenPaywall} from "../modal/paywall-pro-required-modal/paywall-pro-required-modal";
-import {useTranslation} from "@skeleton/core-translations";
 
-export const SubscriptionPlanCard = () => {
+/**
+ * `inMenu`: the workspace menu's version: the plan named above the usage ("Free plan"), where nothing
+ * else names it, and the first quota alone.
+ */
+export const SubscriptionPlanCard = ({ inMenu = false }: { inMenu?: boolean }) => {
 
-  const { t } = useTranslation();
   const { openPaywall } = useOpenPaywall();
 
   const currentOrganization = useCurrentOrganization();
   const isSubscribed = currentOrganization.subscription !== null;
 
   const { handleManageSubscription, isPending } = useManageSubscription();
+  const { planName } = useSubscriptionPlan();
+
+  const usageStats = getQuotaUsageStats(currentOrganization.activeQuotas);
 
   return <CardPlan
     className="group-data-[collapsible=icon]:hidden"
@@ -28,6 +33,7 @@ export const SubscriptionPlanCard = () => {
       disabled: isPending
     }}
     variant={isSubscribed ? 'paid' : 'free'}
-    usageStats={getQuotaUsageMetrics(t, currentOrganization.activeQuotas)}
+    planName={inMenu ? planName : undefined}
+    usageStats={inMenu ? usageStats.slice(0, 1) : usageStats}
   />
 }

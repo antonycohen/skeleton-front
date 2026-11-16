@@ -3,6 +3,7 @@ import {
   AlertDescription,
   Button,
   Dialog,
+  DialogBody,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -43,35 +44,33 @@ export const SwitchSsoProtocolModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent size="sm">
         <DialogHeader>
           <DialogTitle>
             {t('security.switchProtocol.title', { protocol: PROTOCOL_LABELS[protocol] })}
           </DialogTitle>
-          <DialogDescription>
+        </DialogHeader>
+        <DialogBody className="flex flex-col gap-4">
+          <DialogDescription className="text-foreground">
             {t('security.switchProtocol.description', {
               protocol: PROTOCOL_LABELS[protocol],
             })}
           </DialogDescription>
-        </DialogHeader>
-
-        <Alert variant="important">
-          <TriangleAlertIcon />
-          <AlertDescription>
-            <span className="flex flex-col gap-1">
-              <span>
-                {t('security.switchProtocol.draftWarning')}
+          <Alert variant="warning">
+            <TriangleAlertIcon />
+            <AlertDescription>
+              <span className="flex flex-col gap-1">
+                <span>{t('security.switchProtocol.draftWarning')}</span>
+                <span>
+                  {protocol === 'saml'
+                    ? t('security.switchProtocol.secretDropped')
+                    : t('security.switchProtocol.certificatesRemoved')}{' '}
+                  {t('security.switchProtocol.rebind')}
+                </span>
               </span>
-              <span>
-                {protocol === 'saml'
-                  ? t('security.switchProtocol.secretDropped')
-                  : t('security.switchProtocol.certificatesRemoved')}{' '}
-                {t('security.switchProtocol.rebind')}
-              </span>
-            </span>
-          </AlertDescription>
-        </Alert>
-
+            </AlertDescription>
+          </Alert>
+        </DialogBody>
         <DialogFooter>
           <Button
             type="button"

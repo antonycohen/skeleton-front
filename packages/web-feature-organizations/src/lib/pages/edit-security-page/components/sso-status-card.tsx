@@ -71,9 +71,9 @@ const Step = ({ title, description, done, action }: StepProps) => (
       ) : (
         <IconCircleDashed className="mt-0.5 size-5 shrink-0 text-muted-foreground" />
       )}
-      <div className="flex flex-col gap-0.5">
-        <span className="font-semibold">{title}</span>
-        <span className="text-sm text-muted-foreground">{description}</span>
+      <div className="flex flex-col gap-1">
+        <span className="title-md">{title}</span>
+        <span className="body text-muted-foreground">{description}</span>
       </div>
     </div>
     {action && <div className="flex shrink-0 items-center gap-2">{action}</div>}
@@ -106,7 +106,7 @@ export function SsoStatusCard({
     <Card>
       <CardHeader>
         <div className="flex items-center gap-3">
-          <CardTitle className="text-xl">{t('security.sso.status.title')}</CardTitle>
+          <CardTitle size="lg">{t('security.sso.status.title')}</CardTitle>
           {!isLoading && status && (
             <Badge variant={STATUS_BADGE[status].variant}>
               {t(STATUS_BADGE[status].labelKey)}

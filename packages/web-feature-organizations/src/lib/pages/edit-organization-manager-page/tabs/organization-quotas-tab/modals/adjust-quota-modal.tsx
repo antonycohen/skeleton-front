@@ -5,6 +5,7 @@ import { ReadQuota } from '@skeleton/core-api-models';
 import {
   Button,
   Dialog,
+  DialogBody,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -67,97 +68,97 @@ const AdjustQuotaForm = ({ quota, onDone }: AdjustQuotaFormProps) => {
           })}
         </DialogDescription>
       </DialogHeader>
+      <form onSubmit={handleSubmit} className="contents">
+        <DialogBody className="flex flex-col gap-4">
+          <dl className="grid grid-cols-2 gap-y-1 rounded-lg bg-muted/50 p-3 body">
+            <dt className="text-muted-foreground">
+              {t('adminOrganizations.quotas.adjust.currentLimit')}
+            </dt>
+            <dd className="text-right tabular-nums">
+              {wasUnlimited
+                ? t('adminOrganizations.quotas.adjust.unlimited')
+                : currentLimit}
+            </dd>
+            <dt className="text-muted-foreground">
+              {t('adminOrganizations.quotas.adjust.used')}
+            </dt>
+            <dd className="text-right tabular-nums">{floor}</dd>
+            <dt className="text-muted-foreground">
+              {t('adminOrganizations.quotas.adjust.periodEnds')}
+            </dt>
+            {/* Down to the minute, matching the field below: a period end is an
+                instant, and a date alone would hide what is actually changing. */}
+            <dd className="text-right tabular-nums">
+              {currentPeriodEnd
+                ? format(currentPeriodEnd, 'dd/MM/yyyy HH:mm')
+                : '-'}
+            </dd>
+          </dl>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <dl className="grid grid-cols-2 gap-y-1 rounded-lg bg-muted/50 p-3 text-sm">
-          <dt className="text-muted-foreground">
-            {t('adminOrganizations.quotas.adjust.currentLimit')}
-          </dt>
-          <dd className="text-right tabular-nums">
-            {wasUnlimited
-              ? t('adminOrganizations.quotas.adjust.unlimited')
-              : currentLimit}
-          </dd>
-          <dt className="text-muted-foreground">
-            {t('adminOrganizations.quotas.adjust.used')}
-          </dt>
-          <dd className="text-right tabular-nums">{floor}</dd>
-          <dt className="text-muted-foreground">
-            {t('adminOrganizations.quotas.adjust.periodEnds')}
-          </dt>
-          {/* Down to the minute, matching the field below: a period end is an
-              instant, and a date alone would hide what is actually changing. */}
-          <dd className="text-right tabular-nums">
-            {currentPeriodEnd
-              ? format(currentPeriodEnd, 'dd/MM/yyyy HH:mm')
-              : '-'}
-          </dd>
-        </dl>
+          <Field data-invalid={!!errors.newLimit}>
+            <FieldLabel htmlFor={newLimitId}>
+              {t('adminOrganizations.quotas.adjust.newLimit')}
+            </FieldLabel>
+            <Input
+              id={newLimitId}
+              type="number"
+              step={1}
+              min={floor}
+              autoComplete="off"
+              aria-invalid={!!errors.newLimit}
+              {...register('newLimit', { valueAsNumber: true })}
+            />
+            <FieldDescription>
+              {wasUnlimited
+                ? t('adminOrganizations.quotas.adjust.unlimitedHint')
+                : delta === 0
+                  ? t('adminOrganizations.quotas.adjust.floorHint', { floor })
+                  : delta > 0
+                    ? t('adminOrganizations.quotas.adjust.increaseHint', { delta })
+                    : t('adminOrganizations.quotas.adjust.decreaseHint', {
+                        delta: -delta,
+                      })}
+            </FieldDescription>
+            {errors.newLimit && <FieldError errors={[errors.newLimit]} />}
+          </Field>
 
-        <Field data-invalid={!!errors.newLimit}>
-          <FieldLabel htmlFor={newLimitId}>
-            {t('adminOrganizations.quotas.adjust.newLimit')}
-          </FieldLabel>
-          <Input
-            id={newLimitId}
-            type="number"
-            step={1}
-            min={floor}
-            autoComplete="off"
-            aria-invalid={!!errors.newLimit}
-            {...register('newLimit', { valueAsNumber: true })}
-          />
-          <FieldDescription>
-            {wasUnlimited
-              ? t('adminOrganizations.quotas.adjust.unlimitedHint')
-              : delta === 0
-                ? t('adminOrganizations.quotas.adjust.floorHint', { floor })
-                : delta > 0
-                  ? t('adminOrganizations.quotas.adjust.increaseHint', { delta })
-                  : t('adminOrganizations.quotas.adjust.decreaseHint', {
-                      delta: -delta,
-                    })}
-          </FieldDescription>
-          {errors.newLimit && <FieldError errors={[errors.newLimit]} />}
-        </Field>
+          <Field data-invalid={!!errors.periodEnd}>
+            <FieldLabel htmlFor={periodEndId}>
+              {t('adminOrganizations.quotas.adjust.periodEnd')}
+            </FieldLabel>
+            <Input
+              id={periodEndId}
+              type="datetime-local"
+              aria-invalid={!!errors.periodEnd}
+              {...register('periodEnd')}
+            />
+            <FieldDescription>
+              {t('adminOrganizations.quotas.adjust.periodEndHint')}
+            </FieldDescription>
+            {errors.periodEnd && <FieldError errors={[errors.periodEnd]} />}
+          </Field>
 
-        <Field data-invalid={!!errors.periodEnd}>
-          <FieldLabel htmlFor={periodEndId}>
-            {t('adminOrganizations.quotas.adjust.periodEnd')}
-          </FieldLabel>
-          <Input
-            id={periodEndId}
-            type="datetime-local"
-            aria-invalid={!!errors.periodEnd}
-            {...register('periodEnd')}
-          />
-          <FieldDescription>
-            {t('adminOrganizations.quotas.adjust.periodEndHint')}
-          </FieldDescription>
-          {errors.periodEnd && <FieldError errors={[errors.periodEnd]} />}
-        </Field>
+          <Field data-invalid={!!errors.reason}>
+            <FieldLabel htmlFor={reasonId}>
+              {t('adminOrganizations.quotas.adjust.reason')}
+            </FieldLabel>
+            <Input
+              id={reasonId}
+              placeholder={t('adminOrganizations.quotas.adjust.reasonPlaceholder')}
+              autoComplete="off"
+              aria-invalid={!!errors.reason}
+              {...register('reason')}
+            />
+            <FieldDescription>
+              {t('adminOrganizations.quotas.adjust.reasonHint')}
+            </FieldDescription>
+            {errors.reason && <FieldError errors={[errors.reason]} />}
+          </Field>
 
-        <Field data-invalid={!!errors.reason}>
-          <FieldLabel htmlFor={reasonId}>
-            {t('adminOrganizations.quotas.adjust.reason')}
-          </FieldLabel>
-          <Input
-            id={reasonId}
-            placeholder={t('adminOrganizations.quotas.adjust.reasonPlaceholder')}
-            autoComplete="off"
-            aria-invalid={!!errors.reason}
-            {...register('reason')}
-          />
-          <FieldDescription>
-            {t('adminOrganizations.quotas.adjust.reasonHint')}
-          </FieldDescription>
-          {errors.reason && <FieldError errors={[errors.reason]} />}
-        </Field>
-
-        {errors.root && (
-          <p className="text-sm text-destructive">{errors.root.message}</p>
-        )}
-
+          {errors.root && (
+            <p className="body text-destructive">{errors.root.message}</p>
+          )}
+        </DialogBody>
         <DialogFooter>
           <Button type="button" variant="outline" onClick={onDone}>
             {t('common.cancel')}
@@ -177,7 +178,7 @@ export const AdjustQuotaModal = ({
   onOpenChange,
 }: AdjustQuotaModalProps) => (
   <Dialog open={open} onOpenChange={onOpenChange}>
-    <DialogContent className="sm:max-w-md">
+    <DialogContent size="md">
       {/*
         The form lives in a child of DialogContent, which Radix unmounts on
         close. CollectionRowActions keeps this modal mounted for every row, so a

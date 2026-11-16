@@ -55,12 +55,12 @@ export const OrganizationQuotaTransactionsTab = () => {
     <div className="flex flex-col gap-4">
       {quotaId && (
         <div className="flex items-center justify-between gap-4 rounded-lg border bg-muted/40 px-4 py-2">
-          <span className="text-sm text-muted-foreground">
+          <span className="body text-muted-foreground">
             {tNode('adminOrganizations.quotaTransactions.scopedTo', {
               quota: quotaLabel,
               period: quotaPeriod,
               strong: (chunks: ReactNode) => (
-                <span className="font-medium text-foreground">{chunks}</span>
+                <span className="label text-foreground">{chunks}</span>
               ),
             })}
           </span>

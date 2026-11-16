@@ -195,11 +195,11 @@ export function RichTextEditor({
             contentEditable={
               <ContentEditable
                 className={cn(
-                  "text-foreground min-h-[120px] bg-transparent px-3 py-2 text-sm outline-none"
+                  "text-foreground min-h-[120px] bg-transparent px-3 py-2 body outline-none"
                 )}
                 aria-placeholder={placeholder}
                 placeholder={
-                  <div className="text-muted-foreground pointer-events-none absolute top-0 left-3 pt-2 text-sm">
+                  <div className="text-muted-foreground pointer-events-none absolute top-0 left-3 pt-2 body">
                     {placeholder}
                   </div>
                 }

@@ -60,7 +60,7 @@ export function useCollectionQuery<T, Q = undefined>({
 
 
 
-  const { data } = useQueryFn(
+  const { data, error, isPending } = useQueryFn(
     {
       offset: pagination.pageIndex * pagination.pageSize,
       limit: pagination.pageSize,
@@ -81,5 +81,8 @@ export function useCollectionQuery<T, Q = undefined>({
   return {
     items: data?.data || [],
     totalCount: data?.pagination?.count || 0,
+    error,
+    /** No answer yet: neither rows nor an empty state to show. */
+    isPending,
   };
 }

@@ -1,4 +1,4 @@
-import {CircleAlertIcon, SparklesIcon} from 'lucide-react';
+import {CircleAlertIcon, InfoIcon} from 'lucide-react';
 import {
   Alert,
   AlertDescription,
@@ -81,8 +81,8 @@ export function PaywallAlert({
 
   if (alertContent.tone === 'upsell') {
     return (
-      <Alert variant="important" className="py-4">
-        <SparklesIcon className="size-4" />
+      <Alert variant="important">
+        <InfoIcon />
         <AlertTitle>{alertContent.title}</AlertTitle>
         <AlertDescription>{alertContent.description}</AlertDescription>
       </Alert>
@@ -90,10 +90,10 @@ export function PaywallAlert({
   }
 
   return (
-    <Alert variant="destructive" className="rounded-2xl border-rose-100 bg-rose-50 py-4">
-      <CircleAlertIcon className="size-4" />
+    <Alert variant="destructive">
+      <CircleAlertIcon />
       <AlertTitle>{alertContent.title}</AlertTitle>
-      <AlertDescription className="text-destructive/90">{alertContent.description}</AlertDescription>
+      <AlertDescription>{alertContent.description}</AlertDescription>
     </Alert>
   );
 }

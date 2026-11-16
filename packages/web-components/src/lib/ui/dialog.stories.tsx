@@ -9,11 +9,13 @@ import { Alert, AlertDescription, AlertTitle } from './alert';
 import { Button } from './button';
 import {
   Dialog,
+  DialogBody,
   DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
+  DialogMedia,
   DialogTitle,
   DialogTrigger,
 } from './dialog';
@@ -25,9 +27,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './tabs';
 const OPEN_DOCS = { docs: { story: { inline: false, iframeHeight: 420 } } };
 
 /**
- * One Dialog for every modal of the app: `DialogHeader`, `DialogFooter` and the content in between.
- * The width is set with `className` on `DialogContent` (`sm:max-w-lg` by default). The "Type" stories
- * below are the app's kinds of modal.
+ * One Dialog for every modal of the app: the same parts (`DialogHeader`, `DialogBody`, `DialogFooter`,
+ * `DialogMedia`), the same 16px radius and 24px padding. Only the width changes: `size` sm 440
+ * (a confirmation), md 560 (a form, the default), lg 740 (an import, a flow, a paywall). The
+ * "Type" stories below are the app's five kinds of modal, with neutral copy.
  */
 const meta = {
   title: 'Components/UI/Dialog',
@@ -44,10 +47,10 @@ const meta = {
           <DialogTitle>Rename project</DialogTitle>
           <DialogDescription>The name is only visible to your team.</DialogDescription>
         </DialogHeader>
-        <div className="grid gap-2">
+        <DialogBody className="grid gap-2">
           <Label htmlFor="project-name">Name</Label>
           <Input id="project-name" defaultValue="Q4 Roadmap" />
-        </div>
+        </DialogBody>
         <DialogFooter className="sm:justify-between">
           <DialogClose asChild>
             <Button variant="ghost">Cancel</Button>
@@ -81,25 +84,88 @@ export const WithoutCloseButton: Story = {
   ),
 };
 
-/** A confirmation (Delete team): narrow, the message in the text color. */
+const MEMBERS = ['Ada Lovelace', 'Grace Hopper', 'Alan Turing', 'Katherine Johnson', 'Margaret Hamilton', 'Linus Torvalds', 'Barbara Liskov', 'Dennis Ritchie', 'Edsger Dijkstra', 'Donald Knuth', 'Radia Perlman', 'Tim Berners-Lee'];
+
+/**
+ * The default: the header and the footer stay put, only `DialogBody` scrolls. Scroll the list: the
+ * rule under the header appears, the one above the footer goes once at the bottom.
+ */
+export const Scrollable: Story = {
+  args: { defaultOpen: true },
+  parameters: { docs: { story: { inline: false, iframeHeight: 560 } } },
+  render: (args) => (
+    <Dialog {...args}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Choose the members</DialogTitle>
+          <DialogDescription>They will get access to the team.</DialogDescription>
+        </DialogHeader>
+        <DialogBody className="flex flex-col gap-2">
+          {MEMBERS.map((member) => (
+            <div key={member} className="rounded-xl outline outline-1 outline-offset-[-1px] outline-border-subtle bg-card px-4 py-3 body">
+              {member}
+            </div>
+          ))}
+        </DialogBody>
+        <DialogFooter className="sm:justify-between">
+          <DialogClose asChild>
+            <Button variant="ghost">Cancel</Button>
+          </DialogClose>
+          <Button>Continue</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  ),
+};
+
+/** `fixedHeight`: the same height whatever the content, for the steps of one flow. */
+export const ScrollableFixedHeight: Story = {
+  name: 'Scrollable — Fixed height',
+  args: { defaultOpen: true },
+  parameters: { docs: { story: { inline: false, iframeHeight: 760 } } },
+  render: (args) => (
+    <Dialog {...args}>
+      <DialogContent fixedHeight>
+        <DialogHeader>
+          <DialogTitle>Name the project</DialogTitle>
+          <DialogDescription>Step 1 of 3</DialogDescription>
+        </DialogHeader>
+        <DialogBody className="grid gap-2">
+          <Label htmlFor="flow-project-name">Name</Label>
+          <Input id="flow-project-name" defaultValue="Q4 Roadmap" />
+        </DialogBody>
+        <DialogFooter className="sm:justify-between">
+          <DialogClose asChild>
+            <Button variant="ghost">Cancel</Button>
+          </DialogClose>
+          <Button>Next</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  ),
+};
+
+/** A confirmation (Delete team): `sm`, the message in the body, in the text color. */
 export const TypeConfirmation: Story = {
   name: 'Type — Confirmation',
   args: { defaultOpen: true },
   parameters: OPEN_DOCS,
   render: (args) => (
     <Dialog {...args}>
-      <DialogContent className="sm:max-w-[440px]">
+      <DialogContent size="sm">
         <DialogHeader>
           <DialogTitle>Delete team</DialogTitle>
         </DialogHeader>
         {/* The message is the dialog's content, not a subtitle. Still a DialogDescription, so a screen
             reader reads it with the title. */}
-        <DialogDescription className="text-foreground">
-          <span className="font-semibold">Customer Success – EMEA</span>
-          {' will be permanently deleted.'}
-          <br />
-          {'Its members will keep their access to the workspace.'}
-        </DialogDescription>
+        <DialogBody>
+          <DialogDescription className="text-foreground">
+            <span className="font-semibold">Customer Success – EMEA</span>
+            {' will be permanently deleted.'}
+            <br />
+            {'Its members will keep their access to the workspace.'}
+          </DialogDescription>
+        </DialogBody>
         <DialogFooter className="sm:justify-between">
           <DialogClose asChild>
             <Button variant="ghost">Cancel</Button>
@@ -111,7 +177,7 @@ export const TypeConfirmation: Story = {
   ),
 };
 
-/** A form (Create a new workspace): the default width. */
+/** A form (Create a new workspace): `md`, the default. */
 export const TypeForm: Story = {
   name: 'Type — Form',
   args: { defaultOpen: true },
@@ -122,20 +188,20 @@ export const TypeForm: Story = {
         <DialogHeader>
           <DialogTitle>Create a new workspace</DialogTitle>
         </DialogHeader>
-        <div className="flex flex-col gap-6">
+        <DialogBody className="flex flex-col gap-6">
           <div className="flex flex-col gap-2">
             <Field orientation="vertical">
               <FieldLabel htmlFor="workspace-name">Workspace name *</FieldLabel>
               <Input id="workspace-name" placeholder="Your workspace name" />
             </Field>
-            <p className="text-sm text-muted-foreground">This will be displayed across the platform.</p>
+            <p className="body text-muted-foreground">This will be displayed across the platform.</p>
           </div>
           <Alert>
             <Info />
             <AlertTitle>You'll be the Owner of this workspace</AlertTitle>
             <AlertDescription>You can invite team members and configure settings after creation.</AlertDescription>
           </Alert>
-        </div>
+        </DialogBody>
         <DialogFooter className="sm:justify-between">
           <DialogClose asChild>
             <Button variant="ghost">Cancel</Button>
@@ -147,7 +213,7 @@ export const TypeForm: Story = {
   ),
 };
 
-/** A success (Workspace created): narrow, an illustration on top, a centered title. */
+/** A success (Workspace created): `sm` with `DialogMedia`, a centered `heading-sm` title. */
 export const TypeSuccess: Story = {
   name: 'Type — Success',
   args: { defaultOpen: true },
@@ -156,19 +222,17 @@ export const TypeSuccess: Story = {
     const assetsUrl = useStaticAssetsUrl();
     return (
       <Dialog {...args}>
-        <DialogContent className="overflow-clip p-0 sm:max-w-md">
-          <div className="px-2 pt-2">
-            <div className="relative aspect-[2/1] w-full overflow-clip rounded-md bg-indigo-200">
-              <img src={`${assetsUrl}/workspace-created.svg`} alt="" className="absolute inset-0 size-full object-cover" />
-            </div>
-          </div>
-          <DialogHeader className="items-center px-8 text-center sm:text-center">
-            <DialogTitle className="text-xl">Workspace created!</DialogTitle>
+        <DialogContent size="sm">
+          <DialogMedia>
+            <img src={`${assetsUrl}/workspace-created.svg`} alt="" className="aspect-[2/1] bg-indigo-200 object-cover" />
+          </DialogMedia>
+          <DialogHeader className="items-center text-center sm:text-center">
+            <DialogTitle className="heading-sm">Workspace created!</DialogTitle>
             <DialogDescription>
               Acme is ready to use. You can now configure your settings and invite team members.
             </DialogDescription>
           </DialogHeader>
-          <DialogFooter className="px-8 pb-8">
+          <DialogFooter>
             <DialogClose asChild>
               <Button size="lg" className="w-full">
                 Done !
@@ -181,37 +245,39 @@ export const TypeSuccess: Story = {
   },
 };
 
-/** A flow (Import contacts): wide, tabs to pick the source. */
+/** A flow (Import contacts): `lg` with `fixedHeight`, every step the same size. */
 export const TypeFlow: Story = {
   name: 'Type — Flow',
   args: { defaultOpen: true },
   parameters: { docs: { story: { inline: false, iframeHeight: 760 } } },
   render: (args) => (
     <Dialog {...args}>
-      <DialogContent className="sm:max-w-[740px]">
+      <DialogContent size="lg" fixedHeight>
         <DialogHeader>
           <DialogTitle>Import contacts into "Customer Success – EMEA"</DialogTitle>
           <DialogDescription>Import a file or pick existing members to add to the team.</DialogDescription>
         </DialogHeader>
-        <Tabs defaultValue="csv" className="w-full">
-          <TabsList className="w-full">
-            <TabsTrigger value="csv" className="flex-1">
-              <FileTextIcon className="size-4" />
-              Import CSV
-            </TabsTrigger>
-            <TabsTrigger value="members" className="flex-1">
-              <UsersIcon className="size-4" />
-              From members
-            </TabsTrigger>
-          </TabsList>
-          <TabsContent value="csv" className="mt-4">
-            <CsvUploader
-              onFileSelect={() => undefined}
-              className="h-[280px]"
-              helperText="Supported: .csv, .xlsx (max 1,000 rows)"
-            />
-          </TabsContent>
-        </Tabs>
+        <DialogBody>
+          <Tabs defaultValue="csv" className="w-full">
+            <TabsList className="w-full">
+              <TabsTrigger value="csv" className="flex-1">
+                <FileTextIcon className="size-4" />
+                Import CSV
+              </TabsTrigger>
+              <TabsTrigger value="members" className="flex-1">
+                <UsersIcon className="size-4" />
+                From members
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="csv" className="mt-4">
+              <CsvUploader
+                onFileSelect={() => undefined}
+                className="h-[280px]"
+                helperText="Supported: .csv, .xlsx (max 1,000 rows)"
+              />
+            </TabsContent>
+          </Tabs>
+        </DialogBody>
         <DialogFooter className="sm:justify-between">
           <Button variant="ghost">Back</Button>
           <Button variant="outline">Skip for now</Button>
@@ -228,8 +294,8 @@ const CHOICE_SUB_STEPS = {
 } as const;
 
 /**
- * A choice (New project): the cards are the actions, so there is no footer. A sub-step's header carries
- * a back button in the close button's style.
+ * A choice (New project): `md`, the cards are the actions, so there is no footer. A sub-step's header
+ * carries a back button in the close button's style.
  */
 export const TypeChoice: Story = {
   name: 'Type — Choice',
@@ -247,7 +313,7 @@ export const TypeChoice: Story = {
                 <DialogTitle>What do you want to create?</DialogTitle>
                 <DialogDescription>Pick a starting point. You can change everything later.</DialogDescription>
               </DialogHeader>
-              <div className="flex flex-col gap-2">
+              <DialogBody className="flex flex-col gap-2">
                 <ButtonCard
                   icon={<LayoutTemplate className="size-5 text-muted-foreground" strokeWidth={1.5} />}
                   title="Start from a template"
@@ -265,12 +331,13 @@ export const TypeChoice: Story = {
                   title="Start from scratch"
                   description="An empty project you build at your own pace."
                 />
-              </div>
+              </DialogBody>
             </>
           ) : (
             <>
               <DialogHeader className="flex-row items-start gap-3">
-                {/* The close button's style (ghost icon), centered on the title's line. */}
+                {/* The close button's style (ghost icon, 36px, 20px icon), centered on the title's
+                    line; the arrow lines up with the 24px edge. */}
                 <Button variant="ghost" size="icon" className="-my-[7px] -ml-2 shrink-0" aria-label="Back" onClick={() => setStep(null)}>
                   <ArrowLeftIcon className="size-5" />
                 </Button>
@@ -283,7 +350,7 @@ export const TypeChoice: Story = {
                   </DialogDescription>
                 </div>
               </DialogHeader>
-              <div className="flex flex-col gap-2">
+              <DialogBody className="flex flex-col gap-2">
                 <ButtonCard
                   icon={<UsersIcon className="size-5 text-muted-foreground" strokeWidth={1.5} />}
                   title="For my team"
@@ -294,7 +361,7 @@ export const TypeChoice: Story = {
                   title="Just for me"
                   description="Private until you decide to share it."
                 />
-              </div>
+              </DialogBody>
             </>
           )}
         </DialogContent>

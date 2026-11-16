@@ -50,7 +50,7 @@ export function ControlledRadioGroupInput<T extends FieldValues>(
         return (
           <div key={option.value} className="flex items-center gap-3">
             <RadioGroupItem value={option.value} id={optionId} />
-            <Label htmlFor={optionId} className="text-sm font-medium cursor-pointer">
+            <Label htmlFor={optionId} className="label cursor-pointer">
               {option.label}
             </Label>
           </div>
@@ -61,7 +61,7 @@ export function ControlledRadioGroupInput<T extends FieldValues>(
 
   return (
     <Field data-invalid={fieldState.invalid} orientation={direction} className={className}>
-      <FieldLabel className={direction === 'horizontal' ? 'font-medium' : ''}>
+      <FieldLabel>
         {label}
       </FieldLabel>
       {direction === 'horizontal' ? (

@@ -3,6 +3,14 @@ packages:
   - packages/*
   - tools/*
 
+allowBuilds:
+  '@swc/core': true
+  core-js: false
+  esbuild: true
+  nx: true
+  protobufjs: false
+  unrs-resolver: true
+
 onlyBuiltDependencies:
   - '@swc/core'
   - esbuild

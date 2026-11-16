@@ -1,5 +1,7 @@
 {
   "layout.jobs.title": "Tâches en arrière-plan",
+  "layout.jobs.remove": "Retirer",
+  "layout.splitLayout.resize": "Redimensionner la colonne principale et le panneau",
   "layout.version": "v{version}",
   "layout.guestUser": "Utilisateur invité"
 }

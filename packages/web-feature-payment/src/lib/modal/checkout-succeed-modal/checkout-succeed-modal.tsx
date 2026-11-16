@@ -2,15 +2,17 @@
 
 import {useCallback, useMemo} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
-import {CheckCircle2Icon, XIcon} from 'lucide-react';
+import {CheckCircle2Icon} from 'lucide-react';
 import {
   Alert,
   AlertTitle,
   Badge,
   Button,
   Dialog,
+  DialogBody,
   DialogContent,
   DialogHeader,
+  DialogMedia,
   DialogTitle,
   PlanBadge,
 } from '@skeleton/web-components';
@@ -71,47 +73,40 @@ export function CheckoutSucceedModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-w-lg gap-6 p-8" showCloseButton={false}>
-        <DialogHeader className="flex-row items-center gap-4">
-          <DialogTitle className="grow text-2xl">{t('billing.checkout.title')}</DialogTitle>
-          <button
-            onClick={handleClose}
-            className="shrink-0 opacity-70 transition-opacity hover:opacity-100"
-          >
-            <XIcon className="size-6" />
-            <span className="sr-only">{t('common.close')}</span>
-          </button>
+      {/* A success: its illustration on top, a centered title, the plan in the body. */}
+      <DialogContent>
+        <DialogMedia>
+          <img
+            src={heroImageUrl}
+            alt={t('billing.checkout.illustrationAlt')}
+            className="h-[108px] object-cover"
+          />
+        </DialogMedia>
+        <DialogHeader className="items-center text-center sm:text-center">
+          <DialogTitle className="heading-sm">{t('billing.checkout.title')}</DialogTitle>
         </DialogHeader>
 
-        <div className="flex flex-col gap-6">
-          <div className="h-[108px] w-full overflow-hidden rounded-md">
-            <img
-              src={heroImageUrl}
-              alt={t('billing.checkout.illustrationAlt')}
-              className="h-full w-full object-cover"
-            />
-          </div>
-
-          <Alert className="border-teal-600 bg-teal-50 text-teal-800">
-            <CheckCircle2Icon className="size-4 text-teal-700" />
-            <AlertTitle className="text-teal-800">
+        <DialogBody className="flex flex-col gap-6">
+          <Alert variant="success">
+            <CheckCircle2Icon />
+            <AlertTitle>
               {t('billing.checkout.planActive', { planName })}
             </AlertTitle>
           </Alert>
 
           <div className="flex flex-col gap-4 rounded-md border p-4">
             <div className="flex items-center justify-between">
-              <p className="text-sm font-medium">{t('billing.checkout.currentPlan')}</p>
+              <p className="label">{t('billing.checkout.currentPlan')}</p>
               <PlanBadge label={planName} />
             </div>
 
             <div className="flex flex-col gap-2">
               {quotas.map((quota, index) => (
                 <div key={index} className="flex items-center justify-between">
-                  <Badge variant="outline" className="rounded-md">
+                  <Badge variant="outline">
                     {quota.label}
                   </Badge>
-                  <span className="text-sm text-muted-foreground">{quota.period}</span>
+                  <span className="body text-muted-foreground">{quota.period}</span>
                 </div>
               ))}
             </div>
@@ -122,7 +117,7 @@ export function CheckoutSucceedModal({
               </div>
             )}
           </div>
-        </div>
+        </DialogBody>
       </DialogContent>
     </Dialog>
   );

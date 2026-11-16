@@ -7,7 +7,7 @@ import { SessionProvider } from '@skeleton/core-store-session';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { RootRoutes } from './routes/root-routes';
-import { Toaster } from 'sonner';
+import { Toaster } from '@skeleton/web-components';
 
 const queryClient = new QueryClient({
   defaultOptions: {

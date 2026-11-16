@@ -2,21 +2,69 @@
   /* ===== COLORS ===== */
   /* Tailwind palette extension */
   --color-neutral-150: #ebebeb;
+  /* Between neutral-900 and neutral-800: dark mode's cards and subtle areas, one step above the background. */
+  --color-neutral-850: #1f1f1f;
 
-  --colors-success-background-light: var(--color-teal-50);
-  --colors-success-background-dark: var(--color-teal-800);
+  /*
+   * Status tones: important (indigo), success (teal), warning (amber), destructive (rose). Three roles
+   * each, for any component carrying the same meaning (Alert, banners, status badges, callouts):
+   *   surface            the tinted fill                          1.04–1.12:1 on white
+   *   border             darker than the surface                  1.24–1.49:1 on white
+   *   on-surface         text and icon on the surface             ~5:1, at least AA (4.5)
+   * Light: the 50 surface and 200 border of each family, for the same low saturation everywhere.
+   * Text steps are picked per family for an even contrast. Dark: the family's 500 over whatever
+   * is underneath (card or background), and light text steps.
+   * `destructive-*` here are the tinted roles; `destructive` itself stays the solid colour.
+   */
+  --colors-important-surface-light: var(--color-indigo-50);
+  --colors-important-surface-dark: color-mix(in oklab, var(--color-indigo-500) 12%, transparent);
+  --colors-important-border-light: var(--color-indigo-200);
+  --colors-important-border-dark: color-mix(in oklab, var(--color-indigo-500) 25%, transparent);
+  --colors-important-on-surface-light: var(--color-indigo-600);
+  --colors-important-on-surface-dark: var(--color-indigo-300);
+  --colors-success-surface-light: var(--color-teal-50);
+  --colors-success-surface-dark: color-mix(in oklab, var(--color-teal-500) 8%, transparent);
+  --colors-success-border-light: var(--color-teal-200);
+  --colors-success-border-dark: color-mix(in oklab, var(--color-teal-500) 16%, transparent);
+  --colors-success-on-surface-light: var(--color-teal-700);
+  --colors-success-on-surface-dark: var(--color-teal-400);
+  --colors-warning-surface-light: var(--color-amber-50);
+  --colors-warning-surface-dark: color-mix(in oklab, var(--color-amber-500) 8%, transparent);
+  --colors-warning-border-light: var(--color-amber-200);
+  --colors-warning-border-dark: color-mix(in oklab, var(--color-amber-500) 14%, transparent);
+  --colors-warning-on-surface-light: var(--color-amber-700);
+  --colors-warning-on-surface-dark: var(--color-amber-400);
+  --colors-destructive-surface-light: var(--color-rose-50);
+  --colors-destructive-surface-dark: color-mix(in oklab, var(--color-rose-500) 10%, transparent);
+  --colors-destructive-border-light: var(--color-rose-200);
+  --colors-destructive-border-dark: color-mix(in oklab, var(--color-rose-500) 22%, transparent);
+  --colors-destructive-on-surface-light: var(--color-rose-700);
+  --colors-destructive-on-surface-dark: var(--color-rose-300);
+
   --colors-accent-light: var(--color-neutral-100);
   --colors-accent-dark: var(--color-neutral-700);
   --colors-accent-foreground-light: var(--color-neutral-900);
   --colors-accent-foreground-dark: var(--color-neutral-50);
-  --colors-background-light: var(--color-white);
-  --colors-background-dark: var(--color-neutral-950);
+  /*
+   * Surfaces, from the back to the front, each one level above what it sits on:
+   *   canvas   the work area behind the pages (preview canvas, empty states)   light neutral-150 · dark neutral-950
+   *   base     the interface: sidebar, chat, navbars, rails, panels            light neutral-50 · dark neutral-900
+   *            (background; the sidebar follows it)
+   *   raised   cards, inputs, Item-LLM (card, subtle, input-background)        light white + border-subtle · dark neutral-850
+   *   overlay  menus, popovers, floating bars (popover, muted)                  light white + shadow · dark neutral-800
+   */
+  /* neutral-150, not 100: beside the neutral-50 panels, the canvas didn't stand apart. */
+  --colors-canvas-light: var(--color-neutral-150);
+  /* neutral-950, not the former 925 (#121212): 5 levels under the neutral-900 panels didn't set it apart. */
+  --colors-canvas-dark: var(--color-neutral-950);
+  --colors-background-light: var(--color-neutral-50);
+  --colors-background-dark: var(--color-neutral-900);
   --colors-border-light: var(--color-neutral-200);
   --colors-border-dark: rgb(255 255 255 / 0.1);
   --colors-border-subtle-light: var(--color-neutral-150);
   --colors-border-subtle-dark: rgb(255 255 255 / 0.1);
   --colors-card-light: var(--color-white);
-  --colors-card-dark: var(--color-neutral-900);
+  --colors-card-dark: var(--color-neutral-850);
   --colors-card-foreground-light: var(--color-neutral-950);
   --colors-card-foreground-dark: var(--color-neutral-50);
   --colors-destructive-light: var(--color-rose-500);
@@ -27,7 +75,8 @@
   --colors-foreground-dark: var(--color-neutral-50);
   --colors-input-light: var(--color-neutral-200);
   --colors-input-dark: rgb(255 255 255 / 0.15);
-  --colors-muted-light: var(--color-neutral-100);
+  /* neutral-150, not 100: on the neutral-50 background, 100 was barely visible (message bubbles; the tabs list is on `canvas` now). */
+  --colors-muted-light: var(--color-neutral-150);
   --colors-muted-dark: var(--color-neutral-800);
   --colors-muted-foreground-light: var(--color-neutral-500);
   --colors-muted-foreground-dark: var(--color-neutral-400);
@@ -38,15 +87,16 @@
   --colors-primary-light: var(--color-neutral-900);
   --colors-primary-dark: var(--color-neutral-200);
   --colors-primary-foreground-light: var(--color-neutral-50);
-  --colors-primary-foreground-dark: var(--color-neutral-900);
+  /* Text on the primary (indigo) colour: white in both themes. Text on `foreground` is `background`. */
+  --colors-primary-foreground-dark: var(--color-neutral-50);
   --colors-ring-light: var(--color-neutral-400);
   --colors-ring-dark: var(--color-neutral-500);
   --colors-secondary-light: var(--color-neutral-100);
   --colors-secondary-dark: var(--color-neutral-800);
   --colors-secondary-foreground-light: var(--color-neutral-900);
   --colors-secondary-foreground-dark: var(--color-neutral-50);
-  --colors-subtle-light: var(--color-neutral-50);
-  --colors-subtle-dark: var(--color-neutral-900);
+  --colors-subtle-light: var(--color-white);
+  --colors-subtle-dark: var(--color-neutral-850);
   --colors-chart-1-light: var(--color-indigo-500);
   --colors-chart-1-dark: var(--color-indigo-400);
   --colors-chart-2-light: var(--color-sky-400);
@@ -65,8 +115,10 @@
   --colors-sidebar-primary-dark: var(--color-blue-700);
   --colors-sidebar-primary-foreground-light: var(--color-neutral-50);
   --colors-sidebar-primary-foreground-dark: var(--color-neutral-50);
-  --colors-sidebar-accent-light: var(--color-neutral-100);
-  --colors-sidebar-accent-dark: var(--color-neutral-800);
+  /* Hover and active as a ghost button's hover: muted (neutral-150) in light, accent at 50% in dark
+     (neutral-700 over the neutral-900 sidebar). neutral-100 barely showed on the neutral-50 sidebar. */
+  --colors-sidebar-accent-light: var(--color-neutral-150);
+  --colors-sidebar-accent-dark: color-mix(in oklab, var(--color-neutral-700) 50%, transparent);
   --colors-sidebar-accent-foreground-light: var(--color-neutral-900);
   --colors-sidebar-accent-foreground-dark: var(--color-neutral-50);
   --colors-sidebar-border-light: var(--color-neutral-150);
@@ -111,10 +163,10 @@
   --text-sm-letter-spacing: 0;
   --text-base-font-size: 16px;
   --text-base-line-height: 24px;
-  --text-base-letter-spacing: 0.15px;
+  --text-base-letter-spacing: 0;
   --text-lg-font-size: 18px;
   --text-lg-line-height: 26px;
-  --text-lg-letter-spacing: 0.2px;
+  --text-lg-letter-spacing: 0;
   --text-xl-font-size: 20px;
   --text-xl-line-height: 28px;
   --text-xl-letter-spacing: -0.3px;

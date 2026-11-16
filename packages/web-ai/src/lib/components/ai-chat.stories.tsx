@@ -84,8 +84,8 @@ export const Empty: Story = {
     initialMessages: [],
     emptyState: (
       <div className="mx-auto max-w-3xl px-4 pt-16 text-center">
-        <h2 className="text-2xl font-semibold">What can I help you with today?</h2>
-        <p className="mt-2 text-sm text-muted-foreground">Ask about your workspace, your team or your billing.</p>
+        <h2 className="heading-md">What can I help you with today?</h2>
+        <p className="mt-2 body text-muted-foreground">Ask about your workspace, your team or your billing.</p>
       </div>
     ),
   },

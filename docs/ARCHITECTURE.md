@@ -4,14 +4,14 @@
 
 - **React 19** with TypeScript (strict mode)
 - **React Router v7** for routing
-- **Vite 7** for building and dev server
+- **Vite 8** for building and dev server
 - **Tailwind CSS v4** with `@tailwindcss/vite` plugin
 - **TanStack Query v5** for server state management
 - **Zustand v5** for client state management
 - **Zod 4** for schemas and validation
 - **react-intl** for internationalization
 - **Radix UI** primitives for accessible components
-- **Nx 22** for monorepo orchestration
+- **Nx 24** for monorepo orchestration
 - **pnpm** for package management
 
 ## Project Structure

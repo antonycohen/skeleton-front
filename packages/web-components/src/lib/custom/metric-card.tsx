@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { cn } from '@skeleton/core-utils';
 import { useTranslation } from '@skeleton/core-translations';
-import { Card } from '../ui/card';
+import { Card, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { Separator } from '../ui/separator';
@@ -51,9 +51,8 @@ export function MetricCard({
   return (
     <Card
       data-slot="metric-card"
-      variant="subtle"
       className={cn(
-        'gap-4 overflow-hidden p-6 shadow-none',
+        'gap-4 overflow-hidden p-6',
         className
       )}
     >
@@ -61,23 +60,24 @@ export function MetricCard({
       <div className="flex w-full items-start gap-2 ">
         <div className="flex flex-1 flex-col gap-4">
           {/* Header */}
-          <span className="text-base leading-normal font-semibold tracking-[0.15px] text-card-foreground">
-            {headerText ?? t('components.metricCard.thisMonth')}
-          </span>
+          <CardTitle>{headerText ?? t('components.metricCard.thisMonth')}</CardTitle>
 
           {/* Data */}
           <div className="flex w-full flex-col gap-1">
             <span
               className={cn(
-                'text-2xl font-semibold leading-none',
+                'heading-md',
                 isEmpty ? 'text-ring' : 'text-foreground'
               )}
             >
               {isEmpty ? '0' : statisticText}
             </span>
-            <span className="text-sm leading-normal font-normal text-muted-foreground">
-              {isEmpty ? (descriptionDataEmpty ?? t('components.metricCard.noData')) : descriptionText}
-            </span>
+            {/* No line when there is nothing to say: the value then sits 16px from what follows, as from its title. */}
+            {(isEmpty ? (descriptionDataEmpty ?? t('components.metricCard.noData')) : descriptionText) && (
+              <span className="body text-muted-foreground">
+                {isEmpty ? (descriptionDataEmpty ?? t('components.metricCard.noData')) : descriptionText}
+              </span>
+            )}
           </div>
         </div>
 
@@ -91,7 +91,7 @@ export function MetricCard({
 
       {/* Badge 1 */}
       {badge1 && (
-        <Badge variant="secondary" className="w-fit rounded-md">
+        <Badge variant="secondary" className="w-fit">
           <span className="size-2 rounded-full bg-emerald-400" />
           {badge1Text}
         </Badge>
@@ -99,7 +99,7 @@ export function MetricCard({
 
       {/* Badge 2 */}
       {badge2 && (
-        <Badge variant="secondary" className="w-fit rounded-md">
+        <Badge variant="secondary" className="w-fit">
           <span className="size-2 rounded-full bg-emerald-400" />
           {badge2Text}
         </Badge>

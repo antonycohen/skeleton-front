@@ -42,19 +42,18 @@ export function ListServiceAccountPage() {
       <header className="sticky top-0 z-30">
         <LayoutTopbar />
       </header>
-      <LayoutContent>
+      <LayoutContent width="narrow">
         <LayoutHeader
           pageTitle={t('serviceAccounts.title')}
           pageDescription={t('serviceAccounts.description')}
-        />
-        <div className="flex flex-col gap-4">
-          <div className="flex justify-end">
+          actions={
             <Button onClick={() => setCreateOpen(true)}>
               <Plus className="size-4" />
               {t('serviceAccounts.createAction')}
             </Button>
-          </div>
-
+          }
+        />
+        <div className="flex flex-col gap-4">
           <Collection
             useLocationAsState
             columns={columns}
@@ -68,7 +67,7 @@ export function ListServiceAccountPage() {
               status: null,
               createdAt: null,
             }}
-            emptyState={t('serviceAccounts.empty')}
+            emptyState={<p className="py-16 text-center body text-muted-foreground">{t('serviceAccounts.empty')}</p>}
           />
         </div>
       </LayoutContent>

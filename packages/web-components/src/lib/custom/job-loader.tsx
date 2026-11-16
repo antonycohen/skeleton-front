@@ -3,6 +3,7 @@ import { cn } from '@skeleton/core-utils';
 import { useTranslation } from '@skeleton/core-translations';
 import { Check, CircleAlert, LoaderCircle } from 'lucide-react';
 import { Button } from '../ui/button';
+import { Card } from '../ui/card';
 
 export type SubJobStatus = 'completed' | 'ongoing' | 'queued' | 'error';
 
@@ -30,17 +31,11 @@ export type JobLoaderProps = {
 
 export function JobLoader({ subJobs, className }: JobLoaderProps) {
   return (
-    <div
-      data-slot="job-loader"
-      className={cn(
-        'flex w-full flex-col gap-1 rounded-xl border border-border p-4',
-        className
-      )}
-    >
+    <Card data-slot="job-loader" className={cn('w-full gap-1 p-4', className)}>
       {subJobs.map((subJob, index) => (
         <SubJobItem key={index} subJob={subJob} />
       ))}
-    </div>
+    </Card>
   );
 }
 
@@ -358,51 +353,45 @@ function SubJobItem({ subJob }: { subJob: SubJob }) {
         {isError ? (
           <div className="flex min-w-0 flex-1 items-center gap-2">
             <div className="flex min-w-0 flex-1 flex-col items-start justify-center">
-              <p className="text-sm font-medium leading-5 text-foreground">
+              <p className="label text-foreground">
                 {title}
               </p>
               <div className="flex items-center gap-1">
                 <CircleAlert className="size-4 text-destructive" />
-                <p className="text-xs leading-[18px] text-destructive">{errorMessage ?? t('components.jobLoader.error')}</p>
+                <p className="body-sm text-destructive">{errorMessage ?? t('components.jobLoader.error')}</p>
               </div>
             </div>
             {onRetry && (
-              <Button variant="outline" size="sm" className="h-8 shrink-0 text-xs" onClick={onRetry}>
+              <Button variant="outline" size="sm" className="h-8 shrink-0 body-sm" onClick={onRetry}>
                 {t('components.jobLoader.retry')}
               </Button>
             )}
           </div>
         ) : isCompleted ? (
           <div className="flex flex-col items-start justify-center">
-            <p className="text-sm font-medium leading-5 text-foreground">
+            <p className="label text-foreground">
               {title}
             </p>
             <div className="flex items-center gap-1">
-              <Check className="size-4 text-teal-500" />
-              <p className="text-xs leading-[18px] text-teal-500">{t('components.jobLoader.completed')}</p>
+              <Check className="size-4 text-success-on-surface" />
+              <p className="body-sm text-success-on-surface">{t('components.jobLoader.completed')}</p>
             </div>
           </div>
         ) : (
           <div className="flex min-w-0 flex-1 flex-col items-start justify-center">
-            <p className="text-sm font-medium leading-5 text-muted-foreground">
+            <p className="label text-muted-foreground">
               {title}
             </p>
             {isOngoing && (
               <div className="flex w-full items-center gap-3">
-                <div
-                  className="relative h-2 min-w-0 flex-1 overflow-hidden rounded-full"
-                  style={{
-                    backgroundImage:
-                      'linear-gradient(90deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.9) 100%), linear-gradient(90deg, rgb(99, 102, 241) 0%, rgb(99, 102, 241) 100%)',
-                  }}
-                >
+                <div className="relative h-2 min-w-0 flex-1 overflow-hidden rounded-full bg-primary/10">
                   <div
                     className="absolute left-0 top-0 h-2 bg-primary transition-[width] duration-100"
                     style={{ width: `${displayProgress}%` }}
                   />
                 </div>
                 <div className="flex w-14 shrink-0 items-center justify-end gap-1">
-                  <span className="text-xs text-muted-foreground">
+                  <span className="body-sm text-muted-foreground">
                     {Math.round(displayProgress)}%
                   </span>
                   <LoaderCircle className="size-4 animate-spin text-muted-foreground" />

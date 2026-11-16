@@ -7,7 +7,7 @@ import type {ContextContentBlock} from '@skeleton/core-api-models';
 import type {AiChatActions, AiChatPlugin, ChatMessage} from '../types/plugin';
 import {getTextFromContentBlocks} from '../utils/stream-helpers';
 import {ContentBlockRenderer} from './content-block-renderer';
-import {Streamdown} from "streamdown";
+import {Markdown} from '@skeleton/web-components/markdown';
 
 // ============================================================================
 // Types
@@ -111,13 +111,13 @@ function UserMessage({ className, style = 'large', content, contextBlocks = [] }
           chip the composer shows while the selection is pending. */}
       <div className={cn(
         'flex max-w-[85%] flex-col items-start gap-1 rounded-bl-2xl rounded-br-2xl rounded-tl-2xl rounded-tr-none bg-muted px-4 py-3 text-foreground',
-        isCompact ? 'text-sm leading-5' : 'text-base leading-6',
+        isCompact ? 'body' : 'body-lg',
       )}>
         {contextBlocks.map((block, index) => (
           <span
             key={block.id ?? index}
             data-slot="ai-chat-message-context"
-            className="flex h-8 max-w-full items-center gap-1 rounded-full border border-border bg-muted p-2 text-sm leading-5 text-foreground"
+            className="flex h-8 max-w-full items-center gap-1 rounded-full border border-border bg-muted p-2 body text-foreground"
           >
             <MousePointer2 className="size-3 shrink-0" />
             <span className="truncate px-1">
@@ -125,7 +125,7 @@ function UserMessage({ className, style = 'large', content, contextBlocks = [] }
             </span>
           </span>
         ))}
-        <Streamdown>{content}</Streamdown>
+        <Markdown>{content}</Markdown>
       </div>
     </div>
   );
@@ -162,7 +162,7 @@ function AssistantMessage({
       )}
     >
       <div className={cn(
-        isCompact ? 'py-3 text-sm leading-5' : 'py-1 min-w-0 flex-1',
+        isCompact ? 'py-3 body' : 'py-1 min-w-0 flex-1',
       )}>
         {hasContentBlocks ? (
           <ContentBlockRenderer
@@ -195,7 +195,7 @@ function PlainTextContent({ content, isStreaming, style = 'large' }: PlainTextCo
   return (
     <div className={cn(
       'text-foreground',
-      style === 'compact' ? 'text-sm leading-5' : 'text-base leading-6',
+      style === 'compact' ? 'body' : 'body-lg',
     )}>
       {content}
       {isStreaming && (

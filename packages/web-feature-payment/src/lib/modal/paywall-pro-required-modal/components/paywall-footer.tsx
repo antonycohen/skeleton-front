@@ -29,11 +29,9 @@ export function PaywallFooter({
             </a>
           </Button>
         ) : (
-          <>
-            <Button onClick={onUpgrade} disabled={isCheckoutPending}>
-              {isCheckoutPending ? t('billing.redirecting') : t('billing.paywall.upgrade')}
-            </Button>
-          </>
+          <Button onClick={onUpgrade} disabled={isCheckoutPending}>
+            {isCheckoutPending ? t('billing.redirecting') : t('billing.paywall.upgrade')}
+          </Button>
         )}
       </div>
     </DialogFooter>

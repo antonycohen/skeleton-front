@@ -82,8 +82,9 @@ export function CarouselModal({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
+        scrollable={false}
         showCloseButton={false}
-        className="sm:max-w-[448px] overflow-clip rounded-3xl border p-0 gap-0 shadow-lg"
+        className="sm:max-w-[448px] overflow-clip rounded-2xl border p-0 gap-0 shadow-lg"
       >
         {/* Close button */}
         <DialogClose className="absolute right-[15px] top-[15px] z-10 flex size-8 items-center justify-center rounded-md border bg-background shadow-xs transition-opacity hover:opacity-80">
@@ -136,10 +137,10 @@ export function CarouselModal({
               isTransitioning ? 'opacity-0' : 'opacity-100'
             )}
           >
-            <DialogTitle className="font-heading text-xl font-semibold tracking-tight text-foreground">
+            <DialogTitle className="heading-sm text-foreground">
               {slides[current]?.title}
             </DialogTitle>
-            <p className="text-base text-muted-foreground">
+            <p className="body-lg text-muted-foreground">
               {slides[current]?.description}
             </p>
           </div>

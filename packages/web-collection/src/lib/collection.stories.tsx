@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { http } from 'msw';
 import { expect, fn, userEvent, within } from 'storybook/test';
-import type { ColumnDef } from '@tanstack/react-table';
+import type { CollectionColumnDef } from './collection-features';
 import { BanIcon, CheckCircle2Icon, ClockIcon, MailIcon, PencilIcon, PlusIcon, Trash2Icon } from 'lucide-react';
 import { useGetUsers } from '@skeleton/core-api';
 import type { User, UserStatus } from '@skeleton/core-api-models';
@@ -58,7 +58,7 @@ const STATUS_OPTIONS = [
   { label: 'Invited', value: 'INVITED', icon: MailIcon },
 ];
 
-const columns: ColumnDef<User>[] = [
+const columns: CollectionColumnDef<User>[] = [
   {
     id: 'name',
     accessorFn: (u) => `${u.firstName} ${u.lastName}`,
@@ -96,7 +96,7 @@ const columns: ColumnDef<User>[] = [
   },
 ];
 
-const actionsColumn: ColumnDef<User> = {
+const actionsColumn: CollectionColumnDef<User> = {
   id: 'actions',
   enableHiding: false,
   meta: { className: 'w-12' },

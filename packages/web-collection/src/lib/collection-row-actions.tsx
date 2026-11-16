@@ -2,7 +2,8 @@
 
 import {Fragment} from 'react';
 import {DotsVerticalIcon} from '@radix-ui/react-icons';
-import {Row} from '@tanstack/react-table';
+import {RowData} from '@tanstack/react-table';
+import {CollectionRow} from './collection-features';
 
 import {
   ActionMenuItem,
@@ -24,6 +25,8 @@ interface CommonAction {
   className?: string;
   label: string;
   group?: string;
+  /** `destructive` for an action that deletes or can't be undone: label and icon in the destructive colour. */
+  variant?: 'default' | 'destructive';
   icon: ComponentType<{ size?: number }>;
   /**
    * When set, the item is rendered greyed out with this text as its tooltip
@@ -65,12 +68,12 @@ const filterDialogActions = <T,>(actions: Action<T>[]): DialogAction<T>[] => {
   return actions.filter(isDialogAction);
 };
 
-interface Props<T> {
-  row: Row<T>;
+interface Props<T extends RowData> {
+  row: CollectionRow<T>;
   actions: Action<T>[];
 }
 
-export function CollectionRowActions<T>({ row, actions }: Props<T>) {
+export function CollectionRowActions<T extends RowData>({ row, actions }: Props<T>) {
   const { t } = useTranslation();
   const [open, setOpen] = useDialogState<string>(null);
 
@@ -82,6 +85,7 @@ export function CollectionRowActions<T>({ row, actions }: Props<T>) {
     return (
       <DropdownMenuItem
         className={cn('' ,action.className)}
+        variant={action.variant}
         key={index}
         onClick={() => setOpen(action.dialog.id)}
       >
@@ -94,7 +98,7 @@ export function CollectionRowActions<T>({ row, actions }: Props<T>) {
   const renderLinkActionMenuItem = (action: LinkAction<T>, index: number) => {
     const Icon = action.icon;
     return (
-      <DropdownMenuItem className={action.className} key={index} asChild>
+      <DropdownMenuItem className={action.className} variant={action.variant} key={index} asChild>
         <Link to={action.linkTo(row.original)}>
           <Icon size={16} />
           {action.label}
@@ -111,6 +115,7 @@ export function CollectionRowActions<T>({ row, actions }: Props<T>) {
     return (
       <DropdownMenuItem
         className={action.className}
+        variant={action.variant}
         key={index}
         onClick={() => action.onClick(row.original)}
       >
@@ -126,6 +131,7 @@ export function CollectionRowActions<T>({ row, actions }: Props<T>) {
       <ActionMenuItem
         key={index}
         className={action.className}
+        variant={action.variant}
         blockedReason={reason}
         onSelect={() => undefined}
       >

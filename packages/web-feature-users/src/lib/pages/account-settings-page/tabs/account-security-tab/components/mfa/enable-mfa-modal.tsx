@@ -5,6 +5,7 @@ import {
   Button,
   CopyButton,
   Dialog,
+  DialogBody,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -38,14 +39,16 @@ export const EnableMfaModal = ({ open, onOpenChange, user, enrolment }: EnableMf
   if (recoveryCodes) {
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="sm:max-w-lg">
+        <DialogContent>
           <DialogHeader>
             <DialogTitle>{t('account.mfa.enableModal.doneTitle')}</DialogTitle>
             <DialogDescription>
               {t('account.mfa.enableModal.doneDescription')}
             </DialogDescription>
           </DialogHeader>
-          <RecoveryCodesList codes={recoveryCodes.recoveryCodes} accountEmail={user.email} />
+          <DialogBody className="flex flex-col gap-4">
+            <RecoveryCodesList codes={recoveryCodes.recoveryCodes} accountEmail={user.email} />
+          </DialogBody>
           <DialogFooter>
             <Button type="button" onClick={() => onOpenChange(false)}>
               {t('account.mfa.savedRecoveryCodes')}
@@ -58,7 +61,7 @@ export const EnableMfaModal = ({ open, onOpenChange, user, enrolment }: EnableMf
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent>
         <form id="enable-mfa-form" onSubmit={handleSubmit} className="contents">
           <FormProvider {...form}>
             <DialogHeader>
@@ -67,37 +70,37 @@ export const EnableMfaModal = ({ open, onOpenChange, user, enrolment }: EnableMf
                 {t('account.mfa.enableModal.description')}
               </DialogDescription>
             </DialogHeader>
-
-            <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
-              <img
-                src={enrolment.qrCodeDataUrl}
-                alt={t('account.mfa.enableModal.qrCodeAlt')}
-                width={176}
-                height={176}
-                className="size-44 shrink-0 self-center rounded-lg border bg-white p-2"
-              />
-              <div className="flex min-w-0 flex-1 flex-col gap-3">
-                <div className="flex flex-col gap-1">
-                  <span className="text-sm font-medium">{t('account.mfa.enableModal.cantScan')}</span>
-                  <span className="text-sm text-muted-foreground">
-                    {t('account.mfa.enableModal.enterKeyByHand')}
-                  </span>
-                  <div className="flex items-center gap-1 rounded-md border bg-muted/40 pl-3">
-                    <code className="min-w-0 flex-1 break-all py-2 font-mono text-xs tracking-wider select-all">
-                      {enrolment.secret}
-                    </code>
-                    <CopyButton value={enrolment.secret} toastMessage={t('account.mfa.enableModal.keyCopied')} />
+            <DialogBody className="flex flex-col gap-4">
+              <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
+                <img
+                  src={enrolment.qrCodeDataUrl}
+                  alt={t('account.mfa.enableModal.qrCodeAlt')}
+                  width={176}
+                  height={176}
+                  className="size-44 shrink-0 self-center rounded-lg border bg-white p-2"
+                />
+                <div className="flex min-w-0 flex-1 flex-col gap-3">
+                  <div className="flex flex-col gap-1">
+                    <span className="label">{t('account.mfa.enableModal.cantScan')}</span>
+                    <span className="body text-muted-foreground">
+                      {t('account.mfa.enableModal.enterKeyByHand')}
+                    </span>
+                    <div className="flex items-center gap-1 rounded-md border bg-muted/40 pl-3">
+                      <code className="min-w-0 flex-1 break-all py-2 code tracking-wider select-all">
+                        {enrolment.secret}
+                      </code>
+                      <CopyButton value={enrolment.secret} toastMessage={t('account.mfa.enableModal.keyCopied')} />
+                    </div>
                   </div>
+                  <MfaCodeInput name="code" label={t('account.mfa.enableModal.codeLabel')} autoFocus />
+                  {rootError && (
+                    <p role="alert" className="body text-destructive">
+                      {tIfKey(rootError)}
+                    </p>
+                  )}
                 </div>
-                <MfaCodeInput name="code" label={t('account.mfa.enableModal.codeLabel')} autoFocus />
-                {rootError && (
-                  <p role="alert" className="text-sm text-destructive">
-                    {tIfKey(rootError)}
-                  </p>
-                )}
               </div>
-            </div>
-
+            </DialogBody>
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
                 {t('common.cancel')}

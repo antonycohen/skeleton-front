@@ -25,7 +25,7 @@ Authoritative rules:
 
 ## Shared (both levels)
 
-- [ ] Columns hook `hooks/use-<entity>-list-columns.tsx` returning `ColumnDef<Read<Entity>>[]` (follow the `list-columns-hooks` rule); always include an `actions` column. For a **nested** list, the hook can live alongside the tab file (`tabs/<name>-tab/hooks/use-<entity>-list-columns.tsx`).
+- [ ] Columns hook `hooks/use-<entity>-list-columns.tsx` returning `CollectionColumnDef<Read<Entity>>[]` from `@skeleton/web-collection` (follow the `list-columns-hooks` rule); always include an `actions` column. For a **nested** list, the hook can live alongside the tab file (`tabs/<name>-tab/hooks/use-<entity>-list-columns.tsx`).
 - [ ] `Collection` wired with `useQueryFn`, `staticParams`, `queryFields`, and an `emptyState`
 - [ ] Headers, cell fallbacks, action labels, title/description and `emptyState` texts use `t()` (`common.actions`, `common.delete`, … for generic ones); new keys added to the namespace file in both `en` and `fr`
 - [ ] Workspace: `staticParams` carries the workspace id from `useGetCurrentWorkspaceId()`, links built with `useCurrentWorkspaceUrlPrefix()`. Admin: links are absolute from `/`.

@@ -140,7 +140,7 @@ export function SsoCertificatesCard({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-xl">
+        <CardTitle size="lg">
           {t('security.certificates.title')}
         </CardTitle>
         <CardDescription>
@@ -150,7 +150,7 @@ export function SsoCertificatesCard({
 
       <CardContent className="flex flex-col gap-6">
         {announcesOtherCertificates && (
-          <Alert variant="important">
+          <Alert variant="warning">
             <TriangleAlertIcon />
             <AlertDescription>
               <span className="flex flex-col items-start gap-3">
@@ -176,7 +176,7 @@ export function SsoCertificatesCard({
         {isLoading && <Skeleton className="h-24 w-full rounded-xl" />}
 
         {!isLoading && rows.length === 0 && (
-          <p className="text-sm text-muted-foreground">
+          <p className="body text-muted-foreground">
             {t('security.certificates.empty')}
           </p>
         )}
@@ -190,12 +190,12 @@ export function SsoCertificatesCard({
               <div className="flex items-start justify-between gap-4">
                 <div className="flex flex-col gap-1">
                   <div className="flex items-center gap-3">
-                    <span className="font-medium">
+                    <span className="label-lg">
                       {row.subject ?? t('security.certificates.fallbackName')}
                     </span>
                     <ExpiryBadge certificate={row} />
                   </div>
-                  <span className="text-sm text-muted-foreground">
+                  <span className="body text-muted-foreground">
                     {t('security.certificates.validity', {
                       from: formatDate(row.notBefore),
                       to: formatDate(row.notAfter),
@@ -213,7 +213,7 @@ export function SsoCertificatesCard({
                   <Trash2Icon className="size-4 text-destructive" />
                 </Button>
               </div>
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <div className="flex items-center gap-2 body-sm text-muted-foreground">
                 <span>SHA-256</span>
                 <span className="break-all font-mono">
                   {row.fingerprintSha256}
@@ -258,7 +258,7 @@ export function SsoCertificatesCard({
         )}
 
         {isFull && (
-          <p className="border-t pt-6 text-sm text-muted-foreground">
+          <p className="border-t pt-6 body text-muted-foreground">
             {t('security.certificates.full')}
           </p>
         )}
